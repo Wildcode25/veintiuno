@@ -1,5 +1,5 @@
-class Player{
-    constructor(){
+export class Player{
+    constructor(nickName){
         this.nickName = nickName;
         this.cards = [];
         this.accumulatedCards = [];

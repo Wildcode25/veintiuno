@@ -1,4 +1,4 @@
-import {Game} from "./classes/game";
+import {Game} from "./classes/game.js";
 
 let game = new Game();
 
