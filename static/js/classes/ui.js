@@ -1,74 +1,96 @@
+import { Player } from "./player";
 export class Ui {
-  
-  /**
-   * The Ui class is responsible for handling the user interface of a game called "Veintiuno".
-   * It provides methods for displaying messages, asking for player names, and welcoming the players.
-   *
-   * @example
-   * const ui = new Ui();
-   * ui.displayWelcome(); // Displays a welcome message
-   * const players = ui.askNames(); // Asks for player names and returns an array of names
-   * ui.display(); // Displays the game interface
-   */
-
-  /**
-   * Displays the game interface.
-   */
-  
   displayGame(gameCards, player) {
-    let stringPlayerCards="";
-    let stringGameCards="";
+    let stringPlayerCards = "";
+    let stringGameCards = "";
     player.cards.forEach((e, i) => {
-      stringPlayerCards += `${i + 1})${e.name} `;
+      stringPlayerCards += `${i + 1}.${e.name} `;
     });
-    gameCards.forEach((e, i)=>{
-      stringGameCards += `${i+1})${e.name} `
-    })
-    console.log("juega "+player.nickName)
+    gameCards.cards.forEach((e, i) => {
+      stringGameCards += `${i + 1}.${e.name} `;
+    });
+    console.log("juega " + player.nickName);
     console.log(stringGameCards);
-    let cardIndex=0;
-    do{
+    let cardIndex = 0;
+    do {
       cardIndex = parseInt(prompt(stringPlayerCards)) - 1;
-    }while(cardIndex<0 || cardIndex>player.cards.lenght)
-     
+    } while (cardIndex < 0 || cardIndex >= player.cards.length);
 
     return {
-      card: player.cards[cardIndex], 
-      actionNumber: parseInt(prompt("1. Soltar 2. Robar 3. Formar 4. Emparejar"))
-    }
-    
+      card: player.cards[cardIndex],
+      actionIndex: parseInt(
+        prompt("1. Soltar 2. Robar 3. Formar 4. Emparejar")
+      ),
+      cardIndex: cardIndex
+    };
   }
 
-  /**
-   * Asks the user for player names and returns an array of names.
-   *
-   * @returns {string[]} An array of player names.
-   */
   askPlayerNames() {
-    let players = []
-    let limit
-    let op=0;
-    while (op != 1) {
-      op = parseInt(prompt("1. Dos jugadores 2. Cuatro jugadores"));
+    let players = [];
+    let limit;
+    let op = 0;
+    while (op != 1 && op != 2 && op != 3) {
+      op = parseInt(prompt("1. Dos jugadores 2. Tres jugadores 3. Cuatro jugadores"));
       switch (op) {
         case 1:
-          limit = 2; break;
+          limit = 2;
+          break;
         case 2:
-          alert("Opcion no disponible"); break;
+          limit = 3;
+          break;
+        case 3: 
+          limit = 4;
+          break;
         default:
           alert("Opcion no valida");
       }
-      alert(op)
+    
     }
+
     for (let i = 0; i < limit; i++) {
-      players.push(prompt(`Nombre de jugador ${i + 1}`));
+      let player = new Player(prompt(`Nombre de jugador ${i + 1}`))
+      players.push(player);
     }
+    console.log(players)
     return players;
   }
+  selectCards(gameCards) {
+    let indexGameCard = 0;
+    let op = 0;
+    let selectedCards = [];
+    let indexs = [];
+    let band=true;
+    while (op != 1) {
+      do {
+        indexGameCard = parseInt(prompt("Seleccionar carta")) - 1;
+      } while (indexGameCard < 0 || indexGameCard >= gameCards.length);
+      
+      if (indexs.length > 0) {
+        for(let index of indexs){
+          if (index == indexGameCard)
+          {
+            band = false;
+            break;
+          } 
+        }
+      }
+      if (band) {
+        op = prompt("1.confirmar 2.elegir otra");
+        if (op == 2||op==1){
+          selectedCards.push(gameCards[indexGameCard]);
+          indexs.push(indexGameCard);
+        } 
+        else if (op != 1) alert("Opcion no valida");
 
-  /**
-   * Displays a welcome message to the user.
-   */
+      }
+      else {
+        alert("Carta seleccionada")
+        band = true;
+      }
+    }
+    return selectedCards;
+  }
+
   displayWelcome() {
     alert("Bienvenido a Veintiuno");
   }

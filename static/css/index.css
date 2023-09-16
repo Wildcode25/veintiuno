@@ -1,0 +1,38 @@
+*{
+    box-sizing: border-box;
+}
+body{
+    display: flex;
+    justify-content: center;
+    background-color:darkslategray;
+}
+
+.table{
+    position: relative;
+    display: flex;
+    background-color: #283;
+    width: 500px;
+    min-height: 400px;
+    padding-bottom: 50px;
+    flex-wrap: wrap;
+    box-shadow: inset 0 0px 50px black ;
+}
+
+
+.gameCard{
+    border-radius: 5%;
+    text-align: center;
+    text-shadow: 0 0 5px black;
+    padding-top: 50px;
+    height: 125px;
+    margin: 20px;
+    flex-basis: 80px;
+    background-color: white;
+}
+.playerCardContainer{
+    display: flex;
+    position: absolute;
+    width: 100%;
+    left: 0%;
+    top: 100%
+}
