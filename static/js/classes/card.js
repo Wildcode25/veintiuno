@@ -1,10 +1,13 @@
 export class Card{
-    constructor(name, value){
+    constructor(name, symbol,  value, color){
         this.name = name;
+        this.symbol = symbol
         this.value = value;
+        this.color = color
         this.block ={
          
         }
         this.formedCards = []
+        
     }
 }

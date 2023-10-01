@@ -4,12 +4,30 @@
 body{
     display: flex;
     justify-content: center;
+    
     background-color:darkslategray;
+}
+.playerContainer{
+    display: grid;
+    grid-template-columns: repeat(2,180px);
+    grid-template-rows: repeat(2);
+    grid-column-gap: 700px;
+    grid-row-gap: 10px ;
+    position: absolute;
+    
+}
+.playerStatisticContainer{
+    border-radius: 10px;
+    padding: 10px;
+    text-align: start;
+    background-color: white;
 }
 
 .table{
+    justify-self: center;
     position: relative;
     display: flex;
+    justify-content: center;
     background-color: #283;
     width: 500px;
     min-height: 400px;
@@ -25,14 +43,13 @@ body{
     text-shadow: 0 0 5px black;
     padding-top: 50px;
     height: 125px;
-    margin: 20px;
+    margin: 5% 3%;
     flex-basis: 80px;
     background-color: white;
 }
 .playerCardContainer{
     display: flex;
-    position: absolute;
-    width: 100%;
-    left: 0%;
-    top: 100%
+    justify-content: center;
+    width: 400px;
+    height: 125px;
 }

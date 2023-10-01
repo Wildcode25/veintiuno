@@ -1,28 +1,265 @@
 import { Player } from "./player";
-export class Ui {
-  displayGame(gameCards, player) {
-    let stringPlayerCards = "";
-    let stringGameCards = "";
-    player.cards.forEach((e, i) => {
-      stringPlayerCards += `${i + 1}.${e.name} `;
-    });
-    gameCards.cards.forEach((e, i) => {
-      stringGameCards += `${i + 1}.${e.name} `;
-    });
-    console.log("juega " + player.nickName);
-    console.log(stringGameCards);
-    let cardIndex = 0;
-    do {
-      cardIndex = parseInt(prompt(stringPlayerCards)) - 1;
-    } while (cardIndex < 0 || cardIndex >= player.cards.length);
+import { Deck } from "./deck";
+const newDeck = new Deck();
+let deck = newDeck.getDeck();
+const table = document.querySelector(".table");
+const playerCardsContainer = document.querySelector(".playerCardContainer");
+const playersContainer = document.querySelector(".playerContainer");
 
-    return {
-      card: player.cards[cardIndex],
-      actionIndex: parseInt(
-        prompt("1. Soltar 2. Robar 3. Formar 4. Emparejar")
-      ),
-      cardIndex: cardIndex
+export class Ui {
+  displayGame(players) {
+    let gameCards = {
+      cards: [],
+      playStatus: false,
     };
+    gameCards.cards = deck.getCards(deck.cards);
+    players.forEach((player) => {
+      player.cards = deck.getCards(deck.cards);
+    });
+
+    sprintsPlayers();
+    function sprintsPlayers() {
+      let plays = 0;
+      function turnPlayer(turn, limit) {
+        console.log("Baraja: " + deck.cards.length);
+        let newTurn = 0;
+        table.innerHTML = "";
+        playerCardsContainer.innerHTML = "";
+        playersContainer.innerHTML = "";
+        players.forEach((player) => {
+          player.resetPointsDistribution();
+          player.countCards();
+          let playerStatisticContainer = document.createElement("div");
+          playerStatisticContainer.className = "playerStatisticContainer";
+          createPlayerStatisticContainerContent(
+            playerStatisticContainer,
+            "Nombre",
+            player.nickName
+          );
+          createPlayerStatisticContainerContent(
+            playerStatisticContainer,
+            "Total de cartas",
+            player.pointsDistribution.totalCards
+          );
+          createPlayerStatisticContainerContent(
+            playerStatisticContainer,
+            "cartas A",
+            player.pointsDistribution.APoints
+          );
+          createPlayerStatisticContainerContent(
+            playerStatisticContainer,
+            "Cartas de Pi",
+            player.pointsDistribution.piCards.length
+          );
+          createPlayerStatisticContainerContent(
+            playerStatisticContainer,
+            "10 de diamante",
+            player.pointsDistribution.dymondTen
+          );
+          createPlayerStatisticContainerContent(
+            playerStatisticContainer,
+            "2 de Pi",
+            player.pointsDistribution.piTwo
+          );
+          createPlayerStatisticContainerContent(
+            playerStatisticContainer,
+            "Puntos",
+            player.points
+          );
+          if (player.nickName == players[turn].nickName) {
+            playerStatisticContainer.style.background = "#9c9";
+          }
+          playersContainer.appendChild(playerStatisticContainer);
+        });
+        gameCards.cards.forEach((e, i) => {
+          let card = document.createElement("div");
+          card.className = "gameCard";
+          card.style.color = e.color;
+          let nameCard = document.createTextNode(e.name);
+          card.appendChild(nameCard);
+          table.appendChild(card);
+        });
+        if (plays >= 4 * players.length) {
+          plays = 0;
+          if (deck.cards.length > 0)
+            players.forEach((player) => {
+              player.cards = deck.getCards(deck.cards);
+            });
+          else {
+            updatePoints(players);
+            if (evaluateWinner(players)) {
+              return;
+            } else {
+              deck = newDeck.getDeck();
+              players.forEach((player) => {
+                player.resetPointsDistribution();
+              });
+            }
+          }
+        }
+        players[turn].cards.forEach((playerCard, i) => {
+          let card = document.createElement("div");
+          card.className = "gameCard";
+          card.style.color = playerCard.color;
+          let nameCard = document.createTextNode(playerCard.name);
+          card.appendChild(nameCard);
+          playerCardsContainer.appendChild(card);
+          card.addEventListener("dblclick", (e) => {
+            console.log(e);
+            players[turn].dropCard(gameCards, playerCard);
+            playerVerification(gameCards, players[turn], playerCard);
+            newTurn = turn >= limit - 1 ? 0 : turn + 1;
+            plays++;
+            turnPlayer(newTurn, limit);
+          });
+          card.addEventListener("click", (e) => {
+            let selectedCards = [];
+            card.style.background = "gray";
+            table.childNodes.forEach((childNode, index) => {
+              let selectCards=(e) => {
+                childNode.style.background = "gray";
+                selectedCards.push(gameCards.cards[index]);
+                console.log(selectedCards)
+                childNode.removeEventListener("click", selectCards)
+                
+            }
+              childNode.addEventListener("click", selectCards);
+            });
+            let lootCardsAction = (e) => {
+              e.preventDefault();
+              players[turn].lootCards(gameCards, selectedCards, playerCard);
+              
+              if (playerVerification(gameCards, players[turn], playerCard)) {
+                newTurn = turn >= limit - 1 ? 0 : turn + 1;
+                plays++;
+                card.removeEventListener("click", lootCardsAction)
+                turnPlayer(newTurn, limit);
+              }
+              card.style.background = "white";
+              table.childNodes.forEach((childNode) => {
+              childNode.style.background = "white";
+              });
+              selectedCards=[]
+              card.removeEventListener("contextmenu", lootCardsAction)
+              console.log(selectedCards)
+              
+            }
+            table.addEventListener("contextmenu", lootCardsAction);
+            table.addEventListener("click", (e) => {
+              if (e.altKey) {
+                players[turn].groupCards(
+                  gameCards,
+                  selectedCards,
+                  playerCard
+                );
+
+                if (
+                  playerVerification(gameCards, players[turn], playerCard)
+                ) {
+                  newTurn = turn >= limit - 1 ? 0 : turn + 1;
+                  plays++;
+                  turnPlayer(newTurn, limit);
+                }
+                card.style.background = "white";
+                table.childNodes.forEach((childNode) => {
+                  childNode.style.background = "white";
+                });
+
+                selectedCards = [];
+              }
+            });
+            table.addEventListener("dblclick", (e) => {
+              players[turn].match(gameCards, selectedCards, playerCard);
+
+              if (playerVerification(gameCards, players[turn], playerCard)) {
+                newTurn = turn >= limit - 1 ? 0 : turn + 1;
+                plays++;
+                turnPlayer(newTurn, limit);
+              }
+
+              card.style.background = "white";
+              table.childNodes.forEach((childNode) => {
+                childNode.style.background = "white";
+              });
+            });
+          });
+        });
+      }
+      turnPlayer(0, players.length);
+      function playerVerification(gameCard, player, playerCard) {
+        if (gameCard.playStatus) {
+          player.cards = player.cards.filter((playerCardItem) => {
+            return playerCardItem.name != playerCard.name;
+          });
+          gameCards.playStatus = false;
+          return true;
+        }
+        return false;
+      }
+      function evaluateWinner(players) {
+        for (let player of players) {
+          if (player.points >= 21) {
+            return true;
+          }
+        }
+        return false;
+      }
+      function createPlayerStatisticContainerContent(
+        playerStatisticContainer,
+        detail,
+        data
+      ) {
+        let detailElement = document.createElement("h4");
+        detailElement.appendChild(document.createTextNode(detail + ": "));
+        let dataElement = document.createElement("b");
+        dataElement.style.color = "#e55";
+        dataElement.appendChild(document.createTextNode(data));
+        detailElement.appendChild(dataElement);
+        playerStatisticContainer.appendChild(detailElement);
+      }
+      function updatePoints(players) {
+        console.log(players);
+        let mostCardsPlayer = players[0];
+        let mostPiPlayer = players[0];
+        for (let player of players) {
+          if (
+            mostCardsPlayer.pointsDistribution.totalCards <
+            player.pointsDistribution.totalCards
+          )
+            mostCardsPlayer = player;
+          if (
+            mostPiPlayer.pointsDistribution.piCards.length <
+            player.pointsDistribution.piCards.length
+          )
+            mostPiPlayer = player;
+          if (player.points < 17) {
+            if (player.pointsDistribution.dymondTen == 1) player.points += 2;
+            if (player.pointsDistribution.piTwo == 1) player.points++;
+            player.points += player.pointsDistribution.APoints;
+          } else if (player.points == 19) {
+            if (player.pointsDistribution.dymondTen == 1) player.points += 2;
+          }
+        }
+        if (mostPiPlayer.points < 17) {
+          mostCardsPlayer.points += 3;
+          mostPiPlayer.points++;
+        } else {
+          if (mostCardsPlayer.points == 17 && mostPiPlayer.points == 17) {
+            mostCardsPlayer.points += 3;
+            mostPiPlayer.points++;
+          }
+          if (mostCardsPlayer == 18) {
+            mostCardsPlayer.points += 3;
+          }
+          if (mostPiPlayer == 20) {
+            mostPiPlayer.points++;
+          }
+        }
+        for (let i = 0; i < players.length - 1; i++) {
+          [players[i], players[i + 1]] = [players[i + 1], players[i]];
+        }
+      }
+    }
   }
 
   askPlayerNames() {
@@ -30,7 +267,9 @@ export class Ui {
     let limit;
     let op = 0;
     while (op != 1 && op != 2 && op != 3) {
-      op = parseInt(prompt("1. Dos jugadores 2. Tres jugadores 3. Cuatro jugadores"));
+      op = parseInt(
+        prompt("1. Dos jugadores 2. Tres jugadores 3. Cuatro jugadores")
+      );
       switch (op) {
         case 1:
           limit = 2;
@@ -38,20 +277,19 @@ export class Ui {
         case 2:
           limit = 3;
           break;
-        case 3: 
+        case 3:
           limit = 4;
           break;
         default:
           alert("Opcion no valida");
       }
-    
     }
 
     for (let i = 0; i < limit; i++) {
-      let player = new Player(prompt(`Nombre de jugador ${i + 1}`))
+      let player = new Player(prompt(`Nombre de jugador ${i + 1}`));
       players.push(player);
     }
-    console.log(players)
+    console.log(players);
     return players;
   }
   selectCards(gameCards) {
@@ -59,32 +297,28 @@ export class Ui {
     let op = 0;
     let selectedCards = [];
     let indexs = [];
-    let band=true;
+    let band = true;
     while (op != 1) {
       do {
         indexGameCard = parseInt(prompt("Seleccionar carta")) - 1;
       } while (indexGameCard < 0 || indexGameCard >= gameCards.length);
-      
+
       if (indexs.length > 0) {
-        for(let index of indexs){
-          if (index == indexGameCard)
-          {
+        for (let index of indexs) {
+          if (index == indexGameCard) {
             band = false;
             break;
-          } 
+          }
         }
       }
       if (band) {
         op = prompt("1.confirmar 2.elegir otra");
-        if (op == 2||op==1){
+        if (op == 2 || op == 1) {
           selectedCards.push(gameCards[indexGameCard]);
           indexs.push(indexGameCard);
-        } 
-        else if (op != 1) alert("Opcion no valida");
-
-      }
-      else {
-        alert("Carta seleccionada")
+        } else if (op != 1) alert("Opcion no valida");
+      } else {
+        alert("Carta seleccionada");
         band = true;
       }
     }
