@@ -1,12 +1,15 @@
 import { Player } from "./player";
 import { Deck } from "./deck";
+//Variables declaration
 const newDeck = new Deck();
 let deck = newDeck.getDeck();
 const table = document.querySelector(".table");
 const playerCardsContainer = document.querySelector(".playerCardContainer");
 const playersContainer = document.querySelector(".playerContainer");
 
+//User intarface
 export class Ui {
+  //Start the game
   displayGame(players) {
     let gameCards = {
       cards: [],
@@ -16,10 +19,13 @@ export class Ui {
     players.forEach((player) => {
       player.cards = deck.getCards(deck.cards);
     });
-
+    //Call the function sprintplayer
     sprintsPlayers();
+
     function sprintsPlayers() {
       let plays = 0;
+
+      
       function turnPlayer(turn, limit) {
         console.log("Baraja: " + deck.cards.length);
         let newTurn = 0;
@@ -140,8 +146,9 @@ export class Ui {
               childNode.style.background = "white";
               });
               selectedCards=[]
-              card.removeEventListener("contextmenu", lootCardsAction)
+              table.removeEventListener("contextmenu", lootCardsAction)
               console.log(selectedCards)
+              
               
             }
             table.addEventListener("contextmenu", lootCardsAction);
