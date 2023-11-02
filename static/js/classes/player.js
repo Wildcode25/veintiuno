@@ -74,19 +74,25 @@ export class Player {
     let sum2 = 0;
     let sums = [];
     for (let selectedCard of selectedCards) {
-      sum += selectedCard.value;
+      if(selectedCard.block.form){
+        sum += selectedCard.value;
+      }
+      else if(selectedCard.value == playerCard.value){
+        sum+=selectedCard.value;
+      }
     }
   console.log("suma: "+sum)
     if (sum % playerCard.value == 0 && sum != 0) {
       for (let i = 1; i <= selectedCards.length; i++) {
         sums.push(this.sumasPosibles(selectedCards, i, playerCard.value));
       }
-      for (let sumA of sums) {
-        sum2 += sumA.length;
+      for (let sumFilas of sums) {
+        sum2 += sumFilas.length;
       }
       console.log(sum/playerCard.value)
-      if (sum2 == sum / playerCard.value){
-        console.log(sum2)
+      console.log(sum2)
+      if (sum2 >= sum / playerCard.value){
+        
         return true;
       } 
     }
@@ -138,6 +144,7 @@ export class Player {
           playerCard.name = groupName;
           playerCard.value = groupValue;
           playerCard.formedCards.concat(selectedCards);
+          playerCard.block.form = false;
           gameCards = this.updateGameCards(gameCards, selectedCards);
           gameCards.cards.push(playerCard);
           gameCards.playStatus = true;
@@ -151,13 +158,18 @@ export class Player {
     const resultados = [];
     function calcularSumas(actual, startIndex) {
       if (actual.length === n) {
-        const suma = actual.reduce((a, b) => a + b, 0);
-        if (suma == cardValue) resultados.push(suma);
+        let suma = 0;
+        for(let actualItem of actual){
+          suma+=actualItem.value;
+        }
+        if (suma == cardValue){
+          resultados.push(suma);
+        } 
         return;
       }
       for (let i = startIndex; i < arr.length; i++) {
-        const nuevoActual = [...actual, arr[i].value];
-        calcularSumas(nuevoActual, i + 1);
+        let nuevoActual = [...actual, arr[i]];
+        calcularSumas(nuevoActual, i+1);
       }
     }
     calcularSumas([], 0);
@@ -166,6 +178,11 @@ export class Player {
 
   checkForm(selectedCards, playerCard) {
     let sum = 0;
+    selectedCards.forEach((selectedCard)=>{
+      if(!selectedCard.block.form){
+        return false;
+      }
+    })
     console.log(selectedCards)
     if (selectedCards.length > 1)
       for (let selectedCard of selectedCards) {
@@ -183,10 +200,10 @@ export class Player {
     let groupName = "( ";
     let groupValue;
     selectedCards.push(playerCard);
-
-    for (let e of this.cards) {
-      if (this.checkForm(selectedCards, e)) {
-        groupValue = e.value;
+    
+    for (let turnPlayerCard of this.cards) {
+      if (this.checkForm(selectedCards, turnPlayerCard)) {
+        groupValue = turnPlayerCard.value;
         selectedCards.forEach((card) => {
           groupName += card.name + " ";
         });

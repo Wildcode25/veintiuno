@@ -14,6 +14,7 @@ body{
     grid-column-gap: 700px;
     grid-row-gap: 10px ;
     position: absolute;
+    z-index: -10;
     
 }
 .playerStatisticContainer{
@@ -46,6 +47,7 @@ body{
     margin: 5% 3%;
     flex-basis: 80px;
     background-color: white;
+    cursor: pointer;
 }
 .playerCardContainer{
     display: flex;
