@@ -5,6 +5,7 @@ const newDeck = new Deck();
 let selectCard=false
 let deck = newDeck.getDeck();
 let plays = 0;
+let selectedCards=[]
 const table = document.querySelector(".table");
 const playerCardsContainer = document.querySelector(".playerCardContainer");
 const playersContainer = document.querySelector(".playerContainer");
@@ -192,7 +193,7 @@ export class Ui {
         });
         card.addEventListener("click", (e) => {
           selectCard = true;
-          let selectedCards = [];
+          selectedCards = []
           card.style.background = "gray";
           table.childNodes.forEach((childNode, index) => {
             
@@ -205,10 +206,9 @@ export class Ui {
                 }
               };
               childNode.addEventListener("click", selectCards);
-
-            
             
           });
+
           let lootCardsAction = (e) => {
             if (selectCard) {
               e.preventDefault();
@@ -220,15 +220,13 @@ export class Ui {
                 card.removeEventListener("click", lootCardsAction);
                 turnPlayer(newTurn, limit);
               }
-
-              
             }
             card.style.background = "white";
             table.childNodes.forEach((childNode) => {
               childNode.style.background = "white";
             });
             selectCard = false;
-            selectedCards = [];
+            
               table.removeEventListener("contextmenu", lootCardsAction);
               console.log(selectedCards);
           };
@@ -242,9 +240,6 @@ export class Ui {
                   plays++;
                   turnPlayer(newTurn, limit);
                 }
-                
-                
-                selectedCards = [];
               }
               card.style.background = "white";
                 table.childNodes.forEach((childNode) => {
@@ -305,38 +300,7 @@ export class Ui {
     console.log(players);
     return players;
   }
-  selectCards(gameCards) {
-    let indexGameCard = 0;
-    let op = 0;
-    let selectedCards = [];
-    let indexs = [];
-    let band = true;
-    while (op != 1) {
-      do {
-        indexGameCard = parseInt(prompt("Seleccionar carta")) - 1;
-      } while (indexGameCard < 0 || indexGameCard >= gameCards.length);
-
-      if (indexs.length > 0) {
-        for (let index of indexs) {
-          if (index == indexGameCard) {
-            band = false;
-            break;
-          }
-        }
-      }
-      if (band) {
-        op = prompt("1.confirmar 2.elegir otra");
-        if (op == 2 || op == 1) {
-          selectedCards.push(gameCards[indexGameCard]);
-          indexs.push(indexGameCard);
-        } else if (op != 1) alert("Opcion no valida");
-      } else {
-        alert("Carta seleccionada");
-        band = true;
-      }
-    }
-    return selectedCards;
-  }
+  
 
   displayWelcome() {
     alert("Bienvenido a Veintiuno");

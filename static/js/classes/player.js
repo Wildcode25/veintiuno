@@ -65,7 +65,6 @@ export class Player {
       gameCards.playStatus = true;
       
     }
-    selectedCards=[]
     console.log(selectedCards);
     return gameCards;
   }
@@ -73,13 +72,9 @@ export class Player {
     let sum = 0;
     let sum2 = 0;
     let sums = [];
+    console.log(selectedCards)
     for (let selectedCard of selectedCards) {
-      if(selectedCard.block.form){
-        sum += selectedCard.value;
-      }
-      else if(selectedCard.value == playerCard.value){
-        sum+=selectedCard.value;
-      }
+      sum+=selectedCard.value;
     }
   console.log("suma: "+sum)
     if (sum % playerCard.value == 0 && sum != 0) {
@@ -179,7 +174,7 @@ export class Player {
   checkForm(selectedCards, playerCard) {
     let sum = 0;
     selectedCards.forEach((selectedCard)=>{
-      if(!selectedCard.block.form){
+      if(selectedCard.block.form){
         return false;
       }
     })
