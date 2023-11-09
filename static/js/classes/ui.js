@@ -14,6 +14,10 @@ const playersContainer = document.querySelector(".playerContainer");
 export class Ui {
   //Start the game
   displayGame(players) {
+    let turn = 0;
+    let gloabalCardObject;
+    let limit = players.length
+    let globalPlayerCard;
     let gameCards = {
       cards: [],
       playStatus: false,
@@ -23,7 +27,7 @@ export class Ui {
       player.cards = deck.getCards(deck.cards);
     });
     //Call the function sprintplayer
-    turnPlayer(0, players.length);
+    turnPlayer(0);
 
     function evaluateWinner(players) {
       for (let player of players) {
@@ -98,9 +102,8 @@ export class Ui {
       detailElement.appendChild(dataElement);
       playerStatisticContainer.appendChild(detailElement);
     }
-    function turnPlayer(turn, limit) {
+    function turnPlayer(turn) {
       console.log("Baraja: " + deck.cards.length);
-      let newTurn = 0;
       table.innerHTML = "";
       playerCardsContainer.innerHTML = "";
       playersContainer.innerHTML = "";
@@ -149,11 +152,11 @@ export class Ui {
         }
         playersContainer.appendChild(playerStatisticContainer);
       });
-      gameCards.cards.forEach((e, i) => {
+      gameCards.cards.forEach((gameCard, i) => {
         let card = document.createElement("div");
         card.className = "gameCard";
-        card.style.color = e.color;
-        let nameCard = document.createTextNode(e.name);
+        card.style.color = gameCard.color;
+        let nameCard = document.createTextNode(gameCard.name);
         card.appendChild(nameCard);
         table.appendChild(card);
       });
@@ -179,6 +182,7 @@ export class Ui {
         selectCard = false;
         let card = document.createElement("div");
         card.className = "gameCard";
+        card.id = playerCard.name;
         card.style.color = playerCard.color;
         let nameCard = document.createTextNode(playerCard.name);
         card.appendChild(nameCard);
@@ -187,11 +191,14 @@ export class Ui {
           console.log(e);
           players[turn].dropCard(gameCards, playerCard);
           playerVerification(gameCards, players[turn], playerCard);
-          newTurn = turn >= limit - 1 ? 0 : turn + 1;
+          console.log(turn)
+          if(turn>=limit-1) turn = 0
+          else turn++ 
           plays++;
-          turnPlayer(newTurn, limit);
+          turnPlayer(turn);
         });
         card.addEventListener("click", (e) => {
+          
           selectCard = true;
           selectedCards = []
           card.style.background = "gray";
@@ -208,68 +215,75 @@ export class Ui {
               childNode.addEventListener("click", selectCards);
             
           });
-
-          let lootCardsAction = (e) => {
-            if (selectCard) {
-              e.preventDefault();
-              players[turn].lootCards(gameCards, selectedCards, playerCard);
-
-              if (playerVerification(gameCards, players[turn], playerCard)) {
-                newTurn = turn >= limit - 1 ? 0 : turn + 1;
-                plays++;
-                card.removeEventListener("click", lootCardsAction);
-                turnPlayer(newTurn, limit);
-              }
-            }
-            card.style.background = "white";
-            table.childNodes.forEach((childNode) => {
-              childNode.style.background = "white";
-            });
-            selectCard = false;
-            
-              table.removeEventListener("contextmenu", lootCardsAction);
-              console.log(selectedCards);
-          };
-          table.addEventListener("contextmenu", lootCardsAction);
-          table.addEventListener("click", (e) => {
-            if (e.altKey) {
-              if (selectCard) {
-                players[turn].groupCards(gameCards, selectedCards, playerCard);
-                if (playerVerification(gameCards, players[turn], playerCard)) {
-                  newTurn = turn >= limit - 1 ? 0 : turn + 1;
-                  plays++;
-                  turnPlayer(newTurn, limit);
-                }
-              }
-              card.style.background = "white";
-                table.childNodes.forEach((childNode) => {
-                childNode.style.background = "white";
-                });
-              selectCard = false;
-            }
-          });
-          table.addEventListener("dblclick", (e) => {
-            if (selectCard) {
-              players[turn].match(gameCards, selectedCards, playerCard);
-
-              if (playerVerification(gameCards, players[turn], playerCard)) {
-                newTurn = turn >= limit - 1 ? 0 : turn + 1;
-                plays++;
-                turnPlayer(newTurn, limit);
-              }
-              
-            }
-            selectCard = false;
-              card.style.background = "white";
-              table.childNodes.forEach((childNode) => {
-                childNode.style.background = "white";
-              });
-          });
+          globalPlayerCard = playerCard;
+          gloabalCardObject = card;
+          
         });
       });
     }
-  }
+    //Table listeners
+    table.addEventListener("click", (e) => {
+      
+      if (e.altKey) {
+        if (selectCard) {
+          players[turn].groupCards(gameCards, selectedCards, playerCard);
+          if (playerVerification(gameCards, players[turn], playerCard)) {
+            turn = turn >= limit - 1 ? 0 : turn + 1;
+            plays++;
+            turnPlayer(newTurn);
+          }
+        }
+        card.style.background = "white";
+          table.childNodes.forEach((childNode) => {
+          childNode.style.background = "white";
+          });
+        selectCard = false;
+      }
+    });
+    table.addEventListener("contextmenu", (e)=>{
+      
+      if (selectCard) {
+        e.preventDefault();
+        players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
+        if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
+          turn = turn >= limit - 1 ? 0 : turn + 1;
+          plays++;
+          turnPlayer(turn);
+        }
+      }
+      gloabalCardObject.style.background = "white";
+      table.childNodes.forEach((childNode) => {
+        childNode.style.background = "white";
+      });
+      selectCard = false;
+      console.log(selectedCards);
+    });
+    table.addEventListener("dblclick", (e) => {
+      if (selectCard) {
+        players[turn].match(gameCards, selectedCards, playerCard);
 
+        if (playerVerification(gameCards, players[turn], playerCard)) {
+          newTurn = turn >= limit - 1 ? 0 : turn + 1;
+          plays++;
+          turnPlayer(newTurn, limit);
+        }
+        
+      }
+      selectCard = false;
+        card.style.background = "white";
+        table.childNodes.forEach((childNode) => {
+          childNode.style.background = "white";
+        });
+    });
+  }
+  getPlayerCard(cardId, playerCards){
+    playerCards.forEach((playerCard)=>{
+      if(cardId==playerCard.name){
+        return playerCard;
+      }
+    })
+
+  }
   askPlayerNames() {
     let players = [];
     let limit;

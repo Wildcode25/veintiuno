@@ -78,6 +78,7 @@ export class Player {
     }
   console.log("suma: "+sum)
     if (sum % playerCard.value == 0 && sum != 0) {
+      console.log(selectedCards)
       for (let i = 1; i <= selectedCards.length; i++) {
         sums.push(this.sumasPosibles(selectedCards, i, playerCard.value));
       }
