@@ -14,9 +14,10 @@ const playersContainer = document.querySelector(".playerContainer");
 export class Ui {
   //Start the game
   displayGame(players) {
+    
+    let globalCardObject;
+    let limit = players.length-1
     let turn = 0;
-    let gloabalCardObject;
-    let limit = players.length
     let globalPlayerCard;
     let gameCards = {
       cards: [],
@@ -27,7 +28,7 @@ export class Ui {
       player.cards = deck.getCards(deck.cards);
     });
     //Call the function sprintplayer
-    turnPlayer(0);
+    turnPlayer();
 
     function evaluateWinner(players) {
       for (let player of players) {
@@ -102,7 +103,9 @@ export class Ui {
       detailElement.appendChild(dataElement);
       playerStatisticContainer.appendChild(detailElement);
     }
-    function turnPlayer(turn) {
+    function turnPlayer() {
+      if(turn>limit) turn=0
+      console.log("turno: "+turn)
       console.log("Baraja: " + deck.cards.length);
       table.innerHTML = "";
       playerCardsContainer.innerHTML = "";
@@ -191,11 +194,9 @@ export class Ui {
           console.log(e);
           players[turn].dropCard(gameCards, playerCard);
           playerVerification(gameCards, players[turn], playerCard);
-          console.log(turn)
-          if(turn>=limit-1) turn = 0
-          else turn++ 
+          turn++; 
           plays++;
-          turnPlayer(turn);
+          turnPlayer();
         });
         card.addEventListener("click", (e) => {
           
@@ -216,7 +217,7 @@ export class Ui {
             
           });
           globalPlayerCard = playerCard;
-          gloabalCardObject = card;
+          globalCardObject = card;
           
         });
       });
@@ -226,14 +227,15 @@ export class Ui {
       
       if (e.altKey) {
         if (selectCard) {
-          players[turn].groupCards(gameCards, selectedCards, playerCard);
-          if (playerVerification(gameCards, players[turn], playerCard)) {
-            turn = turn >= limit - 1 ? 0 : turn + 1;
+          players[turn].formCards(gameCards, selectedCards, globalPlayerCard);
+          if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
+            
             plays++;
-            turnPlayer(newTurn);
+            turn++;
+            turnPlayer();
           }
         }
-        card.style.background = "white";
+        globalCardObject.style.background = "white";
           table.childNodes.forEach((childNode) => {
           childNode.style.background = "white";
           });
@@ -246,12 +248,13 @@ export class Ui {
         e.preventDefault();
         players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
         if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
-          turn = turn >= limit - 1 ? 0 : turn + 1;
+          console.log("aquii: "+turn)
+          turn++;
           plays++;
-          turnPlayer(turn);
+          turnPlayer();
         }
       }
-      gloabalCardObject.style.background = "white";
+      globalCardObject.style.background = "white";
       table.childNodes.forEach((childNode) => {
         childNode.style.background = "white";
       });
@@ -260,17 +263,16 @@ export class Ui {
     });
     table.addEventListener("dblclick", (e) => {
       if (selectCard) {
-        players[turn].match(gameCards, selectedCards, playerCard);
-
-        if (playerVerification(gameCards, players[turn], playerCard)) {
-          newTurn = turn >= limit - 1 ? 0 : turn + 1;
+        players[turn].match(gameCards, selectedCards, globalPlayerCard);
+        if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
           plays++;
-          turnPlayer(newTurn, limit);
+          turn++;
+          turnPlayer();
         }
         
       }
       selectCard = false;
-        card.style.background = "white";
+        globalCardObject.style.background = "white";
         table.childNodes.forEach((childNode) => {
           childNode.style.background = "white";
         });

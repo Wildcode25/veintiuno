@@ -191,7 +191,7 @@ export class Player {
     }
     return false;
   }
-  groupCards(gameCards, selectedCards, playerCard) {
+  formCards(gameCards, selectedCards, playerCard) {
     let band = false;
     let groupName = "( ";
     let groupValue;
