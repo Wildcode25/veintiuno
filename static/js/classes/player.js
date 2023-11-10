@@ -7,9 +7,10 @@ export class Player {
       totalCards: 0,
       piCards: [],
       APoints: 0,
+      birao: 0,
       dymondTen: 0,
       piTwo: 0,
-      birao: 0,
+     
     };
     this.points = 0;
   }
@@ -21,6 +22,7 @@ export class Player {
       APoints: 0,
       dymondTen: 0,
       piTwo: 0,
+      birao: 0
     };
   }
   countCards() {

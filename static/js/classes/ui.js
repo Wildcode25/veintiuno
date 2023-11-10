@@ -143,14 +143,15 @@ export class Ui {
         );
         createPlayerStatisticContainerContent(
           playerStatisticContainer,
-          "2 de Pi",
-          player.pointsDistribution.piTwo
-        );
-        createPlayerStatisticContainerContent(
-          playerStatisticContainer,
           "Birao",
           player.pointsDistribution.birao
         );
+        createPlayerStatisticContainerContent(
+          playerStatisticContainer,
+          "2 de Pi",
+          player.pointsDistribution.piTwo
+        );
+        
         createPlayerStatisticContainerContent(
           playerStatisticContainer,
           "Puntos",
