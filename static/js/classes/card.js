@@ -4,9 +4,7 @@ export class Card{
         this.symbol = symbol
         this.value = value;
         this.color = color
-        this.block ={
-            form: false
-        }
+        this.block = false;
         this.formedCards = []
         
     }

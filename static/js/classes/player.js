@@ -9,6 +9,7 @@ export class Player {
       APoints: 0,
       dymondTen: 0,
       piTwo: 0,
+      birao: 0,
     };
     this.points = 0;
   }
@@ -61,6 +62,7 @@ export class Player {
     if (this.checkLoot(selectedCards, playerCard)) {
       gameCards = this.updateGameCards(gameCards, selectedCards);
       selectedCards.push(playerCard);
+      if(gameCards.cards.length == 0) this.pointsDistribution.birao++;
       this.accumulatedCards = this.accumulatedCards.concat(selectedCards);
       gameCards.playStatus = true;
       
@@ -72,12 +74,21 @@ export class Player {
     let sum = 0;
     let sum2 = 0;
     let sums = [];
+    let isBlock=false;
+    let blockedCard;
     console.log(selectedCards)
     for (let selectedCard of selectedCards) {
+      if(selectedCard.block){
+        isBlock = true;
+        blockedCard = selectedCard;
+      } 
       sum+=selectedCard.value;
     }
   console.log("suma: "+sum)
     if (sum % playerCard.value == 0 && sum != 0) {
+      if(isBlock){
+        if(blockedCard.value != playerCard.value) return false;
+      }
       console.log(selectedCards)
       for (let i = 1; i <= selectedCards.length; i++) {
         sums.push(this.sumasPosibles(selectedCards, i, playerCard.value));
@@ -140,7 +151,7 @@ export class Player {
           playerCard.name = groupName;
           playerCard.value = groupValue;
           playerCard.formedCards.concat(selectedCards);
-          playerCard.block.form = false;
+          playerCard.block = true;
           gameCards = this.updateGameCards(gameCards, selectedCards);
           gameCards.cards.push(playerCard);
           gameCards.playStatus = true;
@@ -175,7 +186,7 @@ export class Player {
   checkForm(selectedCards, playerCard) {
     let sum = 0;
     selectedCards.forEach((selectedCard)=>{
-      if(selectedCard.block.form){
+      if(selectedCard.block){
         return false;
       }
     })
@@ -215,6 +226,13 @@ export class Player {
     }
     
     return gameCards;
+  }
+
+  checkBlocks(selectedCards){
+    for(let selectedCard of selectedCards){
+      if(selectedCard.block) return false
+    }
+    return true;
   }
   updateGameCards(gameCards, selectedCards) {
     for (let selectedCardIndex in selectedCards) {

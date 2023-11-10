@@ -2,10 +2,10 @@ import { Player } from "./player";
 import { Deck } from "./deck";
 //Variables declaration
 const newDeck = new Deck();
-let selectCard=false
+let selectCard = false
 let deck = newDeck.getDeck();
 let plays = 0;
-let selectedCards=[]
+let selectedCards = []
 const table = document.querySelector(".table");
 const playerCardsContainer = document.querySelector(".playerCardContainer");
 const playersContainer = document.querySelector(".playerContainer");
@@ -14,10 +14,11 @@ const playersContainer = document.querySelector(".playerContainer");
 export class Ui {
   //Start the game
   displayGame(players) {
-    
+
     let globalCardObject;
-    let limit = players.length-1
+    let limit = players.length - 1
     let turn = 0;
+    let previousTurn = players.length - 1;
     let globalPlayerCard;
     let gameCards = {
       cards: [],
@@ -104,8 +105,8 @@ export class Ui {
       playerStatisticContainer.appendChild(detailElement);
     }
     function turnPlayer() {
-      if(turn>limit) turn=0
-      console.log("turno: "+turn)
+      if (turn > limit) turn = 0;
+      console.log("turno: " + turn)
       console.log("Baraja: " + deck.cards.length);
       table.innerHTML = "";
       playerCardsContainer.innerHTML = "";
@@ -144,6 +145,11 @@ export class Ui {
           playerStatisticContainer,
           "2 de Pi",
           player.pointsDistribution.piTwo
+        );
+        createPlayerStatisticContainerContent(
+          playerStatisticContainer,
+          "Birao",
+          player.pointsDistribution.birao
         );
         createPlayerStatisticContainerContent(
           playerStatisticContainer,
@@ -194,62 +200,72 @@ export class Ui {
           console.log(e);
           players[turn].dropCard(gameCards, playerCard);
           playerVerification(gameCards, players[turn], playerCard);
-          turn++; 
+          turn++;
           plays++;
           turnPlayer();
         });
         card.addEventListener("click", (e) => {
-          
+          playerCardsContainer.childNodes.forEach((childNode) => {
+            if (childNode.id == card.id) {
+              childNode.style.background = "gray";
+            }
+            else childNode.style.background = "white";
+          })
           selectCard = true;
           selectedCards = []
-          card.style.background = "gray";
+
           table.childNodes.forEach((childNode, index) => {
-            
-              let selectCards = (e) => {
-                if (selectCard) {
+
+            let selectCards = (e) => {
+              if (selectCard) {
                 childNode.style.background = "gray";
                 selectedCards.push(gameCards.cards[index]);
                 console.log(selectedCards);
                 childNode.removeEventListener("click", selectCards);
-                }
-              };
-              childNode.addEventListener("click", selectCards);
-            
+              }
+            };
+            childNode.addEventListener("click", selectCards);
+
           });
           globalPlayerCard = playerCard;
           globalCardObject = card;
-          
+
         });
       });
     }
     //Table listeners
     table.addEventListener("click", (e) => {
-      
       if (e.altKey) {
         if (selectCard) {
           players[turn].formCards(gameCards, selectedCards, globalPlayerCard);
           if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
-            
             plays++;
             turn++;
+            previousTurn = turn - 1;
             turnPlayer();
           }
         }
         globalCardObject.style.background = "white";
-          table.childNodes.forEach((childNode) => {
+        table.childNodes.forEach((childNode) => {
           childNode.style.background = "white";
-          });
+        });
         selectCard = false;
+        selectedCards = []
       }
     });
-    table.addEventListener("contextmenu", (e)=>{
-      
+    table.addEventListener("contextmenu", (e) => {
+
       if (selectCard) {
         e.preventDefault();
         players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
         if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
-          console.log("aquii: "+turn)
+          if (players[turn].pointsDistribution.birao > 0 && players[previousTurn] > 0) {
+
+            players[previousTurn].pointsDistribution.birao--;
+            players[turn].pointsDistribution.birao--;
+          }
           turn++;
+          previousTurn = turn-1;
           plays++;
           turnPlayer();
         }
@@ -259,6 +275,7 @@ export class Ui {
         childNode.style.background = "white";
       });
       selectCard = false;
+      selectedCards = []
       console.log(selectedCards);
     });
     table.addEventListener("dblclick", (e) => {
@@ -269,18 +286,19 @@ export class Ui {
           turn++;
           turnPlayer();
         }
-        
+
       }
       selectCard = false;
-        globalCardObject.style.background = "white";
-        table.childNodes.forEach((childNode) => {
-          childNode.style.background = "white";
-        });
+      selectedCards = []
+      globalCardObject.style.background = "white";
+      table.childNodes.forEach((childNode) => {
+        childNode.style.background = "white";
+      });
     });
   }
-  getPlayerCard(cardId, playerCards){
-    playerCards.forEach((playerCard)=>{
-      if(cardId==playerCard.name){
+  getPlayerCard(cardId, playerCards) {
+    playerCards.forEach((playerCard) => {
+      if (cardId == playerCard.name) {
         return playerCard;
       }
     })
@@ -316,7 +334,7 @@ export class Ui {
     console.log(players);
     return players;
   }
-  
+
 
   displayWelcome() {
     alert("Bienvenido a Veintiuno");
