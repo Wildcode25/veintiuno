@@ -1,3 +1,4 @@
+import { Card } from "./card";
 export class Player {
   constructor(nickName) {
     this.nickName = nickName;
@@ -27,11 +28,10 @@ export class Player {
   }
   countCards() {
     this.accumulatedCards.forEach((accumulatedCard) => {
-      if (accumulatedCard.formedCards.length > 0) {
-        for (formedCard of accumulatedCard.formedCards) {
+      if (accumulatedCard.formedCards.length) {
+        for (let formedCard of accumulatedCard.formedCards) {
           this.cardEvaluation(formedCard);
         }
-        console.log(accumulatedCard.formedCards)
         this.pointsDistribution.totalCards +=
           accumulatedCard.formedCards.length;
       } else {
@@ -64,7 +64,12 @@ export class Player {
     if (this.checkLoot(selectedCards, playerCard)) {
       gameCards = this.updateGameCards(gameCards, selectedCards);
       selectedCards.push(playerCard);
-      if(gameCards.cards.length == 0) this.pointsDistribution.birao++;
+      console.log(gameCards.cards.length)
+      if(gameCards.cards.length < 1){
+        this.pointsDistribution.birao++;
+        console.log(this.pointsDistribution.birao)
+        console.log("a")
+      } 
       this.accumulatedCards = this.accumulatedCards.concat(selectedCards);
       gameCards.playStatus = true;
       
@@ -152,7 +157,7 @@ export class Player {
           groupName += ")";
           playerCard.name = groupName;
           playerCard.value = groupValue;
-          playerCard.formedCards.concat(selectedCards);
+          this.concatCards(selectedCards, playerCard)
           playerCard.block = true;
           gameCards = this.updateGameCards(gameCards, selectedCards);
           gameCards.cards.push(playerCard);
@@ -187,6 +192,7 @@ export class Player {
 
   checkForm(selectedCards, playerCard) {
     let sum = 0;
+    let reduce = 0;
     selectedCards.forEach((selectedCard)=>{
       if(selectedCard.block){
         return false;
@@ -195,11 +201,12 @@ export class Player {
     console.log(selectedCards)
     if (selectedCards.length > 1)
       for (let selectedCard of selectedCards) {
+        if(selectedCard.name[0]=='A') reduce+=13;
         sum += selectedCard.value;
       }
     console.log(sum);
+    if(sum>playerCard.value) sum-=reduce;
     if (sum == playerCard.value) {
-      
       return true;
     }
     return false;
@@ -217,19 +224,28 @@ export class Player {
           groupName += card.name + " ";
         });
         groupName += ")";
-        playerCard.name = groupName;
-        playerCard.value = groupValue;
-        playerCard.formedCards.concat(selectedCards);
-        console.log(playerCard.formedCards)
+        let formedCard = new Card(groupName, '+', groupValue, "black")
+        console.log(selectedCards)
+        this.concatCards(selectedCards, formedCard)
+        console.log(formedCard.formedCards)
         gameCards = this.updateGameCards(gameCards, selectedCards);
-        gameCards.cards.push(playerCard);
+        gameCards.cards.push(formedCard);
         gameCards.playStatus = true;
       }
     }
     
     return gameCards;
   }
-
+  concatCards(selectedCards, playerCard){
+    selectedCards.forEach((selectedCard)=>{
+      if(selectedCard.symbol=='+'){
+        this.concatCards(selectedCard.formedCards, playerCard)
+      }
+      else{
+        playerCard.formedCards.push(selectedCard)
+      }
+    })
+  }
   checkBlocks(selectedCards){
     for(let selectedCard of selectedCards){
       if(selectedCard.block) return false

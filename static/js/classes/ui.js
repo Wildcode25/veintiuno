@@ -24,6 +24,7 @@ export class Ui {
       cards: [],
       playStatus: false,
     };
+    console.log(gameCards.cards.length)
     gameCards.cards = deck.getCards(deck.cards);
     players.forEach((player) => {
       player.cards = deck.getCards(deck.cards);
@@ -163,12 +164,7 @@ export class Ui {
         playersContainer.appendChild(playerStatisticContainer);
       });
       gameCards.cards.forEach((gameCard, i) => {
-        let card = document.createElement("div");
-        card.className = "gameCard";
-        card.style.color = gameCard.color;
-        let nameCard = document.createTextNode(gameCard.name);
-        card.appendChild(nameCard);
-        table.appendChild(card);
+        table.appendChild(createHtmlCardElement(gameCard));
       });
       if (plays >= 4 * players.length) {
         plays = 0;
@@ -190,12 +186,7 @@ export class Ui {
       }
       players[turn].cards.forEach((playerCard, i) => {
         selectCard = false;
-        let card = document.createElement("div");
-        card.className = "gameCard";
-        card.id = playerCard.name;
-        card.style.color = playerCard.color;
-        let nameCard = document.createTextNode(playerCard.name);
-        card.appendChild(nameCard);
+        let card = createHtmlCardElement(playerCard)
         playerCardsContainer.appendChild(card);
         card.addEventListener("dblclick", (e) => {
           console.log(e);
@@ -214,20 +205,6 @@ export class Ui {
           })
           selectCard = true;
           selectedCards = []
-
-          table.childNodes.forEach((childNode, index) => {
-
-            let selectCards = (e) => {
-              if (selectCard) {
-                childNode.style.background = "gray";
-                selectedCards.push(gameCards.cards[index]);
-                console.log(selectedCards);
-                childNode.removeEventListener("click", selectCards);
-              }
-            };
-            childNode.addEventListener("click", selectCards);
-
-          });
           globalPlayerCard = playerCard;
           globalCardObject = card;
 
@@ -235,6 +212,40 @@ export class Ui {
       });
     }
     //Table listeners
+    table.addEventListener("click", (e)=>{
+      
+      if(selectCard){
+        if(e.target.className == "gameCard"){
+          if(e.target.style.background != "gray"){
+            e.target.style.background = "gray";
+          for(let gameCard of gameCards.cards){
+            if(e.target.id === gameCard.name){
+              selectedCards.push(gameCard);
+              break;
+            }
+          }
+          }
+          else{
+            e.target.style.background = "white";
+            selectedCards = selectedCards.filter((selectCard)=>{
+              return selectCard.name != e.target.id;
+            });
+          }
+          
+        }
+        console.log(selectedCards);
+      }
+    })
+    function createHtmlCardElement(cardObjet){
+      let card = document.createElement("div");
+      card.className = "gameCard";
+      card.id = cardObjet.name;
+      card.style.color = cardObjet.color;
+      let nameCard = document.createTextNode(cardObjet.name);
+      card.appendChild(nameCard);
+      return card;
+    }
+    
     table.addEventListener("click", (e) => {
       if (e.altKey) {
         if (selectCard) {
@@ -261,7 +272,7 @@ export class Ui {
         players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
         if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
           if (players[turn].pointsDistribution.birao > 0 && players[previousTurn] > 0) {
-
+            console.log("w")
             players[previousTurn].pointsDistribution.birao--;
             players[turn].pointsDistribution.birao--;
           }
