@@ -246,8 +246,8 @@ export class Ui {
       return card;
     }
     
-    table.addEventListener("click", (e) => {
-      if (e.altKey) {
+    document.addEventListener("keydown", (e) => {
+      if (e.key == "x") {
         if (selectCard) {
           players[turn].formCards(gameCards, selectedCards, globalPlayerCard);
           if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
@@ -256,19 +256,19 @@ export class Ui {
             previousTurn = turn - 1;
             turnPlayer();
           }
-        }
-        globalCardObject.style.background = "white";
-        table.childNodes.forEach((childNode) => {
+          globalCardObject.style.background = "white";
+          table.childNodes.forEach((childNode) => {
           childNode.style.background = "white";
         });
+        }
+        
         selectCard = false;
         selectedCards = []
       }
     });
-    table.addEventListener("contextmenu", (e) => {
-
+    document.addEventListener("keydown", (e) => {
+      if(e.key == "z"){
       if (selectCard) {
-        e.preventDefault();
         players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
         if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
           if (players[turn].pointsDistribution.birao > 0 && players[previousTurn] > 0) {
@@ -289,8 +289,10 @@ export class Ui {
       selectCard = false;
       selectedCards = []
       console.log(selectedCards);
+    }
     });
-    table.addEventListener("dblclick", (e) => {
+    document.addEventListener("keydown", (e) => {
+      if(e.key == "c"){
       if (selectCard) {
         players[turn].match(gameCards, selectedCards, globalPlayerCard);
         if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
@@ -298,14 +300,16 @@ export class Ui {
           turn++;
           turnPlayer();
         }
-
+        selectCard = false;
+        selectedCards = []
+        globalCardObject.style.background = "white";
+        table.childNodes.forEach((childNode) => {
+          childNode.style.background = "white";
+        });
       }
-      selectCard = false;
-      selectedCards = []
-      globalCardObject.style.background = "white";
-      table.childNodes.forEach((childNode) => {
-        childNode.style.background = "white";
-      });
+    
+      
+    }
     });
   }
   getPlayerCard(cardId, playerCards) {
