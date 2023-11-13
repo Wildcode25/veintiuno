@@ -246,7 +246,7 @@ export class Ui {
       return card;
     }
     
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener("keyup", (e) => {
       if (e.key == "x") {
         if (selectCard) {
           players[turn].formCards(gameCards, selectedCards, globalPlayerCard);
@@ -266,7 +266,7 @@ export class Ui {
         selectedCards = []
       }
     });
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener("keyup", (e) => {
       if(e.key == "z"){
       if (selectCard) {
         players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
@@ -291,7 +291,7 @@ export class Ui {
       console.log(selectedCards);
     }
     });
-    document.addEventListener("keydown", (e) => {
+    document.addEventListener("keyup", (e) => {
       if(e.key == "c"){
       if (selectCard) {
         players[turn].match(gameCards, selectedCards, globalPlayerCard);

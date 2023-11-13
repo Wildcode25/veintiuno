@@ -93,8 +93,24 @@ export class Player {
       sum += selectedCard.value
     }
     console.log("suma: " + sum)
-    for (let i = 0; i <= cardsA; i++) {
-
+    for (let e = 0; e <= cardsA; e++) {
+      sum=0;
+      if (playerCard.name[0] == 'A') {
+        if (e > 0) {
+          for (let selectedCard of selectedCards) {
+            if (selectedCard.value == 14) {
+              selectedCard.value = 1;
+              break;
+            }
+          }
+        }
+      }
+      else {
+        for (let selectedCard of selectedCards) {
+          sum += selectedCard.value;
+          if (selectedCard.value == 14) selectedCard.value = 1;
+        }
+      }
       if (isBlock) {
         if (blockedCard.value != playerCard.value) return false;
       }
@@ -110,19 +126,6 @@ export class Player {
 
         return true;
       }
-      if (playerCard.name[0] == 'A') {
-        for (let selectedCard of selectedCards) {
-          if (selectedCard.value == 14) {
-            selectedCard.value = 1;
-            break;
-          }
-        }
-      }
-      else {
-        for (let selectedCard of selectedCards) {
-          if (selectedCard.value == 14) selectedCard.value = 1;
-        }
-      }
     }
 
 
@@ -132,15 +135,37 @@ export class Player {
     let sum = 0;
     let sum2 = 0;
     let sums = [];
-    let cardsA
+    let cardsA=0
     for (let selectedCard of selectedCards) {
-      sum += selectedCard.value;
+     
       if (selectedCard.value == 14) {
         cardsA++;
       }
     }
     console.log(sum)
-    if (sum % playerCard.value == 0) {
+    for (let e = 0; e <= cardsA; e++) {
+
+      console.log("sum:"+sum)
+      sum=0;
+      if (playerCard.name[0] == 'A') {
+        if (e > 0) {
+          for (let selectedCard of selectedCards) {
+            if (selectedCard.value == 14) {
+              selectedCard.value = 1;
+              break;
+            }
+          }
+        }
+      }
+      else {
+        for (let selectedCard of selectedCards) {
+         
+          if (selectedCard.value == 14) selectedCard.value = 1;
+        }
+      }
+      for(let selectedCard of selectedCards){
+        sum += selectedCard.value;
+      }
       for (let i = 1; i <= selectedCards.length; i++) {
         sums.push(this.sumasPosibles(selectedCards, i, playerCard.value));
       }
@@ -154,6 +179,7 @@ export class Player {
         sum = 0;
         return true;
       }
+
     }
 
     return false;
