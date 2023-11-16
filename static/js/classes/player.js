@@ -83,18 +83,21 @@ export class Player {
     let blockedCard;
     let cardsA = 0
     for (let selectedCard of selectedCards) {
-      if (selectedCard.block) {
+      if (selectedCard.symbol=='-') {
         isBlock = true;
         blockedCard = selectedCard;
       }
-      if (selectedCard.value == 14) {
+      if(selectedCard.symbol == '+'&& selectedCards.length>1){
+        return false;
+      }
+      if (selectedCard.name[0] == 'A') {
         cardsA++;
       }
       sum += selectedCard.value
     }
     console.log("suma: " + sum)
     for (let e = 0; e <= cardsA; e++) {
-      sum=0;
+      sum = 0;
       if (playerCard.name[0] == 'A') {
         if (e > 0) {
           for (let selectedCard of selectedCards) {
@@ -135,22 +138,22 @@ export class Player {
     let sum = 0;
     let sum2 = 0;
     let sums = [];
-    let cardsA=0
+    let cardsA = 0
     for (let selectedCard of selectedCards) {
-     
-      if (selectedCard.value == 14) {
+
+      if (selectedCard.name[0] == 'A') {
         cardsA++;
       }
     }
     console.log(sum)
     for (let e = 0; e <= cardsA; e++) {
 
-      console.log("sum:"+sum)
-      sum=0;
+      console.log("sum:" + sum)
+      sum = 0;
       if (playerCard.name[0] == 'A') {
         if (e > 0) {
           for (let selectedCard of selectedCards) {
-            if (selectedCard.value == 14) {
+            if (selectedCard.name[0] == 'A') {
               selectedCard.value = 1;
               break;
             }
@@ -159,11 +162,11 @@ export class Player {
       }
       else {
         for (let selectedCard of selectedCards) {
-         
-          if (selectedCard.value == 14) selectedCard.value = 1;
+
+          if (selectedCard.name[0] == 'A') selectedCard.value = 1;
         }
       }
-      for(let selectedCard of selectedCards){
+      for (let selectedCard of selectedCards) {
         sum += selectedCard.value;
       }
       for (let i = 1; i <= selectedCards.length; i++) {
@@ -173,7 +176,7 @@ export class Player {
         sum2 += sumA.length;
       }
       sum = sum / playerCard.value;
-      if (sum2 == sum && sum >= 2) {
+      if (sum2 >= sum && sum >= 2) {
         console.log(selectedCards)
         console.log(sum);
         sum = 0;
@@ -196,12 +199,11 @@ export class Player {
             groupName += card.name + " ";
           });
           groupName += ")";
-          playerCard.name = groupName;
-          playerCard.value = groupValue;
-          this.concatCards(selectedCards, playerCard)
-          playerCard.block = true;
+          let formedCard = new Card(groupName, "-", groupValue, "purple")
+          this.concatCards(selectedCards, formedCard)
+          formedCard.block = true;
           gameCards = this.updateGameCards(gameCards, selectedCards);
-          gameCards.cards.push(playerCard);
+          gameCards.cards.push(formedCard);
           gameCards.playStatus = true;
         }
     }
@@ -236,6 +238,7 @@ export class Player {
     let reduce = 0;
     selectedCards.forEach((selectedCard) => {
       if (selectedCard.block) {
+        console.log("return false en form")
         return false;
       }
     })
@@ -265,7 +268,7 @@ export class Player {
           groupName += card.name + " ";
         });
         groupName += ")";
-        let formedCard = new Card(groupName, '+', groupValue, "black")
+        let formedCard = new Card(groupName, '+', groupValue, "green")
         console.log(selectedCards)
         this.concatCards(selectedCards, formedCard)
         console.log(formedCard.formedCards)
