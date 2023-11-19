@@ -52,10 +52,31 @@ export class Player {
     }
     if (card.name == "2" + "♠️") this.pointsDistribution.piTwo++;
   }
-  dropCard(gameCards, playerCard) {
-    gameCards.cards.push(playerCard);
+  verifyFormedCards(gameCards) {
+    for (let gameCard of gameCards.cards) {
+      if (gameCard.formedBy == this.nickName)
+        return false;
+    }
+    return true;
+  }
+  blockA(gameCards, playerCard) {
+    let cardsA = this.cards.filter((cardItem) => {
+      return cardItem.value == 14
+    })
+    if (cardsA.length > 1) {
+      playerCard.block = true;
+      playerCard.formedBy = this.nickName
+      gameCards.cards.push(playerCard)
+      gameCards.playStatus = true;
+    }
 
-    gameCards.playStatus = true;
+  }
+  dropCard(gameCards, playerCard) {
+    if (this.verifyFormedCards(gameCards)) {
+      console.log("hola")
+      gameCards.cards.push(playerCard)
+      gameCards.playStatus = true;
+    }
     return gameCards;
   }
   lootCards(gameCards, selectedCards, playerCard) {
@@ -82,15 +103,19 @@ export class Player {
     let isBlock = false;
     let blockedCard;
     let cardsA = 0
+    let mod = 0
     for (let selectedCard of selectedCards) {
-      if (selectedCard.symbol=='-') {
+      if (selectedCard.symbol == '-') {
         isBlock = true;
         blockedCard = selectedCard;
       }
-      if(selectedCard.symbol == '+'&& selectedCards.length>1){
-        return false;
-      }
+
       if (selectedCard.name[0] == 'A') {
+        if (selectedCard.block) {
+          if (playerCard.name[0] != selectedCard.name[0]) {
+            return false;
+          }
+        }
         cardsA++;
       }
       sum += selectedCard.value
@@ -138,10 +163,15 @@ export class Player {
     let sum = 0;
     let sum2 = 0;
     let sums = [];
-    let cardsA = 0
+    let cardsA = 0;
+    let mod = 0
     for (let selectedCard of selectedCards) {
-
       if (selectedCard.name[0] == 'A') {
+        if (selectedCard.block)
+
+          return false;
+
+
         cardsA++;
       }
     }
@@ -151,6 +181,7 @@ export class Player {
       console.log("sum:" + sum)
       sum = 0;
       if (playerCard.name[0] == 'A') {
+
         if (e > 0) {
           for (let selectedCard of selectedCards) {
             if (selectedCard.name[0] == 'A') {
@@ -175,11 +206,10 @@ export class Player {
       for (let sumA of sums) {
         sum2 += sumA.length;
       }
-      sum = sum / playerCard.value;
-      if (sum2 >= sum && sum >= 2) {
+      mod = sum / playerCard.value;
+      if (sum2 >= mod && mod >= 2) {
         console.log(selectedCards)
-        console.log(sum);
-        sum = 0;
+        console.log("mod: " + mod);
         return true;
       }
 
@@ -189,22 +219,22 @@ export class Player {
   }
   match(gameCards, selectedCards, playerCard) {
     let groupValue;
-    let groupName = "(";
+    let groupName = "-"
     selectedCards.push(playerCard);
     for (let card of this.cards) {
       if (playerCard.name != card.name)
-        if (this.checkMatch(selectedCards, card, playerCard)) {
+        if (this.checkMatch(selectedCards, card)) {
           groupValue = card.value;
-          selectedCards.forEach((card) => {
-            groupName += card.name + " ";
-          });
-          groupName += ")";
+          groupName += card.value;
+
           let formedCard = new Card(groupName, "-", groupValue, "purple")
           this.concatCards(selectedCards, formedCard)
           formedCard.block = true;
+          formedCard.formedBy = this.nickName;
           gameCards = this.updateGameCards(gameCards, selectedCards);
           gameCards.cards.push(formedCard);
           gameCards.playStatus = true;
+          break;
         }
     }
 
@@ -236,12 +266,9 @@ export class Player {
   checkForm(selectedCards, playerCard) {
     let sum = 0;
     let reduce = 0;
-    selectedCards.forEach((selectedCard) => {
-      if (selectedCard.block) {
-        console.log("return false en form")
-        return false;
-      }
-    })
+    if (this.checkBlocks(selectedCards)) {
+      return false
+    }
     console.log(selectedCards)
     if (selectedCards.length > 1)
       for (let selectedCard of selectedCards) {
@@ -257,24 +284,23 @@ export class Player {
   }
   formCards(gameCards, selectedCards, playerCard) {
     let band = false;
-    let groupName = "( ";
+    let groupName = "+";
     let groupValue;
     selectedCards.push(playerCard);
 
     for (let turnPlayerCard of this.cards) {
       if (this.checkForm(selectedCards, turnPlayerCard)) {
         groupValue = turnPlayerCard.value;
-        selectedCards.forEach((card) => {
-          groupName += card.name + " ";
-        });
-        groupName += ")";
+        groupName += turnPlayerCard.value;
         let formedCard = new Card(groupName, '+', groupValue, "green")
         console.log(selectedCards)
         this.concatCards(selectedCards, formedCard)
         console.log(formedCard.formedCards)
+        formedCard.formedBy = this.nickName;
         gameCards = this.updateGameCards(gameCards, selectedCards);
         gameCards.cards.push(formedCard);
         gameCards.playStatus = true;
+        break;
       }
     }
 
@@ -292,9 +318,9 @@ export class Player {
   }
   checkBlocks(selectedCards) {
     for (let selectedCard of selectedCards) {
-      if (selectedCard.block) return false
+      if (selectedCard.block) return true
     }
-    return true;
+    return false;
   }
   updateGameCards(gameCards, selectedCards) {
     for (let selectedCardIndex in selectedCards) {

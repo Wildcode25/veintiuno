@@ -170,14 +170,16 @@ export class Ui {
       });
       if (plays >= 4 * players.length) {
         plays = 0;
-        if (deck.cards.length > 0)
+        if (deck.cards.length > 0){
           players.forEach((player) => {
             player.cards = deck.getCards(deck.cards);
           });
+        }
         else {
           players.forEach((player)=>{
             if(player.nickName==lastPlayerLootName){
               player.accumulatedCards = player.accumulatedCards.concat(gameCards.cards)
+              gameCards.cards=[]
               
             }
             player.resetPointsDistribution();
@@ -200,8 +202,9 @@ export class Ui {
                 [players[i], players[e]]=[players[e], players[i]]
               }
             }
-            turnPlayer()
+            
           }
+          turnPlayer()
         }
       }
       players[turn].cards.forEach((playerCard, i) => {
@@ -211,10 +214,12 @@ export class Ui {
         card.addEventListener("dblclick", (e) => {
           console.log(e);
           players[turn].dropCard(gameCards, playerCard);
-          playerVerification(gameCards, players[turn], playerCard);
-          turn++;
-          plays++;
-          turnPlayer();
+          if(playerVerification(gameCards, players[turn], playerCard)){
+            turn++;
+            plays++;
+            turnPlayer();
+          }
+         
         });
         card.addEventListener("click", (e) => {
 
@@ -290,6 +295,13 @@ export class Ui {
           selectCard = false;
           selectedCards = []
         }
+        if(e.key=="a"){
+          players[turn].blockA(gameCards, globalPlayerCard)
+          playerVerification(gameCards, players[turn], globalPlayerCard);
+          turn++;
+          plays++;
+          turnPlayer();
+        }
         if (e.key == "z") {
           lastPlayerLootName = players[turn].nickName
           players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
@@ -298,11 +310,12 @@ export class Ui {
               console.log("w")
               players[previousTurn].pointsDistribution.birao--;
               players[turn].pointsDistribution.birao--;
+             
             }
             turn++;
-            previousTurn = turn - 1;
+            
             plays++;
-            turnPlayer();
+            turnPlayer()
           }
 
           globalCardObject.style.background = "white";
