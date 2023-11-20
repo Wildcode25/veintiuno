@@ -9,12 +9,13 @@ body{
 }
 .playerContainer{
     display: grid;
-    grid-template-columns: repeat(2,20%);
+    grid-template-columns: repeat(2,25%);
     grid-template-rows: repeat(2);
-    grid-column-gap: 700px;
+    grid-column-gap: 600px;
     grid-row-gap: 10px ;
     position: absolute;
     z-index: -10;
+    transform: translateX(-8.5%);
     
 }
 .playerStatisticContainer{

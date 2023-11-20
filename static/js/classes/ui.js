@@ -307,9 +307,10 @@ export class Ui {
             turn++;
           previousTurn = turn - 1;
           plays++;
-          selectCard = false;
+          
             turnPlayer();
           }
+          selectCard = false;
           globalCardObject.style.background = "white";
           table.childNodes.forEach((childNode) => {
             childNode.style.background = "white";
