@@ -60,7 +60,7 @@ export class Ui {
           if (player.pointsDistribution.dymondTen == 1) player.points += 2;
           if (player.pointsDistribution.piTwo == 1) player.points++;
           player.points += player.pointsDistribution.APoints;
-          player.points+=player.pointsDistribution.birao
+          player.points += player.pointsDistribution.birao
         } else if (player.points == 19) {
           if (player.pointsDistribution.dymondTen == 1) player.points += 2;
         }
@@ -108,6 +108,7 @@ export class Ui {
       playerStatisticContainer.appendChild(detailElement);
     }
     function turnPlayer() {
+
       if (turn > limit) turn = 0;
       console.log("turno: " + turn)
       console.log("Baraja: " + deck.cards.length);
@@ -170,17 +171,17 @@ export class Ui {
       });
       if (plays >= 4 * players.length) {
         plays = 0;
-        if (deck.cards.length > 0){
+        if (deck.cards.length > 0) {
           players.forEach((player) => {
             player.cards = deck.getCards(deck.cards);
           });
         }
         else {
-          players.forEach((player)=>{
-            if(player.nickName==lastPlayerLootName){
+          players.forEach((player) => {
+            if (player.nickName == lastPlayerLootName) {
               player.accumulatedCards = player.accumulatedCards.concat(gameCards.cards)
-              gameCards.cards=[]
-              
+              gameCards.cards = []
+
             }
             player.resetPointsDistribution();
             player.countCards()
@@ -196,15 +197,16 @@ export class Ui {
               player.accumulatedCards = []
               player.cards = deck.getCards(deck.cards);
             });
-            
-            for(let i=0; i<players.length-1; i++ ){
-              for(let e=1; e<players.lenght-1;e++){
-                [players[i], players[e]]=[players[e], players[i]]
+
+            for (let i = 0; i < players.length - 1; i++) {
+              for (let e = 1; e < players.lenght - 1; e++) {
+                [players[i], players[e]] = [players[e], players[i]]
               }
             }
-            
+
           }
           turnPlayer()
+
         }
       }
       players[turn].cards.forEach((playerCard, i) => {
@@ -214,12 +216,13 @@ export class Ui {
         card.addEventListener("dblclick", (e) => {
           console.log(e);
           players[turn].dropCard(gameCards, playerCard);
-          if(playerVerification(gameCards, players[turn], playerCard)){
+          if (playerVerification(gameCards, players[turn], playerCard)) {
             turn++;
+            previousTurn = turn - 1;
             plays++;
             turnPlayer();
           }
-         
+
         });
         card.addEventListener("click", (e) => {
 
@@ -265,44 +268,65 @@ export class Ui {
         console.log(selectedCards);
       }
     })
-    function createHtmlCardElement(cardObjet) {
+    function createHtmlCardElement(cardObject) {
       let card = document.createElement("div");
       card.className = "gameCard";
-      card.id = cardObjet.name;
-      card.style.color = cardObjet.color;
-      let nameCard = document.createTextNode(cardObjet.name);
-      card.appendChild(nameCard);
+      card.id = cardObject.name;
+      card.style.color = cardObject.color;
+      card.innerHTML = cardObject.name
+
+      if (cardObject.symbol == '+' || cardObject.symbol == '-') {
+        let formedCards = document.createElement("div");
+
+        for (let formedCard of cardObject.formedCards) {
+          formedCards.appendChild(createHtmlCardElement(formedCard))
+        }
+        formedCards.style.visibility = "hidden";
+        formedCards.style.position = "absolute";
+        formedCards.style.border = `solid ${cardObject.color} 3px`
+        card.appendChild(formedCards)
+        card.addEventListener("mouseover", (e) => {
+          formedCards.classList.toggle("formedCards")
+          
+        })
+        card.addEventListener("mouseout", (e) => {
+          formedCards.classList.toggle("formedCards");
+          
+        })
+      }
       return card;
     }
-//Doucment events
+    //Doucment events
     document.addEventListener("keyup", (e) => {
+
       if (selectCard) {
         if (e.key == "x") {
 
           players[turn].formCards(gameCards, selectedCards, globalPlayerCard);
           if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
-            plays++;
             turn++;
-            previousTurn = turn - 1;
+          previousTurn = turn - 1;
+          plays++;
+          selectCard = false;
             turnPlayer();
           }
           globalCardObject.style.background = "white";
           table.childNodes.forEach((childNode) => {
             childNode.style.background = "white";
           });
-
-
-          selectCard = false;
+          
           selectedCards = []
         }
-        if(e.key=="a"){
+        if (e.key == "a") {
           players[turn].blockA(gameCards, globalPlayerCard)
           playerVerification(gameCards, players[turn], globalPlayerCard);
           turn++;
+          previousTurn = turn - 1;
           plays++;
           turnPlayer();
         }
         if (e.key == "z") {
+          console.log(turn)
           lastPlayerLootName = players[turn].nickName
           players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
           if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
@@ -310,10 +334,10 @@ export class Ui {
               console.log("w")
               players[previousTurn].pointsDistribution.birao--;
               players[turn].pointsDistribution.birao--;
-             
+
             }
             turn++;
-            
+            previousTurn = turn - 1;
             plays++;
             turnPlayer()
           }
@@ -330,8 +354,9 @@ export class Ui {
 
           players[turn].match(gameCards, selectedCards, globalPlayerCard);
           if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
-            plays++;
             turn++;
+            previousTurn = turn - 1;
+            plays++;
             turnPlayer();
           }
           selectCard = false;

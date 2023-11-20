@@ -174,6 +174,7 @@ export class Player {
 
         cardsA++;
       }
+      else if(selectedCard.block&&playerCard.value!=selectedCard.value) return false; 
     }
     console.log(sum)
     for (let e = 0; e <= cardsA; e++) {
@@ -292,8 +293,7 @@ export class Player {
       if (this.checkForm(selectedCards, turnPlayerCard)) {
         groupValue = turnPlayerCard.value;
         groupName += turnPlayerCard.value;
-        let formedCard = new Card(groupName, '+', groupValue, "green")
-        console.log(selectedCards)
+        let formedCard = new Card(groupName, '+', groupValue, "blue")
         this.concatCards(selectedCards, formedCard)
         console.log(formedCard.formedCards)
         formedCard.formedBy = this.nickName;
@@ -308,7 +308,7 @@ export class Player {
   }
   concatCards(selectedCards, playerCard) {
     selectedCards.forEach((selectedCard) => {
-      if (selectedCard.symbol == '+') {
+      if (selectedCard.formedCards.length>0) {
         this.concatCards(selectedCard.formedCards, playerCard)
       }
       else {

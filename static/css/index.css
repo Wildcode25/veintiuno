@@ -9,7 +9,7 @@ body{
 }
 .playerContainer{
     display: grid;
-    grid-template-columns: repeat(2,180px);
+    grid-template-columns: repeat(2,20%);
     grid-template-rows: repeat(2);
     grid-column-gap: 700px;
     grid-row-gap: 10px ;
@@ -30,30 +30,58 @@ body{
     display: flex;
     justify-content: center;
     background-color: #283;
-    width: 500px;
+    max-width: 500px;
     height: 350px;
     padding-bottom: 50px;
     flex-wrap: wrap;
     box-shadow: inset 0 0px 50px black ;
-    overflow-y:scroll
+    overflow: auto;
+    box-sizing:border-box;
 }
 
 
 .gameCard{
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 100%;
     border-radius: 5%;
-    text-align: center;
     text-shadow: 0 0 5px black;
-    padding-top: 50px;
-    height: 125px;
+    height: 40%;
     margin: 5% 3%;
-    flex-basis: 80px;
+    flex-basis: 16%;
     background-color: white;
     cursor: pointer;
     user-select: none;
+   
+}
+.formedCards{
+    
+    font-size: smaller;
+    visibility: visible !important;
+    z-index: 200;
+    left: 105%;
+    bottom: 30%;
+    display: flex;
+    border-radius: 5%;
+    justify-content: center;
+    background-color: #ccc;
+    width: 100px;
+    height: 100px;
+    padding-bottom: 50px;
+    flex-wrap: wrap;
+    overflow-y:auto;
+    
+    
+}
+.formedCards div{
+    flex-basis: 20%;
+    height: 50%;
 }
 .playerCardContainer{
     display: flex;
     justify-content: center;
-    width: 400px;
-    height: 125px;
+    width: 500px;
+    height: 300px;
 }
