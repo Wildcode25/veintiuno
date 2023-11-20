@@ -150,7 +150,7 @@ export class Player {
       }
       console.log(sum / playerCard.value)
       console.log(sum2)
-      if (sum2 >= sum / playerCard.value) {
+      if (sum2 >= sum / playerCard.value && sum>0) {
 
         return true;
       }

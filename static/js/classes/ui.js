@@ -42,7 +42,7 @@ export class Ui {
       return false;
     }
     function updatePoints(players) {
-      console.log(players);
+      
       let mostCardsPlayer = players[0];
       let mostPiPlayer = players[0];
       for (let player of players) {
@@ -83,6 +83,7 @@ export class Ui {
       for (let i = 0; i < players.length - 1; i++) {
         [players[i], players[i + 1]] = [players[i + 1], players[i]];
       }
+      console.log(players);
     }
     function playerVerification(gameCard, player, playerCard) {
       if (gameCard.playStatus) {
