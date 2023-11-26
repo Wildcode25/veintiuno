@@ -1,11 +1,10 @@
 import { Player } from "./player";
 import { Deck } from "./deck";
 //Variables declaration
-const newDeck = new Deck();
-let selectCard = false
-let deck = newDeck.getDeck();
+let selectCard = false;
+let deck = new Deck();
 let plays = 0;
-let selectedCards = []
+let selectedCards = [];
 const table = document.querySelector(".table");
 const playerCardsContainer = document.querySelector(".playerCardContainer");
 const playersContainer = document.querySelector(".playerContainer");
@@ -14,9 +13,8 @@ const playersContainer = document.querySelector(".playerContainer");
 export class Ui {
   //Start the game
   displayGame(players) {
-
     let globalCardObject;
-    let limit = players.length - 1
+    let limit = players.length - 1;
     let turn = 0;
     let previousTurn = players.length - 1;
     let globalPlayerCard;
@@ -25,10 +23,10 @@ export class Ui {
       cards: [],
       playStatus: false,
     };
-    console.log(gameCards.cards.length)
-    gameCards.cards = deck.getCards(deck.cards);
+    console.log(gameCards.cards.length);
+    gameCards.cards = deck.dealCards();
     players.forEach((player) => {
-      player.cards = deck.getCards(deck.cards);
+      player.cards = deck.dealCards();
     });
     //Call the function sprintplayer
     turnPlayer();
@@ -42,7 +40,6 @@ export class Ui {
       return false;
     }
     function updatePoints(players) {
-      
       let mostCardsPlayer = players[0];
       let mostPiPlayer = players[0];
       for (let player of players) {
@@ -60,7 +57,7 @@ export class Ui {
           if (player.pointsDistribution.dymondTen == 1) player.points += 2;
           if (player.pointsDistribution.piTwo == 1) player.points++;
           player.points += player.pointsDistribution.APoints;
-          player.points += player.pointsDistribution.birao
+          player.points += player.pointsDistribution.birao;
         } else if (player.points == 19) {
           if (player.pointsDistribution.dymondTen == 1) player.points += 2;
         }
@@ -109,9 +106,8 @@ export class Ui {
       playerStatisticContainer.appendChild(detailElement);
     }
     function turnPlayer() {
-
       if (turn > limit) turn = 0;
-      console.log("turno: " + turn)
+      console.log("turno: " + turn);
       console.log("Baraja: " + deck.cards.length);
       table.innerHTML = "";
       playerCardsContainer.innerHTML = "";
@@ -172,47 +168,45 @@ export class Ui {
       });
       if (plays >= 4 * players.length) {
         plays = 0;
-        if (deck.cards.length > 0) {
+        if (deck.haveCards) {
           players.forEach((player) => {
-            player.cards = deck.getCards(deck.cards);
+            player.cards = deck.dealCards();
           });
-        }
-        else {
+        } else {
           players.forEach((player) => {
             if (player.nickName == lastPlayerLootName) {
-              player.accumulatedCards = player.accumulatedCards.concat(gameCards.cards)
-              gameCards.cards = []
-
+              player.accumulatedCards = player.accumulatedCards.concat(
+                gameCards.cards
+              );
+              gameCards.cards = [];
             }
             player.resetPointsDistribution();
-            player.countCards()
-          })
+            player.countCards();
+          });
           updatePoints(players);
           if (evaluateWinner(players)) {
             return;
           } else {
-            deck = newDeck.getDeck();
-            gameCards.cards = deck.getCards(deck.cards);
+            deck = new Deck();
+            gameCards.cards = deck.dealCards();
             players.forEach((player) => {
               player.resetPointsDistribution();
-              player.accumulatedCards = []
-              player.cards = deck.getCards(deck.cards);
+              player.accumulatedCards = [];
+              player.cards = deck.dealCards();
             });
 
             for (let i = 0; i < players.length - 1; i++) {
               for (let e = 1; e < players.lenght - 1; e++) {
-                [players[i], players[e]] = [players[e], players[i]]
+                [players[i], players[e]] = [players[e], players[i]];
               }
             }
-
           }
-          turnPlayer()
-
+          turnPlayer();
         }
       }
       players[turn].cards.forEach((playerCard, i) => {
         selectCard = false;
-        let card = createHtmlCardElement(playerCard)
+        let card = createHtmlCardElement(playerCard);
         playerCardsContainer.appendChild(card);
         card.addEventListener("dblclick", (e) => {
           console.log(e);
@@ -223,30 +217,25 @@ export class Ui {
             plays++;
             turnPlayer();
           }
-
         });
         card.addEventListener("click", (e) => {
-
           playerCardsContainer.childNodes.forEach((childNode) => {
             if (childNode.id == card.id) {
               childNode.style.background = "gray";
-            }
-            else childNode.style.background = "white";
-          })
+            } else childNode.style.background = "white";
+          });
           table.childNodes.forEach((childNode) => {
             childNode.style.background = "white";
           });
           selectCard = true;
-          selectedCards = []
+          selectedCards = [];
           globalPlayerCard = playerCard;
           globalCardObject = card;
-
         });
       });
     }
     //Table listeners
     table.addEventListener("click", (e) => {
-
       if (selectCard) {
         if (e.target.className == "gameCard") {
           if (e.target.style.background != "gray") {
@@ -257,58 +246,52 @@ export class Ui {
                 break;
               }
             }
-          }
-          else {
+          } else {
             e.target.style.background = "white";
             selectedCards = selectedCards.filter((selectCard) => {
               return selectCard.name != e.target.id;
             });
           }
-
         }
         console.log(selectedCards);
       }
-    })
+    });
     function createHtmlCardElement(cardObject) {
       let card = document.createElement("div");
       card.className = "gameCard";
       card.id = cardObject.name;
       card.style.color = cardObject.color;
-      card.innerHTML = cardObject.name
+      card.innerHTML = cardObject.name;
 
-      if (cardObject.symbol == '+' || cardObject.symbol == '-') {
+      if (cardObject.symbol == "+" || cardObject.symbol == "-") {
         let formedCards = document.createElement("div");
 
         for (let formedCard of cardObject.formedCards) {
-          formedCards.appendChild(createHtmlCardElement(formedCard))
+          formedCards.appendChild(createHtmlCardElement(formedCard));
         }
         formedCards.style.visibility = "hidden";
         formedCards.style.position = "absolute";
-        formedCards.style.border = `solid ${cardObject.color} 3px`
-        card.appendChild(formedCards)
+        formedCards.style.border = `solid ${cardObject.color} 3px`;
+        card.appendChild(formedCards);
         card.addEventListener("mouseover", (e) => {
-          formedCards.classList.toggle("formedCards")
-          
-        })
+          formedCards.classList.toggle("formedCards");
+        });
         card.addEventListener("mouseout", (e) => {
           formedCards.classList.toggle("formedCards");
-          
-        })
+        });
       }
       return card;
     }
     //Doucment events
     document.addEventListener("keyup", (e) => {
-
       if (selectCard) {
         if (e.key == "x") {
-
           players[turn].formCards(gameCards, selectedCards, globalPlayerCard);
           if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
             turn++;
-          previousTurn = turn - 1;
-          plays++;
-          
+            previousTurn = turn - 1;
+            plays++;
+
             turnPlayer();
           }
           selectCard = false;
@@ -316,11 +299,11 @@ export class Ui {
           table.childNodes.forEach((childNode) => {
             childNode.style.background = "white";
           });
-          
-          selectedCards = []
+
+          selectedCards = [];
         }
         if (e.key == "a") {
-          players[turn].blockA(gameCards, globalPlayerCard)
+          players[turn].blockA(gameCards, globalPlayerCard);
           playerVerification(gameCards, players[turn], globalPlayerCard);
           turn++;
           previousTurn = turn - 1;
@@ -328,20 +311,22 @@ export class Ui {
           turnPlayer();
         }
         if (e.key == "z") {
-          console.log(turn)
-          lastPlayerLootName = players[turn].nickName
+          console.log(turn);
+          lastPlayerLootName = players[turn].nickName;
           players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
           if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
-            if (players[turn].pointsDistribution.birao > 0 && players[previousTurn].pointsDistribution.birao > 0) {
-              console.log("w")
+            if (
+              players[turn].pointsDistribution.birao > 0 &&
+              players[previousTurn].pointsDistribution.birao > 0
+            ) {
+              console.log("w");
               players[previousTurn].pointsDistribution.birao--;
               players[turn].pointsDistribution.birao--;
-
             }
             turn++;
             previousTurn = turn - 1;
             plays++;
-            turnPlayer()
+            turnPlayer();
           }
 
           globalCardObject.style.background = "white";
@@ -349,11 +334,10 @@ export class Ui {
             childNode.style.background = "white";
           });
           selectCard = false;
-          selectedCards = []
+          selectedCards = [];
           console.log(selectedCards);
         }
         if (e.key == "c") {
-
           players[turn].match(gameCards, selectedCards, globalPlayerCard);
           if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
             turn++;
@@ -362,26 +346,21 @@ export class Ui {
             turnPlayer();
           }
           selectCard = false;
-          selectedCards = []
+          selectedCards = [];
           globalCardObject.style.background = "white";
           table.childNodes.forEach((childNode) => {
             childNode.style.background = "white";
           });
-
-
-
         }
       }
     });
-
   }
   getPlayerCard(cardId, playerCards) {
     playerCards.forEach((playerCard) => {
       if (cardId == playerCard.name) {
         return playerCard;
       }
-    })
-
+    });
   }
   askPlayerNames() {
     let players = [];
@@ -413,7 +392,6 @@ export class Ui {
     console.log(players);
     return players;
   }
-
 
   displayWelcome() {
     alert("Bienvenido a Veintiuno");
