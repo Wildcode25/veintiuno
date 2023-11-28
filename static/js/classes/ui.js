@@ -191,6 +191,7 @@ export class Ui {
             gameCards.cards = deck.dealCards();
             players.forEach((player) => {
               player.resetPointsDistribution();
+              player.pointsDistribution.birao = 0;
               player.accumulatedCards = [];
               player.cards = deck.dealCards();
             });
@@ -304,11 +305,18 @@ export class Ui {
         }
         if (e.key == "a") {
           players[turn].blockA(gameCards, globalPlayerCard);
-          playerVerification(gameCards, players[turn], globalPlayerCard);
-          turn++;
-          previousTurn = turn - 1;
-          plays++;
-          turnPlayer();
+          if (playerVerification(gameCards, players[turn], globalPlayerCard)) {
+            turn++;
+            previousTurn = turn - 1;
+            plays++;
+            turnPlayer();
+          }
+          globalCardObject.style.background = "white";
+          table.childNodes.forEach((childNode) => {
+            childNode.style.background = "white";
+          });
+          selectCard = false;
+          selectedCards = [];
         }
         if (e.key == "z") {
           console.log(turn);
