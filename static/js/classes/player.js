@@ -1,6 +1,8 @@
 import { Card } from "./card";
 import { Game } from "./game";
-let game = new Game();
+import { GameRules } from "./game_rules";
+
+let gameRules = new GameRules();
 
 export class Player {
   constructor(nickName) {
@@ -29,12 +31,12 @@ export class Player {
     this.accumulatedCards.forEach((accumulatedCard) => {
       if (accumulatedCard.numberOfFormedCards) {
         for (let formedCard of accumulatedCard.formedCards) {
-          this.cardEvaluation(formedCard);
+          gameRules.cardEvaluation(formedCard, this);
         }
         this.pointsDistribution.totalCards +=
           accumulatedCard.numberOfFormedCards;
       } else {
-        this.cardEvaluation(accumulatedCard);
+        gameRules.cardEvaluation(accumulatedCard, this);
         this.pointsDistribution.totalCards++;
       }
     });
@@ -52,15 +54,15 @@ export class Player {
     return this.cards.filter((cardItem) => cardItem.value == 14).length;
   }
   dropCard(gameCards, playerCard) {
-    if (this.verifyFormedCards(gameCards)) {
+    if (gameRules.verifyFormedCards(gameCards)) {
       gameCards.cards.push(playerCard);
       gameCards.playStatus = true;
     }
   }
   lootCards(gameCards, selectedCards, playerCard) {
-    if (game.checkLoot(selectedCards, playerCard)) {
+    if (gameRules.checkLoot(selectedCards, playerCard)) {
       this.updateGameCards(gameCards, selectedCards);
-      if (tableIsEmpty(gameCards)) this.pointsDistribution.birao++;
+      if (gameRules.tableIsEmpty(gameCards)) this.pointsDistribution.birao++;
       this.accumulatedCards = this.accumulatedCards.concat(
         selectedCards,
         playerCard
@@ -75,7 +77,7 @@ export class Player {
     selectedCards.push(playerCard);
     for (let card of this.cards) {
       if (playerCard.name != card.name)
-        if (game.checkMatch(selectedCards, card)) {
+        if (gameRules.checkMatch(selectedCards, card)) {
           groupValue = card.value;
           groupName += card.value;
 
@@ -97,7 +99,7 @@ export class Player {
     selectedCards.push(playerCard);
 
     for (let turnPlayerCard of this.cards) {
-      if (game.checkForm(selectedCards, turnPlayerCard)) {
+      if (gameRules.checkForm(selectedCards, turnPlayerCard)) {
         groupValue = turnPlayerCard.value;
         groupName += turnPlayerCard.value;
         let formedCard = new Card(groupName, "+", groupValue, "blue");
