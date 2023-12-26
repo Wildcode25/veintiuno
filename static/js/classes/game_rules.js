@@ -144,10 +144,10 @@ export class GameRules {
     }
     if (card.name == "2" + "♠️") player.pointsDistribution.piTwo++;
   }
-  verifyFormedCards(gameCards) {
+  verifyFormedCards(gameCards, player) {
     return (
       gameCards.cards.findIndex(
-        (gameCard) => gameCard.formedBy == this.nickName
+        (gameCard) => gameCard.formedBy == player.nickName
       ) == -1
     );
   }

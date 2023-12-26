@@ -54,7 +54,7 @@ export class Player {
     return this.cards.filter((cardItem) => cardItem.value == 14).length;
   }
   dropCard(gameCards, playerCard) {
-    if (gameRules.verifyFormedCards(gameCards)) {
+    if (gameRules.verifyFormedCards(gameCards, this)) {
       gameCards.cards.push(playerCard);
       gameCards.playStatus = true;
     }
