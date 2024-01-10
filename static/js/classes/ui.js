@@ -5,14 +5,15 @@ let selectCard = false;
 let deck = new Deck();
 let plays = 0;
 let selectedCards = [];
-const table = document.querySelector(".table");
-const playerCardsContainer = document.querySelector(".playerCardContainer");
-const playersContainer = document.querySelector(".playerContainer");
+
 
 //User intarface
 export class Ui {
   //Start the game
   displayGame(players) {
+    const table = document.querySelector(".table");
+const playerCardsContainer = document.querySelector(".playerCardContainer");
+const playersContainer = document.querySelector(".playerContainer");
     let globalCardObject;
     let limit = players.length - 1;
     let turn = 0;
@@ -370,37 +371,7 @@ export class Ui {
       }
     });
   }
-  askPlayerNames() {
-    let players = [];
-    let limit;
-    let op = 0;
-    while (op != 1 && op != 2 && op != 3) {
-      op = parseInt(
-        prompt("1. Dos jugadores 2. Tres jugadores 3. Cuatro jugadores")
-      );
-      switch (op) {
-        case 1:
-          limit = 2;
-          break;
-        case 2:
-          limit = 3;
-          break;
-        case 3:
-          limit = 4;
-          break;
-        default:
-          alert("Opcion no valida");
-      }
-    }
-
-    for (let i = 0; i < limit; i++) {
-      let player = new Player(prompt(`Nombre de jugador ${i + 1}`));
-      players.push(player);
-    }
-    console.log(players);
-    return players;
-  }
-
+ 
   displayWelcome() {
     alert("Bienvenido a Veintiuno");
   }

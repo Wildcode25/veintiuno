@@ -5,19 +5,46 @@
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <link rel="stylesheet" href="static/css/index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script type="module" defer src="static/js/main.js"></script>
+    <script type="module" defer src="static/js/classes/login_ui.js"></script>
     <title>Vite App</title>
   </head>
   <body>
-   <div class="playerContainer">
-   </div>
-    <div class="gameContainer">
-      <div class="table"> 
-      
-      </div>
-      <div class="playerCardContainer">
-                
+    <h1>Veintiuno</h1>
+    <div class="layout">
+      <div class="players_option_container">
+        <div class="player_numbers_option_item" data-value="2">Two players</div>
+      <div class="player_numbers_option_item"  data-value="3">Three players</div>
+      <div class="player_numbers_option_item" data-value="4">Four players</div>
       </div>
     </div>
+   <template class="form_template">
+
+    <form class="form">
+        
+            <label for="Nickname" class="playerLabel">
+                
+            </label>
+            <input type="text" placeholder="Nickname">
+            <div class="buttons">
+              <button type="submit" class="back_button">atras</button>
+            <button type="submit" class="next_button">Siguiente</button>
+            </div>
+
+          </form>
+   </template>
+   <template class="game_template">
+    <div class="fullGame_container">
+      <div class="playerContainer">
+      </div>
+       <div class="gameContainer">
+         <div class="table"> 
+         
+         </div>
+         <div class="playerCardContainer">
+                   
+         </div>
+       </div>
+    </div>
+   </template>
   </body>
 </html>

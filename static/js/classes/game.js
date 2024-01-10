@@ -1,15 +1,12 @@
 import { Ui } from "./ui.js";
-
+import { Player } from "./player.js";
 let ui = new Ui();
 export class Game {
   constructor() {
     this.deck = [];
   }
-  start() {
-    let play;
-
-    ui.displayWelcome();
-    let players = ui.askPlayerNames();
+  start(players) {
+    console.log(players)
     ui.displayGame(players);
     // let playersPlaces = this.updateStatistics(players);
 

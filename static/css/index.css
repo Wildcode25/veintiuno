@@ -1,11 +1,31 @@
+:root{
+    --esmerald: #45CB85;
+    --jet: #161626;
+    --gunMetal: #242F40;
+    --satin-sheen-gold: #CCA43B;
+    --platinum: #E5E5E5;
+}
+.fullGame_container{
+    width: 100vw;
+    height: 100vh;
+    display: flex;
+    padding-top: 5%;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+
+}
 *{
     box-sizing: border-box;
 }
 body{
     display: flex;
-    justify-content: center;
-    
-    background-color:darkslategray;
+    padding-top: 5%;
+    flex-direction: column;
+    justify-content: start;
+    align-items: center;
+    height: 100vh;
+    background-color:var(--jet);
 }
 .playerContainer{
     display: grid;
@@ -15,7 +35,7 @@ body{
     grid-row-gap: 10px ;
     position: absolute;
     z-index: -10;
-    transform: translateX(-8.5%);
+    right: 23%;
     
 }
 .playerStatisticContainer{
@@ -85,4 +105,95 @@ body{
     justify-content: center;
     width: 500px;
     height: 300px;
+}
+.players_option_container{
+    display: flex;
+    margin-top: 15%;
+    width: 50vw;
+    box-shadow: 0 0 20px 5px black;
+
+}
+.next-to-container{
+    animation: next-to-container 1s ease;
+
+}
+label{
+font-size: x-large;
+}
+.form{
+    color: var(--satin-sheen-gold);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    height: 50vh;
+    width: 25vw;
+    justify-content: center;
+    background-color: var(--gunMetal);
+    gap: 10%;
+    animation: visibilityForm 0.5s ease forwards;
+}
+.form input{
+    outline: none;
+    height: 10%;
+    width: 50%;
+}
+.form button{
+    background-color: var(--esmerald);
+    text-align: center;
+    padding: 3%;
+    width: 30%;
+    border: none;
+    cursor: pointer;
+}
+
+.form div{
+    display: flex;
+    justify-content: center;
+    gap: 1%;
+    width: 100%;
+}
+
+
+.player_numbers_option_item:hover{
+    transform: scale(1.2);
+    opacity: 0.7;
+    color:yellow
+}
+.player_numbers_option_item{
+    width: 50%;
+    transition: all 0.5s;
+    background-color: var(--gunMetal);
+    padding: 5%;
+    text-align: center;
+    cursor: pointer;
+    color: var(--satin-sheen-gold)
+
+
+}
+.next{
+    animation: next-animation 0.5s ease;
+}
+
+@keyframes next-animation {
+    0%{
+        opacity: 0.7;
+        transform: scale(1.2);
+    }
+    100%{
+        opacity: 0.1;
+        transform: scale(8);
+    }
+}
+@keyframes visibilityForm {
+    0%{
+        opacity: 0;
+    }
+    100%{
+        opacity: 1;
+    }
+}
+@keyframes next-to-container {
+    100%{
+        opacity: 0;
+    }
 }
