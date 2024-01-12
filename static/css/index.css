@@ -69,13 +69,16 @@ body{
     font-size: 100%;
     border-radius: 5%;
     text-shadow: 0 0 5px black;
-    height: 40%;
+    height: 129px;
     margin: 5% 3%;
-    flex-basis: 16%;
-    background-color: white;
+    flex-basis: 91px;
     cursor: pointer;
     user-select: none;
    
+}
+.selectAction{
+    opacity: 0.5;
+    border-radius: 5%;
 }
 .formedCards{
     

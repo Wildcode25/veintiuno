@@ -12,7 +12,8 @@ const inputNickname = content.querySelector("input")
 let players=[];
 let limit=0
   function updateForm(limit, numberOfPlayers){
-    const nextButton = document.querySelector(".next_button")
+    const nextButton = document.querySelector(".next_button");
+    console.log(nextButton)
     playerLabel.innerHTML = `Jugador ${numberOfPlayers+1}`
     if(numberOfPlayers>=limit-1){
       nextButton.innerHTML="Iniciar";
@@ -33,7 +34,7 @@ formButtons.addEventListener("click", (e)=>{
     inputNickname.value = lastNickName.nickName;
     updateForm(limit, players.length);
    }
-   else{
+   else if(e.target.className == "next_button"){
     const player = new Player(inputNickname.value);
     players.push(player)
     inputNickname.value = ""
@@ -53,8 +54,9 @@ playersOptionContainer.addEventListener("click",  (e)=>{
       layout.innerHTML="";
       console.log(form)
       layout.appendChild(form)
+      updateForm(limit, players.length)
+
     },500)
-    updateForm(limit, players.length)
     console.log(form)
 
   })

@@ -1,5 +1,6 @@
 import { Player } from "./player";
 import { Deck } from "./deck";
+import { reset } from "nodemon";
 //Variables declaration
 let selectCard = false;
 let deck = new Deck();
@@ -223,11 +224,11 @@ const playersContainer = document.querySelector(".playerContainer");
         card.addEventListener("click", (e) => {
           playerCardsContainer.childNodes.forEach((childNode) => {
             if (childNode.id == card.id) {
-              childNode.style.background = "gray";
-            } else childNode.style.background = "white";
+              childNode.querySelector(".selectAction").style.background = "blue";
+            } else childNode.querySelector(".selectAction").style.background = "none";
           });
           table.childNodes.forEach((childNode) => {
-            childNode.style.background = "white";
+            childNode.querySelector(".selectAction").style.background = "none";
           });
           selectCard = true;
           selectedCards = [];
@@ -239,11 +240,11 @@ const playersContainer = document.querySelector(".playerContainer");
     //Table listeners
     table.addEventListener("click", (e) => {
       if (selectCard) {
-        if (e.target.className == "gameCard") {
-          if (e.target.style.background != "gray") {
-            e.target.style.background = "gray";
+        if (e.target.querySelector(".selectAction").className == "selectAction") {
+          if (e.target.querySelector(".selectAction").style.background != "gray") {
+            e.target.querySelector(".selectAction").style.background = "gray";
             for (let gameCard of gameCards.cards) {
-              if (e.target.id === gameCard.name) {
+              if (e.target.querySelector(".selectAction").id === gameCard.name) {
                 selectedCards.push(gameCard);
                 break;
               }
@@ -262,9 +263,15 @@ const playersContainer = document.querySelector(".playerContainer");
       let card = document.createElement("div");
       card.className = "gameCard";
       card.id = cardObject.name;
-      card.style.color = cardObject.color;
-      card.innerHTML = cardObject.name;
+      card.style.backgroundImage = `url('${cardObject.img.url}')`;
+      card.style.backgroundPositionX = `${cardObject.img.x}px`
+      card.style.backgroundPositionY = `${cardObject.img.y}px`
 
+      let selectAction = document.createElement("div");
+      selectAction.style.width = '100%';
+      selectAction.style.height = '100%';
+      selectAction.className="selectAction"
+      card.appendChild(selectAction);
       if (cardObject.symbol == "+" || cardObject.symbol == "-") {
         let formedCards = document.createElement("div");
 
@@ -296,13 +303,7 @@ const playersContainer = document.querySelector(".playerContainer");
 
             turnPlayer();
           }
-          selectCard = false;
-          globalCardObject.style.background = "white";
-          table.childNodes.forEach((childNode) => {
-            childNode.style.background = "white";
-          });
-
-          selectedCards = [];
+         this.resetSelection(globalCardObject, table)
         }
         if (e.key == "a") {
           players[turn].blockA(gameCards, globalPlayerCard);
@@ -312,12 +313,8 @@ const playersContainer = document.querySelector(".playerContainer");
             plays++;
             turnPlayer();
           }
-          globalCardObject.style.background = "white";
-          table.childNodes.forEach((childNode) => {
-            childNode.style.background = "white";
-          });
-          selectCard = false;
-          selectedCards = [];
+          this.resetSelection(globalCardObject, table)
+
         }
         if (e.key == "z") {
           console.log(turn);
@@ -338,12 +335,8 @@ const playersContainer = document.querySelector(".playerContainer");
             turnPlayer();
           }
 
-          globalCardObject.style.background = "white";
-          table.childNodes.forEach((childNode) => {
-            childNode.style.background = "white";
-          });
-          selectCard = false;
-          selectedCards = [];
+          this.resetSelection(globalCardObject, table)
+
           console.log(selectedCards);
         }
         if (e.key == "c") {
@@ -354,12 +347,8 @@ const playersContainer = document.querySelector(".playerContainer");
             plays++;
             turnPlayer();
           }
-          selectCard = false;
-          selectedCards = [];
-          globalCardObject.style.background = "white";
-          table.childNodes.forEach((childNode) => {
-            childNode.style.background = "white";
-          });
+          this.resetSelection(globalCardObject, table)
+
         }
       }
     });
@@ -371,7 +360,15 @@ const playersContainer = document.querySelector(".playerContainer");
       }
     });
   }
- 
+ resetSelection(globalCardObject, table){
+  selectCard = false;
+  globalCardObject.querySelector(".selectAction").style.background = "none";
+  table.childNodes.forEach((childNode) => {
+    childNode.querySelector(".selectAction").style.background = "none";
+  });
+
+  selectedCards = [];
+ }
   displayWelcome() {
     alert("Bienvenido a Veintiuno");
   }

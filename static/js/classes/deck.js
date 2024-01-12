@@ -1,8 +1,10 @@
 import { Card } from "./card";
+const X_VALUE = -92.25;
+const Y_VALUE = -129
 export class Deck {
   cards = [];
   constructor() {
-    const suits = ["♠️", "♥️", "♦️", "♣️"];
+    const suits = ["♥️", "♠️", "♦️", "♣️"];
     const cardNames = [
       "2",
       "3",
@@ -35,14 +37,20 @@ export class Deck {
     return this.cards.length - 4;
   }
   createCards(cardNames, suits) {
-    for (let suit of suits) {
-      cardNames.forEach((cardName, i) => {
-        const cardValue = i + 2;
-        const fullCardName = cardName + suit;
-        const color = suit == "♥️" || suit == "♦️" ? "red" : "black";
-        this.cards.push(new Card(fullCardName, suit, cardValue, color));
-      });
-    }
+    suits.forEach((suit,e) => {
+      {
+        cardNames.forEach((cardName, i) => {
+          const cardValue = i + 2;
+          const fullCardName = cardName + suit;
+          const color = suit == "♥️" || suit == "♦️" ? "red" : "black";
+          this.cards.push(new Card(fullCardName, suit, cardValue, color, {
+            url: "../../src/img/cartas41.png",
+            x: i*X_VALUE,
+            y: e*Y_VALUE
+          }));
+        });
+      }
+    });
   }
 }
 

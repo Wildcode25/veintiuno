@@ -1,5 +1,5 @@
 export class Card {
-  constructor(name, symbol, value, color) {
+  constructor(name, symbol, value, color, img) {
     this.name = name;
     this.symbol = symbol;
     this.value = value;
@@ -7,6 +7,7 @@ export class Card {
     this.block = false;
     this.formedCards = [];
     this.formedBy = "";
+    this.img = img;
   }
   get numberOfFormedCards() {
     return this.formedCards.length;
