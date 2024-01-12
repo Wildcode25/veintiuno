@@ -1,10 +1,8 @@
-import { Card } from "./card";
-import { Game } from "./game";
-import { GameRules } from "./game_rules";
+
 
 let gameRules = new GameRules();
 
-export class Player {
+ class Player {
   constructor(nickName) {
     this.nickName = nickName;
     this.cards = [];

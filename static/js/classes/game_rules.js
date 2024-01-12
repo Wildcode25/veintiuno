@@ -1,4 +1,4 @@
-export class GameRules {
+ class GameRules {
   getTotalSum(selectedCards) {
     let sum = 0;
     for (let selectedCard of selectedCards) {

@@ -1,6 +1,4 @@
-import { Player } from "./player";
-import { Deck } from "./deck";
-import { reset } from "nodemon";
+
 //Variables declaration
 let selectCard = false;
 let deck = new Deck();
@@ -9,12 +7,12 @@ let selectedCards = [];
 
 
 //User intarface
-export class Ui {
+ class Ui {
   //Start the game
   displayGame(players) {
     const table = document.querySelector(".table");
-const playerCardsContainer = document.querySelector(".playerCardContainer");
-const playersContainer = document.querySelector(".playerContainer");
+    const playerCardsContainer = document.querySelector(".playerCardContainer");
+    const playersContainer = document.querySelector(".playerContainer");
     let globalCardObject;
     let limit = players.length - 1;
     let turn = 0;

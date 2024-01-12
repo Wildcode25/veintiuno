@@ -1,5 +1,5 @@
-import { Player } from "./player";
-import { Game } from "./game";
+
+
 const game = new Game();
 const content = document.querySelector(".form_template").content;
 const form = content.querySelector(".form");
@@ -48,6 +48,7 @@ formButtons.addEventListener("click", (e)=>{
   })
 playersOptionContainer.addEventListener("click",  (e)=>{
     limit = e.target.dataset.value;
+    console.log('hola', limit)
     playersOptionContainer.classList.toggle("next-to-container")
     e.target.classList.toggle("next");
     setTimeout(()=>{

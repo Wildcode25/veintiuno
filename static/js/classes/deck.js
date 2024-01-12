@@ -1,7 +1,7 @@
-import { Card } from "./card";
+
 const X_VALUE = -92.25;
 const Y_VALUE = -129
-export class Deck {
+ class Deck {
   cards = [];
   constructor() {
     const suits = ["♥️", "♠️", "♦️", "♣️"];

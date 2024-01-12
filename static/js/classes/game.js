@@ -1,7 +1,6 @@
-import { Ui } from "./ui.js";
-import { Player } from "./player.js";
+
 let ui = new Ui();
-export class Game {
+ class Game {
   constructor() {
     this.deck = [];
   }

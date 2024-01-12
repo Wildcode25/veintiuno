@@ -1,4 +1,4 @@
-export class Card {
+ class Card {
   constructor(name, symbol, value, color, img) {
     this.name = name;
     this.symbol = symbol;
