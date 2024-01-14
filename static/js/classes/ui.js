@@ -238,19 +238,19 @@ let selectedCards = [];
     //Table listeners
     table.addEventListener("click", (e) => {
       if (selectCard) {
-        if (e.target.querySelector(".selectAction").className == "selectAction") {
-          if (e.target.querySelector(".selectAction").style.background != "gray") {
-            e.target.querySelector(".selectAction").style.background = "gray";
+        if (e.target.className == "selectAction") {
+          if (e.target.style.background != "blue") {
+            e.target.style.background = "blue";
             for (let gameCard of gameCards.cards) {
-              if (e.target.querySelector(".selectAction").id === gameCard.name) {
+              if (e.target.parentNode.id === gameCard.name) {
                 selectedCards.push(gameCard);
                 break;
               }
             }
           } else {
-            e.target.style.background = "white";
+            e.target.style.background = "none";
             selectedCards = selectedCards.filter((selectCard) => {
-              return selectCard.name != e.target.id;
+              return selectCard.name != e.target.parentNode.id;
             });
           }
         }
@@ -323,7 +323,6 @@ let selectedCards = [];
               players[turn].pointsDistribution.birao > 0 &&
               players[previousTurn].pointsDistribution.birao > 0
             ) {
-              console.log("w");
               players[previousTurn].pointsDistribution.birao--;
               players[turn].pointsDistribution.birao--;
             }

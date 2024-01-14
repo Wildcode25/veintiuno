@@ -112,7 +112,7 @@
       if (e > 0) {
         this.evaluateACArds(selectedCards, playerCard);
       }
-      sum = this.getTotalSum(selectedCards);
+      sum = this.getTotalSum(selectedCards)-2;
       combinations = this.getNumberOfCombinations(selectedCards, playerCard);
       console.log(combinations, sum);
       if (combinations >= sum / playerCard.value && sum > 0) {

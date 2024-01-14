@@ -6,6 +6,7 @@ const Y_VALUE = -129
   constructor() {
     const suits = ["♥️", "♠️", "♦️", "♣️"];
     const cardNames = [
+      "A",
       "2",
       "3",
       "4",
@@ -18,7 +19,7 @@ const Y_VALUE = -129
       "J",
       "Q",
       "K",
-      "A",
+      
     ];
     this.createCards(cardNames, suits);
     this.shuffleCards();
