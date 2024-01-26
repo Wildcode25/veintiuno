@@ -1,4 +1,4 @@
- class GameRules {
+class GameRules {
   getTotalSum(selectedCards) {
     let sum = 0;
     for (let selectedCard of selectedCards) {
@@ -112,7 +112,7 @@
       if (e > 0) {
         this.evaluateACArds(selectedCards, playerCard);
       }
-      sum = this.getTotalSum(selectedCards)-2;
+      sum = this.getTotalSum(selectedCards);
       combinations = this.getNumberOfCombinations(selectedCards, playerCard);
       console.log(combinations, sum);
       if (combinations >= sum / playerCard.value && sum > 0) {
@@ -133,7 +133,7 @@
     return combinations;
   }
   cardEvaluation(card, player) {
-    if (card.symbol == "♠️ ") {
+    if (card.symbol == "♠️") {
       player.pointsDistribution.piCards.push(card);
     }
     if (card.name[0] == "A") {
@@ -144,10 +144,10 @@
     }
     if (card.name == "2" + "♠️") player.pointsDistribution.piTwo++;
   }
-  verifyFormedCards(gameCards) {
+  verifyFormedCards(gameCards, player) {
     return (
       gameCards.cards.findIndex(
-        (gameCard) => gameCard.formedBy == this.nickName
+        (gameCard) => gameCard.formedBy == player.nickName
       ) == -1
     );
   }

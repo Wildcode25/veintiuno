@@ -41,10 +41,13 @@ const Y_VALUE = -129
     suits.forEach((suit,e) => {
       {
         cardNames.forEach((cardName, i) => {
-          const cardValue = i + 2;
+          let cardValue;
+          if(cardName == "A") cardValue = 14;
+          else cardValue = i+1;
+
           const fullCardName = cardName + suit;
           const color = suit == "♥️" || suit == "♦️" ? "red" : "black";
-          this.cards.push(new Card(fullCardName, suit, cardValue, color, {
+          this.cards.push(new Card(fullCardName, suit, cardValue, {
             url: "../../src/img/cartas41.png",
             x: i*X_VALUE,
             y: e*Y_VALUE

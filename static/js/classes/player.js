@@ -52,7 +52,7 @@ let gameRules = new GameRules();
     return this.cards.filter((cardItem) => cardItem.value == 14).length;
   }
   dropCard(gameCards, playerCard) {
-    if (gameRules.verifyFormedCards(gameCards)) {
+    if (gameRules.verifyFormedCards(gameCards, this)) {
       gameCards.cards.push(playerCard);
       gameCards.playStatus = true;
     }
@@ -79,8 +79,9 @@ let gameRules = new GameRules();
           groupValue = card.value;
           groupName += card.value;
 
-          let formedCard = new Card(groupName, "-", groupValue, "purple");
+          let formedCard = new Card(groupName, "-", groupValue, selectedCards[selectedCards.length-2].img);
           this.concatCards(selectedCards, formedCard);
+          console.log(formedCard.formedCards)
           formedCard.block = true;
           formedCard.formedBy = this.nickName;
           this.updateGameCards(gameCards, selectedCards);
@@ -100,7 +101,7 @@ let gameRules = new GameRules();
       if (gameRules.checkForm(selectedCards, turnPlayerCard)) {
         groupValue = turnPlayerCard.value;
         groupName += turnPlayerCard.value;
-        let formedCard = new Card(groupName, "+", groupValue, "blue");
+        let formedCard = new Card(groupName, "+", groupValue, selectedCards[selectedCards.length-2].img);
         this.concatCards(selectedCards, formedCard);
         formedCard.formedBy = this.nickName;
         this.updateGameCards(gameCards, selectedCards);

@@ -222,11 +222,11 @@ let selectedCards = [];
         card.addEventListener("click", (e) => {
           playerCardsContainer.childNodes.forEach((childNode) => {
             if (childNode.id == card.id) {
-              childNode.querySelector(".selectAction").style.background = "blue";
-            } else childNode.querySelector(".selectAction").style.background = "none";
+              childNode.childNodes[0].style.background = "blue";
+            } else childNode.childNodes[0].style.background = "none";
           });
           table.childNodes.forEach((childNode) => {
-            childNode.querySelector(".selectAction").style.background = "none";
+            childNode.childNodes[0].style.background = "none";
           });
           selectCard = true;
           selectedCards = [];
@@ -258,6 +258,7 @@ let selectedCards = [];
       }
     });
     function createHtmlCardElement(cardObject) {
+      let selectActionHeight = 100;
       let card = document.createElement("div");
       card.className = "gameCard";
       card.id = cardObject.name;
@@ -266,29 +267,30 @@ let selectedCards = [];
       card.style.backgroundPositionY = `${cardObject.img.y}px`
 
       let selectAction = document.createElement("div");
-      selectAction.style.width = '100%';
-      selectAction.style.height = '100%';
+      // selectAction.style.width = '100%';
+      // selectAction.style.height = '100%';
       selectAction.className="selectAction"
-      card.appendChild(selectAction);
+      // selectAction.style.position = "absolute";
       if (cardObject.symbol == "+" || cardObject.symbol == "-") {
-        let formedCards = document.createElement("div");
-
-        for (let formedCard of cardObject.formedCards) {
-          formedCards.appendChild(createHtmlCardElement(formedCard));
+        let id = card.id
+        let childCard;
+        let parentCard = createHtmlCardElement(cardObject.formedCards[0]);
+        let parentCard2 = parentCard;
+        for(let i = 1; i<cardObject.formedCards.length; i++){
+          childCard = createHtmlCardElement(cardObject.formedCards[i])
+          parentCard.appendChild(childCard)
+          selectActionHeight+=9;
+          selectAction.style.height = `${selectActionHeight}%`
+          parentCard = childCard;
         }
-        formedCards.style.visibility = "hidden";
-        formedCards.style.position = "absolute";
-        formedCards.style.border = `solid ${cardObject.color} 3px`;
-        card.appendChild(formedCards);
-        card.addEventListener("mouseover", (e) => {
-          formedCards.classList.toggle("formedCards");
-        });
-        card.addEventListener("mouseout", (e) => {
-          formedCards.classList.toggle("formedCards");
-        });
+
+        card = parentCard2
+        card.id = id;
       }
+      card.appendChild(selectAction)
       return card;
     }
+   
     //Doucment events
     document.addEventListener("keyup", (e) => {
       if (selectCard) {
@@ -359,9 +361,12 @@ let selectedCards = [];
   }
  resetSelection(globalCardObject, table){
   selectCard = false;
-  globalCardObject.querySelector(".selectAction").style.background = "none";
+  globalCardObject.childNodes[0].style.background = "none";
   table.childNodes.forEach((childNode) => {
-    childNode.querySelector(".selectAction").style.background = "none";
+    childNode.querySelectorAll(".selectAction").forEach((selectActionItem)=>{
+      selectActionItem.style.background = "none";
+    })
+    console.log(childNode)
   });
 
   selectedCards = [];

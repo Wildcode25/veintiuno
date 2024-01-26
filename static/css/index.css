@@ -5,6 +5,11 @@
     --satin-sheen-gold: #CCA43B;
     --platinum: #E5E5E5;
 }
+h1{
+    color: white;
+    text-shadow: yellowgreen 0px 0px 20px;
+    font-size: 4rem;
+}
 .fullGame_container{
     width: 100vw;
     height: 100vh;
@@ -71,33 +76,26 @@ body{
     text-shadow: 0 0 5px black;
     height: 129px;
     margin: 5% 3%;
-    flex-basis: 91px;
+    min-width: 91px;
     cursor: pointer;
     user-select: none;
+    overflow: visible;
    
 }
 .selectAction{
+    position: absolute;
+    height: 100%;
+    width: 100%;
     opacity: 0.5;
     border-radius: 5%;
+    top: 0;
+
 }
-.formedCards{
-    
-    font-size: smaller;
-    visibility: visible !important;
-    z-index: 200;
-    left: 105%;
-    bottom: 30%;
-    display: flex;
-    border-radius: 5%;
-    justify-content: center;
-    background-color: #ccc;
-    width: 100px;
-    height: 100px;
-    padding-bottom: 50px;
-    flex-wrap: wrap;
-    overflow-y:auto;
-    
-    
+
+.gameCard .gameCard{
+    position: relative;
+    top: 9%;
+    overflow: visible;
 }
 .formedCards div{
     flex-basis: 20%;
@@ -111,7 +109,7 @@ body{
 }
 .players_option_container{
     display: flex;
-    margin-top: 15%;
+    margin-top: 10%;
     width: 50vw;
     box-shadow: 0 0 20px 5px black;
 
