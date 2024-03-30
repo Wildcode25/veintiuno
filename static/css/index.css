@@ -1,20 +1,25 @@
 :root{
     --esmerald: #45CB85;
-    --jet: #161626;
-    --gunMetal: #242F40;
+    --jet: #312e2b;
+    --gunMetal: #262421;
     --satin-sheen-gold: #CCA43B;
-    --platinum: #E5E5E5;
+    --platinum: #666;
 }
 h1{
     color: white;
     text-shadow: yellowgreen 0px 0px 20px;
-    font-size: 4rem;
+    font-size: 3rem;
+    margin: 0;
+    text-align: center;
+    width: 100%;
+    background-color: var(--gunMetal);
 }
 .fullGame_container{
+    position: relative;
     width: 100vw;
     height: 100vh;
     display: flex;
-    padding-top: 5%;
+    padding-top: 1%;
     flex-direction: column;
     justify-content: start;
     align-items: center;
@@ -25,29 +30,50 @@ h1{
 }
 body{
     display: flex;
-    padding-top: 5%;
     flex-direction: column;
     justify-content: start;
     align-items: center;
     height: 100vh;
     background-color:var(--jet);
+    overflow: hidden;
+}
+.gameContainer{
+    background-color: #283;
+    box-shadow: inset 0 0px 50px black ;
+
+}
+.playerContainer img{
+    height: 100%;
+    width: 25%;
+    object-fit: cover;
+    border: var(--satin-sheen-gold) solid 0.5vh;
 }
 .playerContainer{
-    display: grid;
-    grid-template-columns: repeat(2,25%);
-    grid-template-rows: repeat(2);
-    grid-column-gap: 600px;
-    grid-row-gap: 10px ;
+    color: var(--satin-sheen-gold);
+    display: flex;
+    height: 55%;
+    width: 95%;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: space-between;
     position: absolute;
     z-index: -10;
-    right: 23%;
+    left: 17%;
+    column-gap: 9%;
+    row-gap: 30%;
+    flex-wrap: wrap;
     
 }
+.playerStatisticContainer h4{
+    margin: 1px;
+}
 .playerStatisticContainer{
-    border-radius: 10px;
-    padding: 10px;
-    text-align: start;
-    background-color: white;
+    display: flex;
+    gap: 5%;
+    padding: 0.3%;
+    height: 15%;
+    width:15%;
+    background-color: var(--gunMetal);
 }
 
 .table{
@@ -55,12 +81,10 @@ body{
     position: relative;
     display: flex;
     justify-content: center;
-    background-color: #283;
     max-width: 500px;
     height: 350px;
     padding-bottom: 50px;
     flex-wrap: wrap;
-    box-shadow: inset 0 0px 50px black ;
     overflow-y: auto;
     box-sizing:border-box;
 }
@@ -105,7 +129,7 @@ body{
     display: flex;
     justify-content: center;
     width: 500px;
-    height: 300px;
+    border-top: #161626 2px solid;
 }
 .players_option_container{
     display: flex;
@@ -198,3 +222,4 @@ font-size: x-large;
         opacity: 0;
     }
 }
+
