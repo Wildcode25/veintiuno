@@ -3,8 +3,9 @@
 let gameRules = new GameRules();
 
  class Player {
-  constructor(nickName) {
+  constructor(nickName, id) {
     this.nickName = nickName;
+    this.id = id
     this.cards = [];
     this.accumulatedCards = [];
     this.pointsDistribution = {

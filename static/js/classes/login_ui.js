@@ -14,18 +14,22 @@ let players = [];
 let limit = 0;
 function updateForm(limit, numberOfPlayers) {
   const nextButton = document.querySelector(".next_button");
-  
+  inputNickname.focus()
   console.log("sdfg");
   playerLabel.innerHTML = `Jugador ${numberOfPlayers + 1}`;
   if (numberOfPlayers >= limit - 1) {
     nextButton.innerHTML = "Iniciar";
   } else {
     nextButton.innerHTML = "Siguiente";
+    
   }
+  
 }
 function nextButtonFunction(e) {
   if ((e.target.className == "next_button" || e.key == "Enter") && inputNickname.value!="") {
-    const player = new Player(inputNickname.value);
+    e.preventDefault()
+    const player = new Player(inputNickname.value, players.length+1);
+    inputNickname.value=""
     players.push(player);
     if (document.querySelector(".next_button").innerHTML === "Iniciar") {
       layout.innerHTML = "";
@@ -35,8 +39,16 @@ function nextButtonFunction(e) {
           .content.querySelector(".fullGame_container")
       );
       game.start(players);
-    } else updateForm(limit, players.length);
-    inputNickname.value = "";
+    } 
+    else {
+      
+      updateForm(limit, players.length);
+      
+
+
+    }     
+
+    
 
   }
 }
@@ -48,6 +60,7 @@ formButtons.addEventListener("click", (e) => {
     if (players.length == 0) {
       layout.innerHTML = "";
       layout.appendChild(playersOptionContainer);
+      inputNickname.value = ""
       return;
     }
     let lastNickName = players.pop();

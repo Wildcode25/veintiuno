@@ -117,7 +117,8 @@ let selectedCards = [];
         player.countCards();
         let playerStatisticContainer = document.createElement("div");
         let playerStatisticContent = document.createElement("div");
-
+        let fullPlayerStatisticContent = document.createElement("div");
+        fullPlayerStatisticContent.className = "pointsDistribution"
         playerStatisticContainer.className = "playerStatisticContainer";
         let imgPlayer = new Image()
         imgPlayer.src = "src/img/jj.jpg";
@@ -127,36 +128,36 @@ let selectedCards = [];
           "",
           player.nickName
         );
-        // createPlayerStatisticContainerContent(
-        //   playerStatisticContainer,
-        //   "Total de cartas",
-        //   player.pointsDistribution.totalCards
-        // );
-        // createPlayerStatisticContainerContent(
-        //   playerStatisticContainer,
-        //   "cartas A",
-        //   player.pointsDistribution.APoints
-        // );
-        // createPlayerStatisticContainerContent(
-        //   playerStatisticContainer,
-        //   "Cartas de Pi",
-        //   player.pointsDistribution.piCards.length
-        // );
-        // createPlayerStatisticContainerContent(
-        //   playerStatisticContainer,
-        //   "10 de diamante",
-        //   player.pointsDistribution.dymondTen
-        // );
-        // createPlayerStatisticContainerContent(
-        //   playerStatisticContainer,
-        //   "Birao",
-        //   player.pointsDistribution.birao
-        // );
-        // createPlayerStatisticContainerContent(
-        //   playerStatisticContainer,
-        //   "2 de Pi",
-        //   player.pointsDistribution.piTwo
-        // );
+        createPlayerStatisticContainerContent(
+          fullPlayerStatisticContent,
+          "Total de cartas: ",
+          player.pointsDistribution.totalCards
+        );
+        createPlayerStatisticContainerContent(
+          fullPlayerStatisticContent,
+          "cartas A: ",
+          player.pointsDistribution.APoints
+        );
+        createPlayerStatisticContainerContent(
+          fullPlayerStatisticContent,
+          "Cartas de Pi: ",
+          player.pointsDistribution.piCards.length
+        );
+        createPlayerStatisticContainerContent(
+          fullPlayerStatisticContent,
+          "10 de diamante: ",
+          player.pointsDistribution.dymondTen
+        );
+        createPlayerStatisticContainerContent(
+          fullPlayerStatisticContent,
+          "Birao: ",
+          player.pointsDistribution.birao
+        );
+        createPlayerStatisticContainerContent(
+          fullPlayerStatisticContent,
+          "2 de Pi: ",
+          player.pointsDistribution.piTwo
+        );
 
         createPlayerStatisticContainerContent(
           playerStatisticContent,
@@ -164,6 +165,20 @@ let selectedCards = [];
           player.points
         );
         playerStatisticContainer.appendChild(playerStatisticContent)
+        playerStatisticContainer.appendChild(fullPlayerStatisticContent)
+        
+        playerStatisticContainer.addEventListener("mouseover", ()=>{
+          console.log("sdf")
+          fullPlayerStatisticContent.style.visibility = "visible"
+          if(player.id%2==0){
+            fullPlayerStatisticContent.style.top = "-460%";
+          }else fullPlayerStatisticContent.style.top = "108%"
+        })
+
+        playerStatisticContainer.addEventListener("mouseout", ()=>{
+          fullPlayerStatisticContent.style.visibility = "hidden"
+        })
+
         if (player.nickName == players[turn].nickName) {
           playerStatisticContainer.style.background = "#666";
         }
