@@ -118,7 +118,12 @@ let selectedCards = [];
         let playerStatisticContainer = document.createElement("div");
         let playerStatisticContent = document.createElement("div");
         let fullPlayerStatisticContent = document.createElement("div");
-        fullPlayerStatisticContent.className = "pointsDistribution"
+        fullPlayerStatisticContent.className = "pointsDistribution";
+        if(player.id%2!=0){
+          let emptyFullPlayerStatisticContent = document.createElement("div");
+          emptyFullPlayerStatisticContent.className = "emptyPointsDistribution";
+          playerStatisticContainer.appendChild(emptyFullPlayerStatisticContent)
+        }
         playerStatisticContainer.className = "playerStatisticContainer";
         let imgPlayer = new Image()
         imgPlayer.src = "src/img/jj.jpg";
@@ -167,12 +172,14 @@ let selectedCards = [];
         playerStatisticContainer.appendChild(playerStatisticContent)
         playerStatisticContainer.appendChild(fullPlayerStatisticContent)
         
-        playerStatisticContainer.addEventListener("mouseover", ()=>{
-          console.log("sdf")
-          fullPlayerStatisticContent.style.visibility = "visible"
-          if(player.id%2==0){
-            fullPlayerStatisticContent.style.top = "-460%";
-          }else fullPlayerStatisticContent.style.top = "108%"
+        playerStatisticContainer.addEventListener("mouseover", (e)=>{
+          if(e.target.className != "emptyPointsDistribution"){
+            console.log("sdf")
+            fullPlayerStatisticContent.style.visibility = "visible"
+            if(player.id%2==0){
+              fullPlayerStatisticContent.style.top = "-460%";
+            }else fullPlayerStatisticContent.style.top = "108%"
+          }
         })
 
         playerStatisticContainer.addEventListener("mouseout", ()=>{

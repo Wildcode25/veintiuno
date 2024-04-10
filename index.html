@@ -12,7 +12,7 @@
 
 <body>
   
-  <!-- <h1>Veintiuno</h1> -->
+ 
   <div class="layout">
     <div class="players_option_container">
       <div class="player_numbers_option_item" data-value="2">Two players</div>
@@ -38,17 +38,32 @@
   <template class="game_template">
     
     <div class="fullGame_container">
-      
-      <div class="playerContainer">
-        <img src="src/img/jj.jpg" alt="">
-      </div>
+      <nav class="sidebar">
+        <ul>
+          <li style="margin-bottom: 20%;"><h1>Veintiuno</h1></li>
+          <li><img src="src/img/play.png" alt=""><h3>Jugar</h3><div></div></li>
+          <li><img src="src/img/amigos.png" alt=""><h3>Amigos</h3><div></div></li>
+          <li><img src="src/img/play.png" alt=""><h3>Otros juegos</h3><div></div></li>
+          <li style="margin-bottom: 100%;"><img src="src/img/tienda.png" alt=""><h3>Tienda</h3><div></div></li>
+          <hr style="width: 100%;">
+          <li><img src="src/img/engranaje.png" alt=""><h3>Configuracion</h3></li>
+        </ul>
+      </nav>
+     
       <div class="gameContainer">
+        <div class="playerContainer">
+          <img src="src/img/jj.jpg" alt="">
+          
+        </div>
         <div class="table">
 
         </div>
         <div class="playerCardContainer">
 
         </div>
+      </div>
+      <div class="chat">
+        Chat
       </div>
     </div>
   </template>
