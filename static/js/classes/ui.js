@@ -1,18 +1,19 @@
-
 //Variables declaration
 let selectCard = false;
 let deck = new Deck();
 let plays = 0;
 let selectedCards = [];
 
-
 //User intarface
- class Ui {
+class Ui {
   //Start the game
   displayGame(players) {
-    const table = document.querySelector(".table");
+    const table = document.querySelector("#table1");
+    console.log(table);
     const playerCardsContainer = document.querySelector(".playerCardContainer");
-    const playersContainer = document.querySelector(".playerContainer");
+    const playersContainer1 = document.querySelector(".playerContainer1");
+    const playersContainer2 = document.querySelector(".playerContainer2");
+    const tutorialButtons = document.querySelectorAll(".tutorialButton");
     let globalCardObject;
     let limit = players.length - 1;
     let turn = 0;
@@ -103,65 +104,39 @@ let selectedCards = [];
       dataElement.style.color = "white";
       dataElement.appendChild(document.createTextNode(data));
       detailElement.appendChild(dataElement);
+
       playerStatisticContainer.appendChild(detailElement);
     }
     function turnPlayer() {
+      document.querySelector(".numbersOfCards").innerHTML = deck.numbersOfCards;
+
       if (turn > limit) turn = 0;
       console.log("turno: " + turn);
-      console.log("Baraja: " + deck.cards.length);
       table.innerHTML = "";
       playerCardsContainer.innerHTML = "";
-      playersContainer.innerHTML = "";
       players.forEach((player) => {
         player.resetPointsDistribution();
         player.countCards();
-        let playerStatisticContainer = document.createElement("div");
+        let playersContainer =
+          player.id % 2 == 0 ? playersContainer2 : playersContainer1;
+        var playerStatisticContainer =
+          player.id % 2 == 0
+            ? playersContainer2.querySelector(
+                `.playerStatisticContainer${player.id}`
+              )
+            : playersContainer1.querySelector(
+                `.playerStatisticContainer${player.id}`
+              );
         let playerStatisticContent = document.createElement("div");
+        playerStatisticContent.className = "playerStatisticContent";
         let fullPlayerStatisticContent = document.createElement("div");
-        fullPlayerStatisticContent.className = "pointsDistribution";
-        if(player.id%2!=0){
-          let emptyFullPlayerStatisticContent = document.createElement("div");
-          emptyFullPlayerStatisticContent.className = "emptyPointsDistribution";
-          playerStatisticContainer.appendChild(emptyFullPlayerStatisticContent)
-        }
-        playerStatisticContainer.className = "playerStatisticContainer";
-        let imgPlayer = new Image()
-        imgPlayer.src = "src/img/jj.jpg";
-        playerStatisticContainer.appendChild(imgPlayer)
+        fullPlayerStatisticContent.className = "playerStatisticContent";
+        let imgPlayer = new Image();
+
         createPlayerStatisticContainerContent(
           playerStatisticContent,
           "",
           player.nickName
-        );
-        createPlayerStatisticContainerContent(
-          fullPlayerStatisticContent,
-          "Total de cartas: ",
-          player.pointsDistribution.totalCards
-        );
-        createPlayerStatisticContainerContent(
-          fullPlayerStatisticContent,
-          "cartas A: ",
-          player.pointsDistribution.APoints
-        );
-        createPlayerStatisticContainerContent(
-          fullPlayerStatisticContent,
-          "Cartas de Pi: ",
-          player.pointsDistribution.piCards.length
-        );
-        createPlayerStatisticContainerContent(
-          fullPlayerStatisticContent,
-          "10 de diamante: ",
-          player.pointsDistribution.dymondTen
-        );
-        createPlayerStatisticContainerContent(
-          fullPlayerStatisticContent,
-          "Birao: ",
-          player.pointsDistribution.birao
-        );
-        createPlayerStatisticContainerContent(
-          fullPlayerStatisticContent,
-          "2 de Pi: ",
-          player.pointsDistribution.piTwo
         );
 
         createPlayerStatisticContainerContent(
@@ -169,27 +144,62 @@ let selectedCards = [];
           "Points: ",
           player.points
         );
-        playerStatisticContainer.appendChild(playerStatisticContent)
-        playerStatisticContainer.appendChild(fullPlayerStatisticContent)
-        
-        playerStatisticContainer.addEventListener("mouseover", (e)=>{
-          if(e.target.className != "emptyPointsDistribution"){
-            console.log("sdf")
-            fullPlayerStatisticContent.style.visibility = "visible"
-            if(player.id%2==0){
-              fullPlayerStatisticContent.style.top = "-460%";
-            }else fullPlayerStatisticContent.style.top = "108%"
-          }
-        })
+        playerStatisticContainer.innerHTML = "";
+        imgPlayer.src = "src/img/jj.jpg";
+        playerStatisticContainer.appendChild(imgPlayer);
+        playerStatisticContainer.appendChild(playerStatisticContent);
 
-        playerStatisticContainer.addEventListener("mouseout", ()=>{
-          fullPlayerStatisticContent.style.visibility = "hidden"
-        })
+        playerStatisticContainer.addEventListener("mouseover", (e) => {
+          console.log("sdf");
 
-        if (player.nickName == players[turn].nickName) {
-          playerStatisticContainer.style.background = "#666";
-        }
-        playersContainer.appendChild(playerStatisticContainer);
+          createPlayerStatisticContainerContent(
+            fullPlayerStatisticContent,
+            "Total de cartas: ",
+            player.pointsDistribution.totalCards
+          );
+          createPlayerStatisticContainerContent(
+            fullPlayerStatisticContent,
+            "cartas A: ",
+            player.pointsDistribution.APoints
+          );
+          createPlayerStatisticContainerContent(
+            fullPlayerStatisticContent,
+            "Cartas de Pi: ",
+            player.pointsDistribution.piCards.length
+          );
+          createPlayerStatisticContainerContent(
+            fullPlayerStatisticContent,
+            "10 de diamante: ",
+            player.pointsDistribution.dymondTen
+          );
+          createPlayerStatisticContainerContent(
+            fullPlayerStatisticContent,
+            "Birao: ",
+            player.pointsDistribution.birao
+          );
+          createPlayerStatisticContainerContent(
+            fullPlayerStatisticContent,
+            "2 de Pi: ",
+            player.pointsDistribution.piTwo
+          );
+          playersContainer.querySelector(".pointsDistribution").innerHTML = "";
+          playersContainer
+            .querySelector(".pointsDistribution")
+            .appendChild(fullPlayerStatisticContent);
+        });
+
+        playerStatisticContainer.addEventListener("mouseout", () => {
+          fullPlayerStatisticContent.innerHTML = "";
+        });
+
+        if (players[turn].id == player.id) {
+          document.querySelector(
+            `.playerStatisticContainer${player.id}`
+          ).style.background = "#666";
+        } else
+          document.querySelector(
+            `.playerStatisticContainer${player.id}`
+          ).style.background = "#262421";
       });
       gameCards.cards.forEach((gameCard, i) => {
         table.appendChild(createHtmlCardElement(gameCard));
@@ -197,9 +207,12 @@ let selectedCards = [];
       if (plays >= 4 * players.length) {
         plays = 0;
         if (deck.haveCards) {
+          document.querySelector(".numbersOfCards").innerHTML = deck.numbersOfCards;
           players.forEach((player) => {
             player.cards = deck.dealCards();
           });
+          document.querySelector(".numbersOfCards").innerHTML = deck.numbersOfCards;
+
         } else {
           players.forEach((player) => {
             if (player.nickName == lastPlayerLootName) {
@@ -291,34 +304,34 @@ let selectedCards = [];
       card.className = "gameCard";
       card.id = cardObject.name;
       card.style.backgroundImage = `url('${cardObject.img.url}')`;
-      card.style.backgroundPositionX = `${cardObject.img.x}px`
-      card.style.backgroundPositionY = `${cardObject.img.y}px`
+      card.style.backgroundPositionX = `${cardObject.img.x}px`;
+      card.style.backgroundPositionY = `${cardObject.img.y}px`;
 
       let selectAction = document.createElement("div");
       // selectAction.style.width = '100%';
       // selectAction.style.height = '100%';
-      selectAction.className="selectAction"
+      selectAction.className = "selectAction";
       // selectAction.style.position = "absolute";
       if (cardObject.symbol == "+" || cardObject.symbol == "-") {
-        let id = card.id
+        let id = card.id;
         let childCard;
         let parentCard = createHtmlCardElement(cardObject.formedCards[0]);
         let parentCard2 = parentCard;
-        for(let i = 1; i<cardObject.formedCards.length; i++){
-          childCard = createHtmlCardElement(cardObject.formedCards[i])
-          parentCard.appendChild(childCard)
-          selectActionHeight+=9;
-          selectAction.style.height = `${selectActionHeight}%`
+        for (let i = 1; i < cardObject.formedCards.length; i++) {
+          childCard = createHtmlCardElement(cardObject.formedCards[i]);
+          parentCard.appendChild(childCard);
+          selectActionHeight += 9;
+          selectAction.style.height = `${selectActionHeight}%`;
           parentCard = childCard;
         }
 
-        card = parentCard2
+        card = parentCard2;
         card.id = id;
       }
-      card.appendChild(selectAction)
+      card.appendChild(selectAction);
       return card;
     }
-   
+
     //Doucment events
     document.addEventListener("keyup", (e) => {
       if (selectCard) {
@@ -331,7 +344,7 @@ let selectedCards = [];
 
             turnPlayer();
           }
-         this.resetSelection(globalCardObject, table)
+          this.resetSelection(globalCardObject, table);
         }
         if (e.key == "a") {
           players[turn].blockA(gameCards, globalPlayerCard);
@@ -341,8 +354,7 @@ let selectedCards = [];
             plays++;
             turnPlayer();
           }
-          this.resetSelection(globalCardObject, table)
-
+          this.resetSelection(globalCardObject, table);
         }
         if (e.key == "z") {
           console.log(turn);
@@ -362,7 +374,7 @@ let selectedCards = [];
             turnPlayer();
           }
 
-          this.resetSelection(globalCardObject, table)
+          this.resetSelection(globalCardObject, table);
 
           console.log(selectedCards);
         }
@@ -374,11 +386,72 @@ let selectedCards = [];
             plays++;
             turnPlayer();
           }
-          this.resetSelection(globalCardObject, table)
-
+          this.resetSelection(globalCardObject, table);
         }
       }
     });
+
+    //tutorialButtons
+    document
+      .querySelector(".visibleTutorialButton")
+      .addEventListener("click", (e) => {
+        document
+          .querySelector(".gameTutorial")
+          .classList.toggle("showGameTutorial");
+        console.log(document.querySelector(".gameTutorial"));
+      });
+    document
+      .querySelector(".closeGameTutorialButton")
+      .addEventListener("click", () => {
+        document
+          .querySelector(".gameTutorial")
+          .classList.toggle("showGameTutorial");
+      });
+    tutorialButtons.forEach((tutorialButton) => {
+      tutorialButton.addEventListener("click", (e) => {
+        tutorialButtons.forEach((item) => {
+          item.querySelector("h2").style.color = "white";
+          item.querySelector("div").classList.remove("lineAnimation");
+        });
+        tutorialButton.querySelector("h2").style.color = "#CCA43B";
+        tutorialButton.querySelector("div").classList.add("lineAnimation");
+      });
+    });
+    addTutorialButtonsEvents(
+      document.querySelector(".left"),
+      document.querySelector(".right"),
+      3,
+      1
+    );
+    addTutorialButtonsEvents(
+      document.querySelector(".left2"),
+      document.querySelector(".right2"),
+      5,
+      2
+    );
+
+    function addTutorialButtonsEvents(left, right, limit, section) {
+      let l = limit;
+      let r = 2;
+      left.addEventListener("click", () => {
+        console.log(l);
+        left.href = `#carrouselCard${section}${l}`;
+        right.href = `#carrouselCard${section}${r}`;
+        l = l <= 1 ? limit : l - 1;
+
+        r = r <= 1 ? limit : r - 1;
+      });
+
+      right.addEventListener("click", () => {
+        console.log(r);
+        console.log(l);
+        left.href = `#carrouselCard${section}${l}`;
+        right.href = `#carrouselCard${section}${r}`;
+        l = l >= limit ? 1 : l + 1;
+
+        r = r >= limit ? 1 : r + 1;
+      });
+    }
   }
   getPlayerCard(cardId, playerCards) {
     playerCards.forEach((playerCard) => {
@@ -387,19 +460,22 @@ let selectedCards = [];
       }
     });
   }
- resetSelection(globalCardObject, table){
-  selectCard = false;
-  globalCardObject.childNodes[0].style.background = "none";
-  table.childNodes.forEach((childNode) => {
-    childNode.querySelectorAll(".selectAction").forEach((selectActionItem)=>{
-      selectActionItem.style.background = "none";
-    })
-    console.log(childNode)
-  });
+  resetSelection(globalCardObject, table) {
+    selectCard = false;
+    globalCardObject.childNodes[0].style.background = "none";
+    table.childNodes.forEach((childNode) => {
+      childNode
+        .querySelectorAll(".selectAction")
+        .forEach((selectActionItem) => {
+          selectActionItem.style.background = "none";
+        });
+      console.log(childNode);
+    });
 
-  selectedCards = [];
- }
+    selectedCards = [];
+  }
   displayWelcome() {
     alert("Bienvenido a Veintiuno");
   }
 }
+//tutorialButtons

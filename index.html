@@ -1,79 +1,221 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="static/css/index.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-<head>
-  <meta charset="UTF-8" />
-  <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-  <link rel="stylesheet" href="static/css/index.css">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vite App</title>
+  </head>
 
-  <title>Vite App</title>
-</head>
-
-<body>
-  
- 
-  <div class="layout">
-    <div class="players_option_container">
-      <div class="player_numbers_option_item" data-value="2">Two players</div>
-      <div class="player_numbers_option_item" data-value="3">Three players</div>
-      <div class="player_numbers_option_item" data-value="4">Four players</div>
-    </div>
-  </div>
-  <template class="form_template">
-
-    <form class="form">
-
-      <label for="Nickname" class="playerLabel">
-
-      </label>
-      <input type="text" placeholder="Nickname">
-      <div class="buttons">
-        <button type="submit" class="back_button">atras</button>
-        <button type="submit" class="next_button">Siguiente</button>
+  <body>
+    <div class="layout">
+      <div class="players_option_container">
+        <div class="player_numbers_option_item" data-value="2">Two players</div>
+        <div class="player_numbers_option_item" data-value="3">
+          Three players
+        </div>
+        <div class="player_numbers_option_item" data-value="4">
+          Four players
+        </div>
       </div>
-
-    </form>
-  </template>
-  <template class="game_template">
+    </div>
+    <template class="form_template">
+      <form class="form">
+        <label for="Nickname" class="playerLabel"> </label>
+        <input type="text" placeholder="Nickname" />
+        <div class="buttons">
+          <button type="submit" class="back_button">atras</button>
+          <button type="submit" class="next_button">Siguiente</button>
+        </div>
+      </form>
+    </template>
+    <template class="game_template">
+      <div class="fullGame_container">
+        
+        <div class="gameTutorial">
+              <div class="tutorialBackground"></div>
+              <div class="tutorialContent">
+               
+                <nav class="sidebar">
+                  <h1 style="text-align: center">Reglas</h1>
+                  <ul>
+                    <li class="tutorialButton">
+                      <a href="#carrouselItem1"><h2 style="color: #CCA43B;">Generales</h2></a>
+                      <div class="lineAnimation"></div>
+                    </li>
+                    <li class="tutorialButton">
+                      <a href="#carrouselItem2"><h2>Controles</h2></a>
+                      <div></div>
+                    </li>
+                    <li class="tutorialButton" style="margin-bottom: 100%">
+                      <a href="#carrouselItem3"><h2>Puntos</h2></a>
+                      <div></div>
+                    </li>
+                  </ul>
+                </nav>
+                <div class="carrouselContainer">
+                  <section class="carrouselItem" id="carrouselItem1">
+                    <div class="carrouselCardButtons">
+                      <a class="left" href="#carrouselCard13">
+                        <h1>L</h1>
+                      </a>
+                      <a class="right" href="#carrouselCard12">
+                        <h1>R</h1>
+                      </a>
+                    </div>
+                    <div class="carrouselCardContainer">
+                      <section class="carrouselCard" id="carrouselCard11">
+                        <h1>Inicio de la ronda</h1>
+                        <p>
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                          Quidem porro aliquam similique vel in repudiandae rem.
+                          Nesciunt, laborum? Neque porro corrupti eius natus
+                          voluptatum sunt molestiae quas cupiditate nisi nemo.
+                        </p>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard12">
+                        <h1>Fin de la ronda</h1>
+                        <p>
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                          Quidem porro aliquam similique vel in repudiandae rem.
+                          Nesciunt, laborum? Neque porro corrupti eius natus
+                          voluptatum sunt molestiae quas cupiditate nisi nemo.
+                        </p>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard13">
+                        <h1>Objetivo</h1>
+                        <p>
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                          Quidem porro aliquam similique vel in repudiandae rem.
+                          Nesciunt, laborum? Neque porro corrupti eius natus
+                          voluptatum sunt molestiae quas cupiditate nisi nemo.
+                        </p>
+                      </section>
+                    </div>
+                  </section>
+                  <section class="carrouselItem" id="carrouselItem2">
+                    <div class="carrouselCardButtons">
+                      <a class="left2" href="#carrouselCard25">
+                        <h1>L</h1>
+                      </a>
+                      <a class="right2" href="#carrouselCard22">
+                        <h1>R</h1>
+                      </a>
+                    </div>
+                    <div class="carrouselCardContainer">
+                      <section class="carrouselCard" id="carrouselCard21">
+                        <h1>Drop card</h1>
     
-    <div class="fullGame_container">
-      <nav class="sidebar">
-        <ul>
-          <li style="margin-bottom: 20%;"><h1>Veintiuno</h1></li>
-          <li><img src="src/img/play.png" alt=""><h3>Jugar</h3><div></div></li>
-          <li><img src="src/img/amigos.png" alt=""><h3>Amigos</h3><div></div></li>
-          <li><img src="src/img/play.png" alt=""><h3>Otros juegos</h3><div></div></li>
-          <li style="margin-bottom: 100%;"><img src="src/img/tienda.png" alt=""><h3>Tienda</h3><div></div></li>
-          <hr style="width: 100%;">
-          <li><img src="src/img/engranaje.png" alt=""><h3>Configuracion</h3></li>
-        </ul>
-      </nav>
-     
-      <div class="gameContainer">
-        <div class="playerContainer">
-          <img src="src/img/jj.jpg" alt="">
-          
-        </div>
-        <div class="table">
+                        <p>
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                          Quidem porro aliquam similique vel in repudiandae rem.
+                          Nesciunt, laborum? Neque porro corrupti eius natus
+                          voluptatum sunt molestiae quas cupiditate nisi nemo.
+                        </p>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard22">
+                        <h1>Loot Card</h1>
+                        <p>
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                          Quidem porro aliquam similique vel in repudiandae rem.
+                          Nesciunt, laborum? Neque porro corrupti eius natus
+                          voluptatum sunt molestiae quas cupiditate nisi nemo.
+                        </p>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard23">
+                        <h1>Formar carta</h1>
+                        <p>
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                          Quidem porro aliquam similique vel in repudiandae rem.
+                          Nesciunt, laborum? Neque porro corrupti eius natus
+                          voluptatum sunt molestiae quas cupiditate nisi nemo.
+                        </p>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard24">
+                        <h1>Emparejar cartas</h1>
+                        <p>
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                          Quidem porro aliquam similique vel in repudiandae rem.
+                          Nesciunt, laborum? Neque porro corrupti eius natus
+                          voluptatum sunt molestiae quas cupiditate nisi nemo.
+                        </p>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard25">
+                        <h1>Block A</h1>
+                        <p>
+                          Lorem, ipsum dolor sit amet consectetur adipisicing elit.
+                          Quidem porro aliquam similique vel in repudiandae rem.
+                          Nesciunt, laborum? Neque porro corrupti eius natus
+                          voluptatum sunt molestiae quas cupiditate nisi nemo.
+                        </p>
+                      </section>
+                    </div>
+                  </section>
+                  <section class="carrouselItem" id="carrouselItem3">
+                    <div class="controls">
+                      <h1 style="text-align: center">Distribucion de puntos</h1>
+                      <ul>
+                        <li><b>Mayor cantidad de cartas: </b>3pts</li>
+                        <li><b>Mayor cantidad de cartas de pi: </b>1pt</li>
+                        <li><b>2 de pi: </b>1pt</li>
+                        <li><b>10 de diamante: </b>2pts</li>
+                        <li><b>Cartas A: </b>1pt por cada carta obtenida</li>
+                        <li><b>Birao: </b>1pt por cada birao obtenido</li>
+                      </ul>
+                    </div>
+                  </section>
+                  
+                    </div>
+                  </section>
+                  <div class="closeGameTutorialButton"><h1 style="cursor: pointer; padding: 5px;">X</h1></div>
+                </div>
+                
 
-        </div>
-        <div class="playerCardContainer">
+              </div>
 
+        <div class="playerContainer playerContainer1">
+          <div class="playerStatisticContainer playerStatisticContainer1"></div>
+          <div class="pointsDistribution pointsDistribution1"></div>
+          <div class="playerStatisticContainer playerStatisticContainer3"></div>
+          <div style="padding: 40px; width: 100px;">
+            
+            <div class="button visibleTutorialButton" style="cursor: pointer;"><div>Tutorial</div><span>Tutorial</span></div>
+            
+          </div>
+        </div>
+
+        <div class="cardsContainer">
+          <div class="table" id="table1"></div>
+          <div class="playerCardContainer"></div>
+        </div>
+        <div class="playerContainer playerContainer2">
+          <div class="playerStatisticContainer playerStatisticContainer2"></div>
+          <div class="pointsDistribution pointsDistribution2"></div>
+          <div class="playerStatisticContainer playerStatisticContainer4"></div>
+          <div style="padding: 8px; position: relative;"><div class="numbersOfCards" ></div><div style=" width: 111px; height: 160px;"><img style="object-fit: cover; border: none;" src="src/img/backcasrd.png" alt=""></div></div>
+        </div> 
+        <div class="controls">
+          <h1 style="text-align: center">Controls</h1>
+          <ul>
+            <li><b>DblClick: </b> drop</li>
+            <li><b>Z: </b>to loot</li>
+            <li><b>X: </b>to form</li>
+            <li><b>C: </b>to match</li>
+            <li><b>A: </b>to block</li>
+          </ul>
         </div>
       </div>
-      <div class="chat">
-        Chat
-      </div>
-    </div>
-  </template>
-  <script src="./static/js/classes/card.js"></script>
-  <script src="./static/js/classes/deck.js"></script>
-  <script src="./static/js/classes/ui.js"></script>
-  <script src="./static/js/classes/game_rules.js"></script>
-  <script src="./static/js/classes/player.js"></script>
-  <script src="/static/js/classes/game.js"></script>
-  <script src="./static/js/classes/login_ui.js"></script>
-</body>
-
+    
+      
+    </template>
+    <script src="./static/js/classes/card.js"></script>
+    <script src="./static/js/classes/deck.js"></script>
+    <script src="./static/js/classes/ui.js"></script>
+    <script src="./static/js/classes/game_rules.js"></script>
+    <script src="./static/js/classes/player.js"></script>
+    <script src="/static/js/classes/game.js"></script>
+    <script src="./static/js/classes/login_ui.js"></script>
+  </body>
 </html>

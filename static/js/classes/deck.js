@@ -34,6 +34,9 @@ const Y_VALUE = -129
   get haveCards() {
     return this.cards.length > 0;
   }
+  get numbersOfCards(){
+    return this.cards.length
+  }
   get initialPosition() {
     return this.cards.length - 4;
   }

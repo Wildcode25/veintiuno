@@ -6,164 +6,320 @@
     --platinum: #666;
 }
 *{
+    margin: 0;
+    padding: 0;
     box-sizing: border-box;
 }
-.sidebar{
-    width: 50%;
-    height: 97%;
-    background-color: var(--gunMetal);
+.gameTutorial{
+    position: absolute;
+    display: flex;
+    width: 1300px;
+    height: 620px;
+    z-index: 100;
+    justify-content: center;
+    align-items: center;
+    visibility: hidden;
+
+    
+}
+.showGameTutorial{
+    visibility: visible;
+    animation-name: showGameTutorial;
+    animation-duration: 1s;
+    animation-fill-mode: forwards
 
 }
-.sidebar ul{
+@keyframes showGameTutorial {
+    0%{
+        opacity: 0;
+        left: -200px;
+    }
+    100%{
+        opacity: 1;
+        left: 0;
+    }
+}
+.tutorialContent{
+      display: flex;  
+      position: relative;
+      background-color: var(--gunMetal);
+      width: 900px;
+      height: 620px;
+      padding: 10px;
+     
+
+}
+.tutorialSidebar{
+    height: 70%;
+    width: 200px;
+}
+.tutorialBackground{
+    position: absolute;
+    background-color: var(--jet);
+    min-width: 1400px;
+    height: 100vh;
+    z-index: -1;
+    opacity: 0.7;
+
+}
+.carrouselContainer{
+    
+    width: 700px;
+    height: 600px;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    
+    
+}
+
+.carrouselCardButtons a{
+    width: 10px;
+    height: 10px;
+}
+.carrouselCardButtons{
+    position: absolute;
+    width: 90%;
+    height: 500px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    z-index: 5;
+    
+}
+
+.carrouselCardContainer{
+    position: relative;
+    display: grid;
+    height: 580px;
+    width: 600px;
+    color: white;
+    overflow: hidden;
+    scroll-behavior: smooth;
+}
+.carrouselCardContainer:nth-child(1){
+    grid-template-columns: repeat(3, 600px);
+}
+.carrouselCardContainer:nth-child(2){
+    grid-template-columns: repeat(5,600px);
+}
+
+.carrouselCardContainer3 section{
+    display: inline-block;
+    width: 800px;
+    height: 50%;
+}
+a{
+    text-decoration: none;
+    width: 100%;
+    height: 100%;
+    color: white
+    
+}
+.carrouselCard{
+    padding: 20px;
+    }
+.carrouselCard h1{
+    padding-bottom: 10%;
+}
+.sidebar{
+    height: 97%;
+    width: 200px;
+    background-color: var(--jet);
     display: flex;
     flex-direction: column;
     list-style: none;
-    padding: 5%;
-   
+    gap: 50px;
+    justify-content: start;
+    padding: 2%;
+
 }
+
 li img{
     position: relative;
     width: 15%;
     top: 10px;
     transition: transform 0.5s;
 }
-
 li{
     position: relative;
-    color: white;
-    margin: 0%;
     cursor: pointer;
+    list-style: none;
+    
     
 }
-li h3{ 
+li h2{ 
     display: inline-block;
     border-radius: 3%; 
-    padding: 5% 5%;
+    padding: 3% 5%;
     height: 100%;
     margin: 0;
+    color: white;
 
 }
 li div{
     border-bottom: solid 1px white;
-    animation: toShrink 0.5s linear forwards;
+    width: 0;
 
 }
 
-.chat{
-    margin-left: 50%;
-}
-li:hover > h3{
-    color: var(--satin-sheen-gold)
-}
-li:hover > div{
-    animation: toStretch 0.5s linear forwards;
-}
-li:hover > img{
-   
-    transform: rotate(360deg);
-}
 
 
 h1{
-    display: inline-block;
+    /* display: inline;
     color: White;
     text-shadow: yellowgreen 0px 0px 20px;
     font-size: 2rem;
     margin: 0;
-    width: 100%;
+    */
+    color: var(--satin-sheen-gold);
 }
 .fullGame_container{
-    position: relative;
-    min-width: 1350px;
+    min-width: 1050px;
     height: 100vh;
+    align-items: start;
     display: grid;
-    grid-template-columns: repeat(3,  1fr) ;
-    padding-top: 1%;
-   padding-left: 0.5%;
-    z-index: 100;
-    
-
+    grid-template-columns: 200px 500px 200px 180px ;
+    gap: 15px;
+    padding: 1%;
+    margin: auto;
 }
 
-
+.tutorialButtonContainer{
+    padding: 50px;
+    color: black;
+}
+.lineAnimation{
+    animation: toStretch 0.3s linear forwards;
+}
+label{
+    cursor: pointer;
+}
 body{
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    min-width: 100vw;
-    min-height: 100vh;
+    width: 1380px;
+    height: 100vh;
     background-color:var(--jet);
     overflow: hidden;
+    align-items: center;
+   
    
 }
 .gameContainer{
-    
+    display: flex;
+    gap: 165px;
 
 }
 .playerContainer img{
     height: 100%;
-    min-width: 25%;
+    min-width: 28%;
     object-fit: cover;
     border: var(--satin-sheen-gold) solid 0.5vh;
 }
 .playerContainer{
+    display: grid;
+    
+    grid-template-rows: 1fr 5fr 1fr 1fr;
+    row-gap: 10px;
     color: var(--satin-sheen-gold);
-    display: flex;
-    height: 55%;
-    width: 95%;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: space-between;
-    position: absolute;
-    z-index: -200;
-    left: 17%;
-    column-gap: 9%;
-    row-gap: 30%;
-    flex-wrap: wrap;
+    height:405px;
+    width: 50px;
+    
     
 }
-.playerStatisticContainer h4{
-    margin: 1px;
+.tutorialButton{
+    border: none;
+    cursor: pointer;
+   
+    &:active{
+        opacity: 0.7;
+    }
+}
+.controls{
+    background-color: var(--gunMetal);
+    border: var( --satin-sheen-gold) solid 3px;
+  text-align: start;
+    height: 57%;
+    
+    border-radius: 15px;
+    font-size: large;
+    gap: 25px;
+    & b{
+        color: var(--satin-sheen-gold);
+    }
+    & li{
+        color: white;
+        margin: 10px 0 0 40px;
+    }
+    & h1{
+        color: var(--satin-sheen-gold);
+        text-shadow: none;
+        padding: 5px;
+    }
+}
+.playerStatisticContent h4{
+   margin: 2px;
 }
 .pointsDistribution{
-    position: absolute;
+    
+    
     background-color: var(--gunMetal);
-    height: 450%;
-    width: 100%;
-    padding: 5%;
-    left: -1%;
-    visibility: hidden;
-    z-index: 100;
+   padding: 10px;
+    width:200px;
+    height: 210px;
+    
 
 }
-.emptyPointsDistribution{
+.button{
+    display: inline-block;
+    position: relative;
+   padding: 20px 29px;
+    border-radius: 40px;
+    color: black;
+    font-weight: bold;
+    box-sizing: border-box;
+ 
+    background-color: var(--satin-sheen-gold);
+}
+.button div{
     position: absolute;
-    background-color: var(--gunMetal);
-    height: 450%;
-    width: 100%;
-    padding: 5%;
-    left: -1%;
-    top: 105%;
+    display: inline-block;
+    z-index: 5;
+    background-color: var(--esmerald);
+    border-radius: 40px;
+    content: "Tutorial";
+    padding: 20px 29px;
+    left: 0px;
+    top: -0px;
+    /* clip-path: polygon(0% 0%, 0% 100%, 100% 100%, 100% 0); */
+    clip-path: circle(0 at 50% 50%);
+    transition: all 0.7s;
 
 }
 
+.playerLabel{
+    font-size: xx-large;
+}
+                                          
+.button:hover > div{
+    clip-path: circle(100% at 50% 50%);
+}
 .playerStatisticContainer{
     display: flex;
-    position: relative;
     gap: 5%;
-    padding: 0.3%;
-    height: 15%;
-    width:15%;
+    padding: 4%;
+    height: 60px;
+    width:200px;
     background-color: var(--gunMetal);
-    z-index: -100;
+    align-items: center;
 }
 
 .table{
     justify-self: center;
-    position: relative;
     display: flex;
     justify-content: center;
-    max-width: 500px;
+    min-width: 500px;
     height: 350px;
     padding-bottom: 50px;
     flex-wrap: wrap;
@@ -173,8 +329,33 @@ body{
     box-shadow: inset 0 0px 50px black ;
 
 }
+.carrouselItem{
+    position: relative;
+    padding: 25px;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    scroll-behavior: smooth;
+   
+    
+}
+#carrouselItem1{
+}
+#carrouselItem2{
+}
+#carrouselItem3{
+}
+.numbersOfCards{
+    position: absolute;
+    padding: 40px 50px;
+    z-index: 5;
+    font-weight: bolder;
+    font-size: 60px;
+    color: black;
 
 
+}
 .gameCard{
     position: relative;
     display: flex;
@@ -191,6 +372,7 @@ body{
     overflow: visible;
    
 }
+
 .selectAction{
     position: absolute;
     height: 100%;
@@ -227,9 +409,7 @@ body{
     animation: next-to-container 1s ease;
 
 }
-label{
-font-size: x-large;
-}
+
 .form{
     color: var(--satin-sheen-gold);
     display: flex;
