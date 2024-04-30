@@ -143,10 +143,12 @@ li img{
 }
 li{
     position: relative;
-    cursor: pointer;
     list-style: none;
     
     
+}
+.sidebar li{
+    cursor: pointer;
 }
 li h2{ 
     display: inline-block;
@@ -355,6 +357,9 @@ body{
     color: black;
 
 
+}
+.left, .left2{
+    transform: rotate(180deg);
 }
 .gameCard{
     position: relative;
