@@ -1,4 +1,4 @@
-const game = new Game();
+
 
 const content = document.querySelector(".form_template").content;
 const form = content.querySelector(".form");
@@ -12,47 +12,40 @@ const inputNickname = content.querySelector("input");
 
 let players = [];
 let limit = 0;
-function updateForm(limit, numberOfPlayers) {
-  const nextButton = document.querySelector(".next_button");
-  inputNickname.focus()
-  console.log("sdfg");
-  playerLabel.innerHTML = `Jugador ${numberOfPlayers + 1}`;
-  if (numberOfPlayers >= limit - 1) {
-    nextButton.innerHTML = "Iniciar";
-  } else {
-    nextButton.innerHTML = "Siguiente";
-    
-  }
-  
-}
-function nextButtonFunction(e) {
-  if ((e.target.className == "next_button" || e.key == "Enter") && inputNickname.value!="") {
-    e.preventDefault()
-    const player = new Player(inputNickname.value, players.length+1);
-    inputNickname.value=""
-    players.push(player);
-    if (document.querySelector(".next_button").innerHTML === "Iniciar") {
-      layout.innerHTML = "";
-      layout.appendChild(
-        document
-          .querySelector(".game_template")
-          .content.querySelector(".fullGame_container")
-      );
-      game.start(players);
-    } 
-    else {
+
+// function nextButtonFunction(e) {
+//   if ((e.target.className == "next_button" || e.key == "Enter") && inputNickname.value!="") {
+//     e.preventDefault()
+//     const player = new Player(inputNickname.value, players.length+1);
+//     inputNickname.value=""
+//     players.push(player);
+//     if (document.querySelector(".next_button").innerHTML === "Iniciar") {
+//       layout.innerHTML = "";
+//       layout.appendChild(
+//         document
+//           .querySelector(".game_template")
+//           .content.querySelector(".fullGame_container")
+//       );
+//       game.start(players);
+//     } 
+//     else {
       
-      updateForm(limit, players.length);
+//       updateForm(limit, players.length);
       
 
 
-    }     
+//     }     
 
     
 
+//   }
+// }
+function startGame(e){
+  if ((e.target.className == "next_button" || e.key == "Enter") && inputNickname.value!=""){
+    window.location.href = `/game?nickName=${inputNickname.value}&&limit=${limit}`
   }
 }
-document.addEventListener("keydown", (e) => nextButtonFunction(e));
+document.addEventListener("keydown", (e) => startGame(e));
 formButtons.addEventListener("click", (e) => {
   e.preventDefault();
 
@@ -62,12 +55,12 @@ formButtons.addEventListener("click", (e) => {
       layout.appendChild(playersOptionContainer);
       inputNickname.value = ""
       return;
-    }
-    let lastNickName = players.pop();
-    inputNickname.value = lastNickName.nickName;
-    updateForm(limit, players.length);
-  } else nextButtonFunction(e);
-});
+    } 
+    // let lastNickName = players.pop();
+    // inputNickname.value = lastNickName.nickName;
+  //   updateForm(limit, players.length);
+  // } else nextButtonFunction(e);
+}else startGame(e)});
 playersOptionContainer.addEventListener("click", (e) => {
   limit = e.target.dataset.value;
   console.log("hola", limit);
@@ -79,7 +72,8 @@ playersOptionContainer.addEventListener("click", (e) => {
     layout.appendChild(form);
     e.target.classList.toggle("next");
     playersOptionContainer.classList.toggle("next-to-container");
-    updateForm(limit, players.length);
+    document.getElementById('inputNickname').focus()
+    // updateForm(limit, players.length);
   }, 500);
   console.log(form);
 });

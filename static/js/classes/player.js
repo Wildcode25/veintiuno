@@ -6,7 +6,7 @@ let gameRules = new GameRules();
   constructor(nickName, id) {
     this.nickName = nickName;
     this.id = id
-    this.cards = [];
+    this.cards=[];
     this.accumulatedCards = [];
     this.pointsDistribution = {
       totalCards: 0,
@@ -17,6 +17,7 @@ let gameRules = new GameRules();
       piTwo: 0,
     };
     this.points = 0;
+    this.turn=false
   }
   resetPointsDistribution() {
     this.pointsDistribution.totalCards = 0;

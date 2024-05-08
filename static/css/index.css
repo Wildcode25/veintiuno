@@ -342,12 +342,7 @@ body{
    
     
 }
-#carrouselItem1{
-}
-#carrouselItem2{
-}
-#carrouselItem3{
-}
+
 .numbersOfCards{
     position: absolute;
     padding: 40px 50px;
@@ -360,6 +355,9 @@ body{
 }
 .left, .left2{
     transform: rotate(180deg);
+}
+.left, .left2, .right, .right2{
+    font-size: x-large;
 }
 .gameCard{
     position: relative;
@@ -431,6 +429,7 @@ body{
     outline: none;
     height: 10%;
     width: 50%;
+    
 }
 .form button{
     background-color: var(--esmerald);

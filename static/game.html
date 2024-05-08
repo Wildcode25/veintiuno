@@ -1,38 +1,15 @@
 <!DOCTYPE html>
-<html lang="es">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
-    <link rel="stylesheet" href="static/css/index.css" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-    <title>Vite App</title>
-  </head>
-
-  <body>
-    <div class="layout">
-      <div class="players_option_container">
-        <div class="player_numbers_option_item" data-value="2">Two players</div>
-        <div class="player_numbers_option_item" data-value="3">
-          Three players
-        </div>
-        <div class="player_numbers_option_item" data-value="4">
-          Four players
-        </div>
-      </div>
-    </div>
-    <template class="form_template">
-      <form class="form">
-        <label for="Nickname" class="playerLabel"> </label>
-        <input type="text" placeholder="Nickname" />
-        <div class="buttons">
-          <button type="submit" class="back_button">atras</button>
-          <button type="submit" class="next_button">Siguiente</button>
-        </div>
-      </form>
-    </template>
-    <template class="game_template">
-      <div class="fullGame_container">
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/index.css">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <title>Home</title>
+</head>
+<body>
+    <div class="fullGame_container">
         
         <div class="gameTutorial">
               <div class="tutorialBackground"></div>
@@ -207,15 +184,17 @@
           </ul>
         </div>
       </div>
-    
       
-    </template>
-    <script src="./static/js/classes/card.js"></script>
-    <script src="./static/js/classes/deck.js"></script>
-    <script src="./static/js/classes/ui.js"></script>
-    <script src="./static/js/classes/game_rules.js"></script>
-    <script src="./static/js/classes/player.js"></script>
-    <script src="/static/js/classes/game.js"></script>
-    <script src="./static/js/classes/login_ui.js"></script>
-  </body>
+      <script src="js/classes/card.js"></script>
+      <script src="js/classes/deck.js"></script>
+      <script src="js/classes/ui.js"></script>
+      <script src="js/classes/game_rules.js"></script>
+      <script src="js/classes/player.js"></script>
+      <script type="module" src="js/classes/game.js"></script>
+      <script type="module">
+        import {Game} from './js/classes/game.js'
+        let game = new Game()
+        game.start()
+      </script>
+</body>
 </html>

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="icon" type="image/svg+xml" href="/vite.svg" />
+    <link rel="stylesheet" href="css/index.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <title>Vite App</title>
+  </head>
+
+  <body>
+    <div class="layout">
+      <div class="players_option_container">
+        <div class="player_numbers_option_item" data-value="2">Two players</div>
+        <div class="player_numbers_option_item" data-value="3">
+          Three players
+        </div>
+        <div class="player_numbers_option_item" data-value="4">
+          Four players
+        </div>
+      </div>
+    </div>
+    <template class="form_template">
+      <form class="form">
+        <label for="Nickname" class="playerLabel"> </label>
+        <input type="text" placeholder="Nickname" id="inputNickname" />
+        <div class="buttons">
+          <button type="submit" class="back_button">atras</button>
+          <button type="submit" class="next_button">Iniciar</button>
+        </div>
+      </form>
+    </template>
+  
+    <script type="module" src="js/classes/login_ui.js"></script>
+  </body>
+</html>
