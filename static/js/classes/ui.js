@@ -191,7 +191,6 @@ class Ui {
     for (let i = 0; i < players.length - 1; i++) {
       [players[i], players[i + 1]] = [players[i + 1], players[i]];
     }
-    band=true
     console.log(players);
   }
   createHtmlCardElement(cardObject) {
@@ -259,7 +258,6 @@ class Ui {
     table.innerHTML = "";
     playerCardsContainer.innerHTML = "";
     if (playInfo.eventName == "startGame") {
-      band=false
       deck.cards = deckCards;
       gameCards.cards = deck.dealCards();
       players.forEach((player) => {
@@ -590,7 +588,7 @@ class Ui {
         selectedCards=[]
       }
         selectedCards=[]
-    return {cards: deck.haveCards, band: band}
+    return deck.haveCards
       
       
       
