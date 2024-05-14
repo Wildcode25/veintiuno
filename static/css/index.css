@@ -1,16 +1,18 @@
-:root{
+:root {
     --esmerald: #45CB85;
     --jet: #312e2b;
     --gunMetal: #262421;
     --satin-sheen-gold: #CCA43B;
     --platinum: #666;
 }
-*{
+
+* {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
 }
-.gameTutorial{
+
+.gameTutorial {
     position: absolute;
     display: flex;
     width: 1300px;
@@ -20,40 +22,45 @@
     align-items: center;
     visibility: hidden;
 
-    
+
 }
-.showGameTutorial{
+
+.showGameTutorial {
     visibility: visible;
     animation-name: showGameTutorial;
     animation-duration: 1s;
     animation-fill-mode: forwards
-
 }
+
 @keyframes showGameTutorial {
-    0%{
+    0% {
         opacity: 0;
         left: -200px;
     }
-    100%{
+
+    100% {
         opacity: 1;
         left: 0;
     }
 }
-.tutorialContent{
-      display: flex;  
-      position: relative;
-      background-color: var(--gunMetal);
-      width: 900px;
-      height: 620px;
-      padding: 10px;
-     
+
+.tutorialContent {
+    display: flex;
+    position: relative;
+    background-color: var(--gunMetal);
+    width: 900px;
+    height: 620px;
+    padding: 10px;
+
 
 }
-.tutorialSidebar{
+
+.tutorialSidebar {
     height: 70%;
     width: 200px;
 }
-.tutorialBackground{
+
+.tutorialBackground {
     position: absolute;
     background-color: var(--jet);
     min-width: 1400px;
@@ -62,21 +69,23 @@
     opacity: 0.7;
 
 }
-.carrouselContainer{
-    
+
+.carrouselContainer {
+
     width: 700px;
     height: 600px;
     overflow: hidden;
     scroll-behavior: smooth;
-    
-    
+
+
 }
 
-.carrouselCardButtons a{
+.carrouselCardButtons a {
     width: 10px;
     height: 10px;
 }
-.carrouselCardButtons{
+
+.carrouselCardButtons {
     position: absolute;
     width: 90%;
     height: 500px;
@@ -85,10 +94,10 @@
     align-items: center;
     color: white;
     z-index: 5;
-    
+
 }
 
-.carrouselCardContainer{
+.carrouselCardContainer {
     position: relative;
     display: grid;
     height: 580px;
@@ -97,32 +106,37 @@
     overflow: hidden;
     scroll-behavior: smooth;
 }
-.carrouselCardContainer:nth-child(1){
+
+.carrouselCardContainer:nth-child(1) {
     grid-template-columns: repeat(3, 600px);
 }
-.carrouselCardContainer:nth-child(2){
-    grid-template-columns: repeat(5,600px);
+
+.carrouselCardContainer:nth-child(2) {
+    grid-template-columns: repeat(5, 600px);
 }
 
-.carrouselCardContainer3 section{
+.carrouselCardContainer3 section {
     display: inline-block;
     width: 800px;
     height: 50%;
 }
-a{
+
+a {
     text-decoration: none;
     width: 100%;
     height: 100%;
     color: white
-    
 }
-.carrouselCard{
+
+.carrouselCard {
     padding: 20px;
-    }
-.carrouselCard h1{
+}
+
+.carrouselCard h1 {
     padding-bottom: 10%;
 }
-.sidebar{
+
+.sidebar {
     height: 97%;
     width: 200px;
     background-color: var(--jet);
@@ -135,31 +149,35 @@ a{
 
 }
 
-li img{
+li img {
     position: relative;
     width: 15%;
     top: 10px;
     transition: transform 0.5s;
 }
-li{
+
+li {
     position: relative;
     list-style: none;
-    
-    
+
+
 }
-.sidebar li{
+
+.sidebar li {
     cursor: pointer;
 }
-li h2{ 
+
+li h2 {
     display: inline-block;
-    border-radius: 3%; 
+    border-radius: 3%;
     padding: 3% 5%;
     height: 100%;
     margin: 0;
     color: white;
 
 }
-li div{
+
+li div {
     border-bottom: solid 1px white;
     width: 0;
 
@@ -167,7 +185,7 @@ li div{
 
 
 
-h1{
+h1 {
     /* display: inline;
     color: White;
     text-shadow: yellowgreen 0px 0px 20px;
@@ -176,115 +194,131 @@ h1{
     */
     color: var(--satin-sheen-gold);
 }
-.fullGame_container{
+
+.fullGame_container {
     min-width: 1050px;
     height: 100vh;
     align-items: start;
     display: grid;
-    grid-template-columns: 200px 500px 200px 180px ;
+    grid-template-columns: 200px 500px 200px 180px;
     gap: 15px;
     padding: 1%;
     margin: auto;
 }
 
-.tutorialButtonContainer{
+.tutorialButtonContainer {
     padding: 50px;
     color: black;
 }
-.lineAnimation{
+
+.lineAnimation {
     animation: toStretch 0.3s linear forwards;
 }
-label{
+
+label {
     cursor: pointer;
 }
-body{
+
+body {
     display: flex;
     justify-content: center;
     width: 1380px;
     height: 100vh;
-    background-color:var(--jet);
+    background-color: var(--jet);
     overflow: hidden;
     align-items: center;
-   
-   
+
+
 }
-.gameContainer{
+
+.gameContainer {
     display: flex;
     gap: 165px;
 
 }
-.playerContainer img{
+
+.playerContainer img {
     height: 100%;
     min-width: 28%;
     object-fit: cover;
     border: var(--satin-sheen-gold) solid 0.5vh;
 }
-.playerContainer{
+
+.playerContainer {
     display: grid;
-    
+
     grid-template-rows: 1fr 5fr 1fr 1fr;
     row-gap: 10px;
     color: var(--satin-sheen-gold);
-    height:405px;
+    height: 405px;
     width: 50px;
-    
-    
+
+
 }
-.tutorialButton{
+
+.tutorialButton {
     border: none;
     cursor: pointer;
-   
-    &:active{
+
+    &:active {
         opacity: 0.7;
     }
 }
-.controls{
+
+.controls {
     background-color: var(--gunMetal);
-    border: var( --satin-sheen-gold) solid 3px;
-  text-align: start;
+    border: var(--satin-sheen-gold) solid 3px;
+    text-align: start;
     height: 57%;
-    
+
     border-radius: 15px;
     font-size: large;
     gap: 25px;
-    & b{
+
+    & b {
         color: var(--satin-sheen-gold);
     }
-    & li{
+
+    & li {
         color: white;
         margin: 10px 0 0 40px;
     }
-    & h1{
+
+    & h1 {
         color: var(--satin-sheen-gold);
         text-shadow: none;
         padding: 5px;
     }
 }
-.playerStatisticContent h4{
-   margin: 2px;
+
+.playerStatisticContent h4 {
+    margin: 2px;
 }
-.pointsDistribution{
-    
-    
+
+.pointsDistribution {
+
+
     background-color: var(--gunMetal);
-   padding: 10px;
-    width:200px;
+    padding: 10px;
+    width: 200px;
     height: 210px;
-    
+
 
 }
-.button{
+
+.button {
     display: inline-block;
     position: relative;
-   padding: 20px 29px;
+    padding: 20px 29px;
     border-radius: 40px;
     color: black;
     font-weight: bold;
     box-sizing: border-box;
- 
+
     background-color: var(--satin-sheen-gold);
 }
-.button div{
+
+.button div {
     position: absolute;
     display: inline-block;
     z-index: 5;
@@ -300,24 +334,26 @@ body{
 
 }
 
-.playerLabel{
+.playerLabel {
     font-size: xx-large;
 }
-                                          
-.button:hover > div{
+
+.button:hover>div {
     clip-path: circle(100% at 50% 50%);
 }
-.playerStatisticContainer{
+
+.playerStatisticContainer {
     display: flex;
     gap: 5%;
     padding: 4%;
     height: 60px;
-    width:200px;
+    width: 200px;
     background-color: var(--gunMetal);
     align-items: center;
 }
 
-.table{
+.table {
+    position: relative;
     justify-self: center;
     display: flex;
     justify-content: center;
@@ -326,12 +362,52 @@ body{
     padding-bottom: 50px;
     flex-wrap: wrap;
     overflow-y: auto;
-    box-sizing:border-box;
+    box-sizing: border-box;
     background-color: #283;
-    box-shadow: inset 0 0px 50px black ;
+    box-shadow: inset 0 0px 50px black;
 
 }
-.carrouselItem{
+
+.preload {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background-color: var(--gunMetal);
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+
+}
+
+.symbolsContainer {
+    display: flex;
+    flex-wrap: wrap;
+    width: 45px;
+    height: 45px;
+    animation-name: rotateSymbolsContainer;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+    animation-direction: alternate-reverse;
+
+
+}
+
+.preload img {
+    height: 20px;
+    width: 20px;
+    object-fit: cover;
+    animation-name: rotateSymbols;
+    animation-iteration-count: infinite;
+    animation-duration: 1s;
+    
+}
+.preload img:nth-child(2){
+    width: 25px;
+    height: 30px;
+}
+.carrouselItem {
     position: relative;
     padding: 25px;
     flex-direction: column;
@@ -339,11 +415,11 @@ body{
     height: 100%;
     text-align: center;
     scroll-behavior: smooth;
-   
-    
+
+
 }
 
-.numbersOfCards{
+.numbersOfCards {
     position: absolute;
     padding: 40px 50px;
     z-index: 5;
@@ -353,13 +429,20 @@ body{
 
 
 }
-.left, .left2{
+
+.left,
+.left2 {
     transform: rotate(180deg);
 }
-.left, .left2, .right, .right2{
+
+.left,
+.left2,
+.right,
+.right2 {
     font-size: x-large;
 }
-.gameCard{
+
+.gameCard {
     position: relative;
     display: flex;
     justify-content: center;
@@ -373,10 +456,10 @@ body{
     cursor: pointer;
     user-select: none;
     overflow: visible;
-   
+
 }
 
-.selectAction{
+.selectAction {
     position: absolute;
     height: 100%;
     width: 100%;
@@ -386,34 +469,38 @@ body{
 
 }
 
-.gameCard .gameCard{
+.gameCard .gameCard {
     position: relative;
     top: 9%;
     overflow: visible;
 }
-.formedCards div{
+
+.formedCards div {
     flex-basis: 20%;
     height: 50%;
 }
-.playerCardContainer{
+
+.playerCardContainer {
     display: flex;
     justify-content: center;
     width: 500px;
     border-top: #161626 2px solid;
 }
-.players_option_container{
+
+.players_option_container {
     display: flex;
-   
+
     width: 50vw;
     box-shadow: 0 0 20px 5px black;
 
 }
-.next-to-container{
+
+.next-to-container {
     animation: next-to-container 1s ease;
 
 }
 
-.form{
+.form {
     color: var(--satin-sheen-gold);
     display: flex;
     flex-direction: column;
@@ -425,13 +512,15 @@ body{
     gap: 10%;
     animation: visibilityForm 0.5s ease forwards;
 }
-.form input{
+
+.form input {
     outline: none;
     height: 10%;
     width: 50%;
-    
+
 }
-.form button{
+
+.form button {
     background-color: var(--esmerald);
     text-align: center;
     padding: 3%;
@@ -440,7 +529,7 @@ body{
     cursor: pointer;
 }
 
-.form div{
+.form div {
     display: flex;
     justify-content: center;
     gap: 1%;
@@ -448,15 +537,17 @@ body{
 }
 
 
-.player_numbers_option_item:hover{
+.player_numbers_option_item:hover {
     transform: scale(1.2);
     opacity: 0.7;
-    color:yellow
+    color: yellow
 }
-.layout{
+
+.layout {
     margin: auto;
 }
-.player_numbers_option_item{
+
+.player_numbers_option_item {
     width: 50%;
     transition: all 0.5s;
     background-color: var(--gunMetal);
@@ -464,62 +555,92 @@ body{
     text-align: center;
     cursor: pointer;
     color: var(--satin-sheen-gold)
-
-
 }
-.next{
+
+.next {
     animation: next-animation 0.5s ease;
 }
-@keyframes ratateIcon {
+@keyframes rotateSymbolsContainer {
+    
+        0%{
+            transform: rotate(0deg);
+            gap: 0;
+        }
+        100%{
+            gap: 20px;
+            width: 70px;
+            height: 70px;
+
+            transform: rotate(360deg);
+        }
+    
+}
+@keyframes rotateSymbols {
     0%{
         transform: rotate(0deg);
     }
     100%{
+        transform: rotate(360deg);
+    }
+}
+@keyframes ratateIcon {
+    0% {
+        transform: rotate(0deg);
+    }
+
+    100% {
         transform: rotate(45deg);
     }
 }
+
 @keyframes toStretch {
-    0%{
+    0% {
         width: 0;
 
     }
-   
-    100%{
-       
+
+    100% {
+
         width: 100%;
     }
 }
+
 @keyframes toShrink {
-    0%{
+    0% {
         width: 100%;
-        
+
     }
-    100%{
+
+    100% {
         width: 0%;
-        
+
     }
 }
+
 @keyframes next-animation {
-    0%{
+    0% {
         opacity: 0.7;
         transform: scale(1.2);
     }
-    100%{
+
+    100% {
         opacity: 0.1;
         transform: scale(8);
     }
 }
+
 @keyframes visibilityForm {
-    0%{
+    0% {
         opacity: 0;
     }
-    100%{
+
+    100% {
         opacity: 1;
     }
 }
+
 @keyframes next-to-container {
-    100%{
+    100% {
         opacity: 0;
     }
 }
-

@@ -192,6 +192,7 @@ class Ui {
       [players[i], players[i + 1]] = [players[i + 1], players[i]];
     }
     console.log(players);
+    band=false
   }
   createHtmlCardElement(cardObject) {
     let selectActionHeight = 100;
@@ -264,6 +265,7 @@ class Ui {
         
         player.cards = deck.dealCards();
       });
+      band=true
     }
     document.querySelector(".numbersOfCards").innerHTML = deck.numbersOfCards;
 
@@ -284,20 +286,15 @@ class Ui {
 
     console.log(players);
 
-    players.forEach((player) => {
-      player.turn=false
+    players.forEach((player, index) => {
+      
       player.resetPointsDistribution();
       player.countCards();
+      player.turn = false
       let playersContainer =
         player.id % 2 == 0 ? playersContainer2 : playersContainer1;
-      var playerStatisticContainer =
-        player.id % 2 == 0
-          ? playersContainer2.querySelector(
-              `.playerStatisticContainer${player.id}`
-            )
-          : playersContainer1.querySelector(
-              `.playerStatisticContainer${player.id}`
-            );
+      var playerStatisticContainer = document.querySelector(
+        `.playerStatisticContainer${index+1}`)
       let playerStatisticContent = document.createElement("div");
       playerStatisticContent.className = "playerStatisticContent";
       let fullPlayerStatisticContent = document.createElement("div");
@@ -365,15 +362,15 @@ class Ui {
 
       if (players[turn].id == player.id) {
         document.querySelector(
-          `.playerStatisticContainer${player.id}`
+          `.playerStatisticContainer${turn+1}`
         ).style.background = "#666";
       } else
         document.querySelector(
-          `.playerStatisticContainer${player.id}`
+          `.playerStatisticContainer${index+1}`
         ).style.background = "#262421";
     });
     players[turn].turn = true
-    gameCards.cards.forEach((gameCard, i) => {
+    gameCards.cards.forEach((gameCard, index) => {
       table.appendChild(this.createHtmlCardElement(gameCard));
     });
     console.log(players[turn]);
@@ -381,8 +378,6 @@ class Ui {
     if (plays >= 4 * players.length) {
       plays = 0;
       if (deck.haveCards) {
-        document.querySelector(".numbersOfCards").innerHTML =
-          deck.numbersOfCards;
         players.forEach((player) => {
           player.cards = deck.dealCards();
         });
@@ -392,9 +387,12 @@ class Ui {
             eventName: "",
             info: 0,
           }, myId);
+      
+      }
+     
           
           
-      } else {
+       else {
         players.forEach((player) => {
           if (player.nickName == lastPlayerLootName) {
             player.accumulatedCards = player.accumulatedCards.concat(
@@ -417,26 +415,18 @@ class Ui {
             
           });
 
-          for (let i = 0; i < players.length - 1; i++) {
-            for (let e = 1; e < players.lenght - 1; e++) {
-              [players[i], players[e]] = [players[e], players[i]];
-            }
-          }
+          
           
           
         }
-        this.turnPlayer(players, limit, deckCards, {
-          eventName: "",
-          info: 0,
-        }, myId);
         
+        band=false
       }
       
-      
-      
-      
     }
-    console.log(players[0]);
+      
+      
+    ;
     //documents events
     
       if (playInfo.eventName == "dblClick") {
@@ -456,6 +446,7 @@ class Ui {
           console.log(turn, limit);
          this.turnPlayer(players, limit, deckCards, { eventName: "", info: 0 }, myId);
         }
+        
         selectedCards=[]
       }
       
@@ -541,7 +532,6 @@ class Ui {
                 info: 0,
               },myId);
             }
-  
             this.resetSelection(table);
             
             
@@ -588,10 +578,18 @@ class Ui {
         selectedCards=[]
       }
         selectedCards=[]
-    return deck.haveCards
+    return band
       
       
       
+  }
+  rotatePlayers(players){
+    for (let i = 0; i < players.length - 1; i++) {
+      for (let e = 1; e < players.lenght - 1; e++) {
+        [players[i], players[e]] = [players[e], players[i]];
+      }
+    }
+   
   }
   resetSelection( table) {
     selectCard = false;
