@@ -71,17 +71,12 @@ class Ui {
     console.log(gameCards.cards.length);
 
     //Call the function sprintplayer
-    players.forEach((player) => {
-      let playersContainer =
-        player.id % 2 == 0 ? playersContainer2 : playersContainer1;
-      var playerStatisticContainer =
-        player.id % 2 == 0
-          ? playersContainer2.querySelector(
-              `.playerStatisticContainer${player.id}`
+    players.forEach((player, index) => {
+   
+      var playerStatisticContainer = document.querySelector(
+              `.playerStatisticContainer${index+1}`
             )
-          : playersContainer1.querySelector(
-              `.playerStatisticContainer${player.id}`
-            );
+          
       let playerStatisticContent = document.createElement("div");
       playerStatisticContent.className = "playerStatisticContent";
       let fullPlayerStatisticContent = document.createElement("div");
@@ -194,6 +189,7 @@ class Ui {
     console.log(players);
     band=false
   }
+
   createHtmlCardElement(cardObject) {
     let selectActionHeight = 100;
     let card = document.createElement("div");
@@ -582,6 +578,27 @@ class Ui {
       
       
       
+  }
+  disconnectedPlayerMessage(disconnectedPlayer, playerNickname, limitPlayers){
+    let table = document.querySelector(".table");
+    table.innerHTML=""
+    let preload = document.createElement("div")
+    preload.className = "preload"
+    preload.style.visibility = "visible"
+    preload.style.padding = "50%"
+    preload.style.justifyContent = "end"
+    preload.style.gap  = "10px"
+    let message = document.createElement("h3");
+    let button = document.createElement("a");
+    button.className="button"
+    button.href = `/game?nickName=${playerNickname}&&limit=${limitPlayers}`
+    button.appendChild(document.createTextNode("Buscar otra partida"))
+    message.innerHTML = `${disconnectedPlayer} ha salido de la partida`;
+    preload.innerHTML="";
+    table.appendChild(preload)
+    preload.appendChild(message)
+    preload.appendChild(button)
+
   }
   rotatePlayers(players){
     for (let i = 0; i < players.length - 1; i++) {

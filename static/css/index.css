@@ -377,6 +377,7 @@ body {
     justify-content: center;
     align-items: center;
     flex-direction: column;
+    color: var(--satin-sheen-gold);
 
 
 }
@@ -389,9 +390,7 @@ body {
     animation-name: rotateSymbolsContainer;
     animation-iteration-count: infinite;
     animation-duration: 1s;
-    animation-direction: alternate-reverse;
-
-
+    animation-direction: linear;
 }
 
 .preload img {
@@ -401,6 +400,7 @@ body {
     animation-name: rotateSymbols;
     animation-iteration-count: infinite;
     animation-duration: 1s;
+    
     
 }
 .preload img:nth-child(2){
@@ -486,7 +486,16 @@ body {
     width: 500px;
     border-top: #161626 2px solid;
 }
-
+.preload h3{
+    text-align: center;
+    width: 400px;
+}
+.preload .button{
+    display: block;
+    width: 200px;
+    padding-bottom: 40px;
+    text-align: center;
+}
 .players_option_container {
     display: flex;
 
@@ -566,12 +575,18 @@ body {
             transform: rotate(0deg);
             gap: 0;
         }
-        100%{
+        50%{
             gap: 20px;
             width: 70px;
             height: 70px;
 
+            transform: rotate(180deg);
+        }
+        100%{
             transform: rotate(360deg);
+            gap: 0;
+            width: 45px;
+            height: 45px;
         }
     
 }

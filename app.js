@@ -3,6 +3,8 @@ import { createServer } from "http";
 import { Server } from "socket.io";
 import path from "path";
 import dotenv from "dotenv";
+let nickName="";
+let limit=2
 let app = express();
 let server = createServer(app);
 let io = new Server(server);
@@ -17,19 +19,27 @@ app.get("/", (req, res) => {
 });
 
 app.get("/game", (req, res) => {
-  playersNicknames.push({
-    nickName: req.query.nickName,
-    limit: req.query.limit,
-  });
+  
+    nickName = req.query.nickName,
+    limit = req.query.limit
+    
+
   console.log(playersNicknames.length);
   res.sendFile(path.join(baseRoute, "game.html"));
 });
 io.on("connection", (socket) => {
   console.log("A player has joined");
   socket.on("joined", () => {
+    playersNicknames.push({
+      nickName: nickName,
+      limit: limit,
+      id: socket.id
+    })
+  
     if (playersNicknames[0].limit >= playersNicknames.length) {
-      io.emit("new_player", playersNicknames);
       socket.emit("my_id", playersNicknames.length - 1);
+      io.emit("new_player", playersNicknames);
+      
     }
     if (playersNicknames[0].limit == playersNicknames.length) {
       io.emit("update_game", deckCards);
@@ -43,6 +53,12 @@ io.on("connection", (socket) => {
   socket.on("new_play", (message) => {
     io.emit("new_play_server", message);
   });
+  socket.on("disconnect", ()=>{
+    io.emit("disconnected_player", playersNicknames.find((playerNickname)=>{
+      return playerNickname.id == socket.id
+    }))
+    playersNicknames=[]
+  })
 });
 server.listen(3000, () => {
   console.log("servidor levantado correctamente");

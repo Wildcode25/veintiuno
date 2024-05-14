@@ -18,13 +18,18 @@ export class Game {
     socket.on("my_id", (id) => {
       myId = id;
     });
-    socket.on("new_player", (playersNickname) => {
-      players = playersNickname.map((playerNickname, index) => {
-        return new Player(playerNickname.nickName, index + 1);
+    socket.on("new_player", (playersData) => {
+      players = playersData.map((playerData, index) => {
+        return new Player(playerData.nickName, playerData.id);
       });
       console.log(players[0]);
       socket.emit("load_cards", ui.displayGame(players, players.length));
     });
+    socket.on("disconnected_player", (playerNickname)=>{
+      ui.disconnectedPlayerMessage(playerNickname.nickName, players[myId].nickName, players.length);
+      socket.disconnect()
+    })
+    
     socket.on("update_game", (deckCards) => {
       console.log(deckCards);
       document.querySelector('.preload').style.visibility='hidden'
