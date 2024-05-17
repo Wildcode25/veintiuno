@@ -50,6 +50,9 @@
                           las cartas de cada jugador, se vuelven a repartir exceptuando la mesa, hasta 
                           que se termine la cantidad de cartas de la baraja en la esquina inferior derecha.
                         </p>
+                        <div>
+                          <img src="./src/img/tutorial/inicio de ronda" alt="">
+                        </div>
                       </section>
                       <section class="carrouselCard" id="carrouselCard12">
                         <h1>Fin de la ronda</h1>
@@ -82,39 +85,44 @@
                       <section class="carrouselCard" id="carrouselCard21">
                         <h1>Soltar cartas</h1>
                         <p>
-                         Haz doble click en la carta que quieres soltar.
+                         Selecciona una carta y presiona "d" para soltar.
                         </p>
+                        <canvas width="500px" height="700px" class="dropCanvas"></canvas>
                       </section>
                       <section class="carrouselCard" id="carrouselCard22">
                         <h1>Tomar cartas</h1>
                         <p>
-                          Selecciona la carta que quieres jugar y las cartas en la mesa que tengan el mismo valor <br>
+                          Selecciona la carta que quieres jugar y las cartas en la mesa que tengan el mismo valor 
                           o que sumen el valor de la carta seleccionada, luego presiona la tecla "z" para tomarlas.
                         </p>
+                        <canvas width="500px" height="700px" class="lootCanvas"></canvas>
                       </section>
                       <section class="carrouselCard" id="carrouselCard23">
-                        <h1>Formar carta</h1>
+                        <h1>Formar cartas</h1>
                         <p>
-                          Selecciona la carta que quieres jugar y las cartas en la mesa con las que quieres formar. <br>
-                          Presiona la tecla "x", si las cartas selecciondas (carta del jugador y cartas de la mesa seleccionadas)
+                          Selecciona la carta que quieres jugar y las cartas en la mesa con las que quieres formar.
+                          Presiona la tecla "x", si las cartas selecciondas 
                           suman el valor de una de las otras cartas del jugador, se forma un grupo de cartas en la mesa.
                         </p>
+                        <canvas width="500px" height="750px" class="formCanvas"></canvas>
                       </section>
                       <section class="carrouselCard" id="carrouselCard24">
                         <h1>Emparejar cartas</h1>
                         <p>
                           Selecciona la carta que quieres jugar y las cartas en la mesa con las que quieres emparejar.
-                          Presiona la tecla "c", si hay 2 o mas cartas o sumas de cartas con el mismo valor <br>
-                          de una de las cartas del jugador se forma un par de cartas del ese valor.
+                          Presiona la tecla "c", si hay 2 o mas cartas o sumas de cartas con el mismo valor 
+                          de una de las cartas del jugador se forma un par de cartas de ese valor.
                         </p>
+                        <canvas width="500px" height="750px"  class="matchCanvas"></canvas>
                       </section>
                       <section class="carrouselCard" id="carrouselCard25">
                         <h1>Block A</h1>
                         <p>
-                          Si un jugador posee mas de una carta A, puede seleccionar una de ellas y presionar la tecla "A" <br>
-                          para soltarla en la mesa con la condicion de que solo se puede tomar con una carta A. No se podra <br>
+                          Si un jugador posee mas de una carta A, puede seleccionar una de ellas y presionar la tecla "A" 
+                          para soltarla en la mesa con la condicion de que solo se puede tomar con una carta A. No se podra 
                           formar ni emparejar con esa carta.
                         </p>
+                        <canvas  width="500px" height="750px" class="blockCanvas"></canvas>
                       </section>
                     </div>
                   </section>
@@ -187,7 +195,7 @@
         <div class="controls">
           <h1 style="text-align: center">Controls</h1>
           <ul>
-            <li><b>DblClick: </b> drop</li>
+            <li><b>D: </b> drop</li>
             <li><b>Z: </b>to loot</li>
             <li><b>X: </b>to form</li>
             <li><b>C: </b>to match</li>

@@ -22,7 +22,7 @@ let globalCardObject;
 let previousTurn;
 let globalPlayerCard;
 let deck = new Deck();
-let band = false
+let band = false;
 //User intarface
 class Ui {
   constructor() {
@@ -72,11 +72,10 @@ class Ui {
 
     //Call the function sprintplayer
     players.forEach((player, index) => {
-   
       var playerStatisticContainer = document.querySelector(
-              `.playerStatisticContainer${index+1}`
-            )
-          
+        `.playerStatisticContainer${index + 1}`
+      );
+
       let playerStatisticContent = document.createElement("div");
       playerStatisticContent.className = "playerStatisticContent";
       let fullPlayerStatisticContent = document.createElement("div");
@@ -129,6 +128,49 @@ class Ui {
 
       r = r >= limitT ? 1 : r + 1;
     });
+    this.addTutorialAnimation()
+  }
+  addTutorialAnimation(){
+
+    let dropCanvas = document.querySelector('.dropCanvas').getContext('2d');
+    let lootCanvas = document.querySelector('.lootCanvas').getContext('2d')
+    let formCanvas = document.querySelector('.formCanvas').getContext('2d');
+    let matchCanvas = document.querySelector('.matchCanvas').getContext('2d');
+    let blockCanvas = document.querySelector('.blockCanvas').getContext('2d');
+
+    let dropFrames=this.getAnimationFrames('../../src/img/tutorial/controles/drop',3 );
+    let lootFrames=this.getAnimationFrames('../../src/img/tutorial/controles/loot',4);
+    let formFrames=this.getAnimationFrames('../../src/img/tutorial/controles/form',9);
+    let matchFrames=this.getAnimationFrames('../../src/img/tutorial/controles/match',10);
+    let blockFrames=this.getAnimationFrames('../../src/img/tutorial/controles/block',7);
+
+    this.drawAnimation(dropCanvas, dropFrames, 3);
+    this.drawAnimation(lootCanvas, lootFrames, 4);
+    this.drawAnimation(formCanvas, formFrames, 9);
+    this.drawAnimation(matchCanvas, matchFrames, 10);
+    this.drawAnimation(blockCanvas, blockFrames, 7);
+  
+
+  }
+  getAnimationFrames(baseRoute, limit){
+    let framesArray=[];
+    for(let i=1; i<=limit; i++){
+      const frame = new Image();
+      frame.src=`${baseRoute}/${i}.png`;
+      framesArray.push(frame)
+    }
+    return framesArray;
+  }
+  drawAnimation(canvas,framesArray, limit){
+    let i =1;
+    setInterval(()=>{
+    if(i>=limit){
+        i=1;
+    }else{
+        canvas.drawImage(framesArray[i], -350, -90);   
+        i++     
+    }
+    }, 1000)
   }
   getPlayerCard(cardId, playerCards) {
     playerCards.forEach((playerCard) => {
@@ -187,7 +229,7 @@ class Ui {
       [players[i], players[i + 1]] = [players[i + 1], players[i]];
     }
     console.log(players);
-    band=false
+    band = false;
   }
 
   createHtmlCardElement(cardObject) {
@@ -250,7 +292,7 @@ class Ui {
     playerStatisticContainer.appendChild(detailElement);
   }
   turnPlayer(players, limit, deckCards, playInfo, myId) {
-    console.log(deckCards);
+    console.log(players);
     turnLimit = limit;
     table.innerHTML = "";
     playerCardsContainer.innerHTML = "";
@@ -258,16 +300,15 @@ class Ui {
       deck.cards = deckCards;
       gameCards.cards = deck.dealCards();
       players.forEach((player) => {
-        
         player.cards = deck.dealCards();
       });
-      band=true
+      band = true;
     }
     document.querySelector(".numbersOfCards").innerHTML = deck.numbersOfCards;
 
     console.log(players);
     if (turn == limit) turn = 0;
-   
+
     console.log(turn);
     console.log(players[turn]);
     players[myId].cards.forEach((playerCard, i) => {
@@ -276,21 +317,19 @@ class Ui {
       let card = this.createHtmlCardElement(playerCard);
       console.log(playerCard);
       playerCardsContainer.appendChild(card);
-
-      
     });
 
     console.log(players);
 
     players.forEach((player, index) => {
-      
       player.resetPointsDistribution();
       player.countCards();
-      player.turn = false
+      player.turn = false;
       let playersContainer =
         player.id % 2 == 0 ? playersContainer2 : playersContainer1;
       var playerStatisticContainer = document.querySelector(
-        `.playerStatisticContainer${index+1}`)
+        `.playerStatisticContainer${index + 1}`
+      );
       let playerStatisticContent = document.createElement("div");
       playerStatisticContent.className = "playerStatisticContent";
       let fullPlayerStatisticContent = document.createElement("div");
@@ -358,14 +397,14 @@ class Ui {
 
       if (players[turn].id == player.id) {
         document.querySelector(
-          `.playerStatisticContainer${turn+1}`
+          `.playerStatisticContainer${turn + 1}`
         ).style.background = "#666";
       } else
         document.querySelector(
-          `.playerStatisticContainer${index+1}`
+          `.playerStatisticContainer${index + 1}`
         ).style.background = "#262421";
     });
-    players[turn].turn = true
+    players[turn].turn = true;
     gameCards.cards.forEach((gameCard, index) => {
       table.appendChild(this.createHtmlCardElement(gameCard));
     });
@@ -379,16 +418,17 @@ class Ui {
         });
         document.querySelector(".numbersOfCards").innerHTML =
           deck.numbersOfCards;
-          this.turnPlayer(players, limit, deckCards, {
+        this.turnPlayer(
+          players,
+          limit,
+          deckCards,
+          {
             eventName: "",
             info: 0,
-          }, myId);
-      
-      }
-     
-          
-          
-       else {
+          },
+          myId
+        );
+      } else {
         players.forEach((player) => {
           if (player.nickName == lastPlayerLootName) {
             player.accumulatedCards = player.accumulatedCards.concat(
@@ -403,212 +443,217 @@ class Ui {
         if (this.evaluateWinner(players)) {
           return;
         } else {
-          
           players.forEach((player) => {
             player.resetPointsDistribution();
             player.pointsDistribution.birao = 0;
             player.accumulatedCards = [];
-            
           });
-
-          
-          
-          
         }
-        
-        band=false
+
+        band = false;
       }
-      
     }
-      
-      
-    ;
+
     //documents events
-    
-      if (playInfo.eventName == "dblClick") {
+
+    if (playInfo.eventName == "dblClick") {
+    }
+
+    if (playInfo.eventName == "keyup") {
+      playInfo.info.selectedCardsId.forEach((selectedCardId) => {
+        selectedCards.push(
+          gameCards.cards.find((gameCard) => {
+            return selectedCardId == gameCard.name;
+          })
+        );
+      });
+
+      console.log(selectedCards);
+      if (playInfo.info.key == "d") {
         console.log(playInfo.info);
         let playerCard;
-  
-        for (let card of players[turn].cards) {
-          console.log(card.name);
-          if (card.name == playInfo.info) playerCard = card;
-        }
-        players[turn].dropCard(gameCards, playerCard);
+
+        // for (let card of players[turn].cards) {
+        //   console.log(card.name);
+        //   if (card.name == playInfo.info.id) playerCard = card;
+        // }
+        players[turn].dropCard(gameCards, globalPlayerCard);
         console.log(playerCard);
-        if (this.playerVerification(gameCards, players[turn], playerCard)) {
+        if (this.playerVerification(gameCards, players[turn], globalPlayerCard)) {
           turn++;
           previousTurn = turn - 1;
           plays++;
           console.log(turn, limit);
-         this.turnPlayer(players, limit, deckCards, { eventName: "", info: 0 }, myId);
+          this.turnPlayer(
+            players,
+            limit,
+            deckCards,
+            { eventName: "", info: 0 },
+            myId
+          );
         }
-        
-        selectedCards=[]
+
+        selectedCards = [];
       }
-      
-      if(playInfo.eventName=="keyup") {
+      if (selectedCards.length > 0) {
+        console.log(" robao");
         
-          playInfo.info.selectedCardsId.forEach((selectedCardId)=>{
-            selectedCards.push(
-              gameCards.cards.find((gameCard)=>{
-                return selectedCardId==gameCard.name;
-              })
-            )
-          })
-        console.log(selectedCards)
-        if (selectedCards.length>0) {
-          console.log(" robao");
-          if (playInfo.info.key == "x") {
-            players[turn].formCards(gameCards, selectedCards, globalPlayerCard);
-            if (
-              this.playerVerification(
-                gameCards,
-                players[turn],
-                globalPlayerCard
-              )
-            ) {
-              turn++;
-              previousTurn = turn - 1;
-              plays++;
-              selectedCards=[]
-             this.turnPlayer(players, limit, deckCards, {
+        if (playInfo.info.key == "x") {
+          players[turn].formCards(gameCards, selectedCards, globalPlayerCard);
+          if (
+            this.playerVerification(gameCards, players[turn], globalPlayerCard)
+          ) {
+            turn++;
+            previousTurn = turn - 1;
+            plays++;
+            selectedCards = [];
+            this.turnPlayer(
+              players,
+              limit,
+              deckCards,
+              {
                 eventName: "",
                 info: 0,
-              }, myId);
-            }
-            
-            this.resetSelection( table);
+              },
+              myId
+            );
           }
-          if (playInfo.info.key == "a") {
-            players[turn].blockA(gameCards, globalPlayerCard);
-            if (
-              this.playerVerification(
-                gameCards,
-                players[turn],
-                globalPlayerCard
-              )
-            ) {
-              turn++;
-              previousTurn = turn - 1;
-              plays++;
-              selectedCards=[]
-              this.turnPlayer(players, limit, deckCards, {
-                eventName: "",
-                info: 0,
-              }, myId);
-            }
-            this.resetSelection(table);
-           
-          }
-          
-          if (playInfo.info.key == "z") {
-            lastPlayerLootName = players[turn].nickName;
-            console.log(selectedCards)
-            players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
-            if (
-              this.playerVerification(
-                gameCards,
-                players[turn],
-                globalPlayerCard
-              )
-            ) {
-              if (
-                players[turn].pointsDistribution.birao > 0 &&
-                players[previousTurn].pointsDistribution.birao > 0
-              ) {
-                players[previousTurn].pointsDistribution.birao--;
-                players[turn].pointsDistribution.birao--;
-              }
-              turn++;
-              previousTurn = turn - 1;
-              plays++;
-              selectedCards=[]
-              this.turnPlayer(players, limit, deckCards, {
-                eventName: "",
-                info: 0,
-              },myId);
-            }
-            this.resetSelection(table);
-            
-            
-            console.log(selectedCards);
-          }
-          if (playInfo.info.key == "c") {
-            players[turn].match(gameCards, selectedCards, globalPlayerCard);
-            if (
-              this.playerVerification(
-                gameCards,
-                players[turn],
-                globalPlayerCard
-              )
-            ) {
-              turn++;
-              previousTurn = turn - 1;
-              plays++;
-              selectedCards=[]
-              this.turnPlayer(players, limit, deckCards, {
-                eventName: "",
-                info: 0,
-              }, myId);
-              
-            }
-            this.resetSelection( table);
-            
-          }
+
+          this.resetSelection(table);
         }
-        
+        if (playInfo.info.key == "a") {
+          players[turn].blockA(gameCards, globalPlayerCard);
+          if (
+            this.playerVerification(gameCards, players[turn], globalPlayerCard)
+          ) {
+            turn++;
+            previousTurn = turn - 1;
+            plays++;
+            selectedCards = [];
+            this.turnPlayer(
+              players,
+              limit,
+              deckCards,
+              {
+                eventName: "",
+                info: 0,
+              },
+              myId
+            );
+          }
+          this.resetSelection(table);
+        }
+
+        if (playInfo.info.key == "z") {
+          lastPlayerLootName = players[turn].nickName;
+          console.log(selectedCards);
+          players[turn].lootCards(gameCards, selectedCards, globalPlayerCard);
+          if (
+            this.playerVerification(gameCards, players[turn], globalPlayerCard)
+          ) {
+            if (
+              players[turn].pointsDistribution.birao > 0 &&
+              players[previousTurn].pointsDistribution.birao > 0
+            ) {
+              players[previousTurn].pointsDistribution.birao--;
+              players[turn].pointsDistribution.birao--;
+            }
+            turn++;
+            previousTurn = turn - 1;
+            plays++;
+            selectedCards = [];
+            this.turnPlayer(
+              players,
+              limit,
+              deckCards,
+              {
+                eventName: "",
+                info: 0,
+              },
+              myId
+            );
+          }
+          this.resetSelection(table);
+
+          console.log(selectedCards);
+        }
+        if (playInfo.info.key == "c") {
+          players[turn].match(gameCards, selectedCards, globalPlayerCard);
+          if (
+            this.playerVerification(gameCards, players[turn], globalPlayerCard)
+          ) {
+            turn++;
+            previousTurn = turn - 1;
+            plays++;
+            selectedCards = [];
+            this.turnPlayer(
+              players,
+              limit,
+              deckCards,
+              {
+                eventName: "",
+                info: 0,
+              },
+              myId
+            );
+          }
+          this.resetSelection(table);
+        }
       }
-      if(playInfo.eventName=="click"){
-        playerCardsContainer.childNodes.forEach((childNode) => {
-          if (childNode.id == playInfo.info.id) {
-            childNode.childNodes[0].style.background = "blue";
-          } else childNode.childNodes[0].style.background = "none";
-        });
-        table.childNodes.forEach((childNode) => {
-          childNode.childNodes[0].style.background = "none";
-        });
-        globalPlayerCard = players[turn].cards.find((card)=>{
-          return playInfo.info.id==card.name
-        });
-        globalCardObject = document.getElementById(`${playInfo.info.id}`)
-        selectedCards=[]
-      }
-        selectedCards=[]
-    return band
-      
-      
-      
+    }
+    if (playInfo.eventName == "click") {
+      playerCardsContainer.childNodes.forEach((childNode) => {
+        if (childNode.id == playInfo.info.id) {
+          childNode.childNodes[0].style.background = "blue";
+        } else childNode.childNodes[0].style.background = "none";
+      });
+      table.childNodes.forEach((childNode) => {
+        childNode.childNodes[0].style.background = "none";
+      });
+      globalPlayerCard = players[turn].cards.find((card) => {
+        return playInfo.info.id == card.name;
+      });
+      globalCardObject = document.getElementById(`${playInfo.info.id}`);
+      selectedCards = [];
+    }
+    selectedCards = [];
+    return band;
   }
-  disconnectedPlayerMessage(disconnectedPlayer, playerNickname, limitPlayers){
+  showFullRoomMessage() {
+    table.innerHTML = "";
+    let message = document.createElement("div");
+    message.className = "fullRoomMessage";
+    message.appendChild(document.createTextNode("La sala esta llena"));
+    table.appendChild(message);
+  }
+  disconnectedPlayerMessage(disconnectedPlayer, playerNickname, limitPlayers) {
     let table = document.querySelector(".table");
-    table.innerHTML=""
-    let preload = document.createElement("div")
-    preload.className = "preload"
-    preload.style.visibility = "visible"
-    preload.style.padding = "50%"
-    preload.style.justifyContent = "end"
-    preload.style.gap  = "10px"
+    table.innerHTML = "";
+    let preload = document.createElement("div");
+    preload.className = "preload";
+    preload.style.visibility = "visible";
+    preload.style.padding = "50%";
+    preload.style.justifyContent = "end";
+    preload.style.gap = "10px";
     let message = document.createElement("h3");
     let button = document.createElement("a");
-    button.className="button"
-    button.href = `/game?nickName=${playerNickname}&&limit=${limitPlayers}`
-    button.appendChild(document.createTextNode("Buscar otra partida"))
+    button.className = "button";
+    button.href = `/game?nickName=${playerNickname}&&limit=${limitPlayers}`;
+    button.appendChild(document.createTextNode("Buscar otra partida"));
     message.innerHTML = `${disconnectedPlayer} ha salido de la partida`;
-    preload.innerHTML="";
-    table.appendChild(preload)
-    preload.appendChild(message)
-    preload.appendChild(button)
-
+    preload.innerHTML = "";
+    table.appendChild(preload);
+    preload.appendChild(message);
+    preload.appendChild(button);
   }
-  rotatePlayers(players){
+  rotatePlayers(players) {
     for (let i = 0; i < players.length - 1; i++) {
       for (let e = 1; e < players.lenght - 1; e++) {
         [players[i], players[e]] = [players[e], players[i]];
       }
     }
-   
   }
-  resetSelection( table) {
+  resetSelection(table) {
     selectCard = false;
     table.childNodes.forEach((childNode) => {
       childNode
@@ -618,8 +663,6 @@ class Ui {
         });
       console.log(childNode);
     });
-
-    
   }
   displayWelcome() {
     alert("Bienvenido a Veintiuno");

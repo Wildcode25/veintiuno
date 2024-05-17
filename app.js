@@ -9,7 +9,7 @@ let app = express();
 let server = createServer(app);
 let io = new Server(server);
 dotenv.config();
-let playersNicknames = [];
+let playersData = [];
 let usersSockets = {};
 let deckCards = [];
 app.use(express.static("static"));
@@ -24,40 +24,58 @@ app.get("/game", (req, res) => {
     limit = req.query.limit
     
 
-  console.log(playersNicknames.length);
+  console.log(playersData.length);
   res.sendFile(path.join(baseRoute, "game.html"));
 });
 io.on("connection", (socket) => {
   console.log("A player has joined");
   socket.on("joined", () => {
-    playersNicknames.push({
+    playersData.push({
       nickName: nickName,
-      limit: limit,
+      room: limit,
       id: socket.id
     })
   
-    if (playersNicknames[0].limit >= playersNicknames.length) {
-      socket.emit("my_id", playersNicknames.length - 1);
-      io.emit("new_player", playersNicknames);
+    if (getNumbersOfPlayerInRoom(limit)<=limit) {
+      socket.emit("my_id", {id: playersData.filter(playerData=>playerData.room==limit).length - 1,
+        room: limit
+      });
+      io.emit("new_player", playersData);
       
     }
-    if (playersNicknames[0].limit == playersNicknames.length) {
-      io.emit("update_game", deckCards);
+    if (getNumbersOfPlayerInRoom(limit) == limit) {
+      console.log("limit: "+limit)
+      io.emit("update_game", {deckCards: deckCards,
+        room: limit
+      });
+    }
+    if(getNumbersOfPlayerInRoom(limit)>limit){
+      playersData.pop().room=0
+      socket.emit("full_room")
     }
   });
   socket.on("load_cards", (message) => {
-    deckCards = shuffleCards(message);
+    deckCards = shuffleCards(message.deckCards);
 
-    io.emit("deckCards_loadeds", deckCards);
+    io.emit("deckCards_loadeds", {deckCards: deckCards,
+      room: message.room
+    });
   });
   socket.on("new_play", (message) => {
     io.emit("new_play_server", message);
   });
   socket.on("disconnect", ()=>{
-    io.emit("disconnected_player", playersNicknames.find((playerNickname)=>{
+    let disconnectedPlayer = playersData.find((playerNickname)=>{
       return playerNickname.id == socket.id
-    }))
-    playersNicknames=[]
+    })
+    if(disconnectedPlayer){
+      playersData=playersData.filter((playerData)=>{
+        return playerData.room!=disconnectedPlayer.room
+      })
+      if(disconnectedPlayer.room!=0)
+      io.emit("disconnected_player", disconnectedPlayer)
+    }
+    
   })
 });
 server.listen(3000, () => {
@@ -75,4 +93,10 @@ function getUserNickname(socket) {
   return Object.keys(usersSockets).find((userSocket) => {
     usersSockets[userSocket] === socket;
   });
+}
+function getNumbersOfPlayerInRoom(room){
+  let numbersOfPlayers=playersData.filter((playerData)=>{
+    return playerData.room == room
+  }).length
+  return numbersOfPlayers 
 }
