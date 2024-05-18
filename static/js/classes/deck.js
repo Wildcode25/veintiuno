@@ -1,9 +1,12 @@
-import { Card } from "./card";
-export class Deck {
+
+const X_VALUE = -92.25;
+const Y_VALUE = -129
+class Deck {
   cards = [];
   constructor() {
-    const suits = ["♠️", "♥️", "♦️", "♣️"];
-    const cardNames = [
+    this.suits = ["♥️", "♠️", "♦️", "♣️"];
+    this.cardNames = [
+      "A",
       "2",
       "3",
       "4",
@@ -16,14 +19,11 @@ export class Deck {
       "J",
       "Q",
       "K",
-      "A",
+      
     ];
-    this.createCards(cardNames, suits);
-    this.shuffleCards();
+    
   }
-  shuffleCards() {
-    this.cards = this.cards.sort(random);
-  }
+  
   dealCards() {
     let turnCards = this.cards.splice(this.initialPosition, 4);
     return turnCards;
@@ -31,21 +31,31 @@ export class Deck {
   get haveCards() {
     return this.cards.length > 0;
   }
+  get numbersOfCards(){
+    return this.cards.length
+  }
   get initialPosition() {
     return this.cards.length - 4;
   }
-  createCards(cardNames, suits) {
-    for (let suit of suits) {
-      cardNames.forEach((cardName, i) => {
-        const cardValue = i + 2;
-        const fullCardName = cardName + suit;
-        const color = suit == "♥️" || suit == "♦️" ? "red" : "black";
-        this.cards.push(new Card(fullCardName, suit, cardValue, color));
-      });
-    }
+  createCards() {
+    this.suits.forEach((suit,e) => {
+      {
+        this.cardNames.forEach((cardName, i) => {
+          let cardValue;
+          if(cardName == "A") cardValue = 14;
+          else cardValue = i+1;
+
+          const fullCardName = cardName + suit;
+          this.cards.push(new Card(fullCardName, suit, cardValue, {
+            url: "src/img/cartas41.png",
+            x: i*X_VALUE,
+            y: e*Y_VALUE
+          }));
+        });
+      }
+    });
+   
   }
 }
 
-function random() {
-  return Math.random() - 0.5;
-}
+

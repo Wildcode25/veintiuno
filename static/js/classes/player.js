@@ -1,13 +1,13 @@
-import { Card } from "./card";
-import { Game } from "./game";
-import { GameRules } from "./game_rules";
+
 
 let gameRules = new GameRules();
 
-export class Player {
-  constructor(nickName) {
+ class Player {
+  constructor(nickName, id, room) {
     this.nickName = nickName;
-    this.cards = [];
+    this.id = id
+    this.room=room
+    this.cards=[];
     this.accumulatedCards = [];
     this.pointsDistribution = {
       totalCards: 0,
@@ -18,6 +18,7 @@ export class Player {
       piTwo: 0,
     };
     this.points = 0;
+    this.turn=false
   }
   resetPointsDistribution() {
     this.pointsDistribution.totalCards = 0;
@@ -54,7 +55,8 @@ export class Player {
     return this.cards.filter((cardItem) => cardItem.value == 14).length;
   }
   dropCard(gameCards, playerCard) {
-    if (gameRules.verifyFormedCards(gameCards, this)) {
+
+    if (gameRules.verifyFormedCards(gameCards, this)&&this.cards.findIndex(card=>card.name==playerCard.name)!=-1) {
       gameCards.cards.push(playerCard);
       gameCards.playStatus = true;
     }
@@ -81,8 +83,9 @@ export class Player {
           groupValue = card.value;
           groupName += card.value;
 
-          let formedCard = new Card(groupName, "-", groupValue, "purple");
+          let formedCard = new Card(groupName, "-", groupValue, selectedCards[selectedCards.length-2].img);
           this.concatCards(selectedCards, formedCard);
+          console.log(formedCard.formedCards)
           formedCard.block = true;
           formedCard.formedBy = this.nickName;
           this.updateGameCards(gameCards, selectedCards);
@@ -102,7 +105,7 @@ export class Player {
       if (gameRules.checkForm(selectedCards, turnPlayerCard)) {
         groupValue = turnPlayerCard.value;
         groupName += turnPlayerCard.value;
-        let formedCard = new Card(groupName, "+", groupValue, "blue");
+        let formedCard = new Card(groupName, "+", groupValue, selectedCards[selectedCards.length-2].img);
         this.concatCards(selectedCards, formedCard);
         formedCard.formedBy = this.nickName;
         this.updateGameCards(gameCards, selectedCards);

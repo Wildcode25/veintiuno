@@ -1,4 +1,4 @@
-export class GameRules {
+class GameRules {
   getTotalSum(selectedCards) {
     let sum = 0;
     for (let selectedCard of selectedCards) {
@@ -133,7 +133,7 @@ export class GameRules {
     return combinations;
   }
   cardEvaluation(card, player) {
-    if (card.symbol == "♠️ ") {
+    if (card.symbol == "♠️") {
       player.pointsDistribution.piCards.push(card);
     }
     if (card.name[0] == "A") {

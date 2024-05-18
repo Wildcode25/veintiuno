@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="css/index.css">
+    
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+    <title>Home</title>
+</head>
+<body>
+    <div class="fullGame_container">
+        
+        <div class="gameTutorial">
+              <div class="tutorialBackground"></div>
+              <div class="tutorialContent">
+               
+                <nav class="sidebar">
+                  <h1 style="text-align: center">Reglas</h1>
+                  <ul>
+                    <li class="tutorialButton">
+                      <a href="#carrouselItem1"><h2 style="color: #CCA43B;">Generales</h2></a>
+                      <div class="lineAnimation"></div>
+                    </li>
+                    <li class="tutorialButton">
+                      <a href="#carrouselItem2"><h2>Controles</h2></a>
+                      <div></div>
+                    </li>
+                    <li class="tutorialButton" style="margin-bottom: 100%">
+                      <a href="#carrouselItem3"><h2>Puntos</h2></a>
+                      <div></div>
+                    </li>
+                  </ul>
+                </nav>
+                <div class="carrouselContainer">
+                  <section class="carrouselItem" id="carrouselItem1">
+                    <div class="carrouselCardButtons">
+                      <a class="left" href="#carrouselCard13">
+                        <h1> > </h1>
+                      </a>
+                      <a class="right" href="#carrouselCard12">
+                        <h1> > </h1>
+                      </a>
+                    </div>
+                    <div class="carrouselCardContainer">
+                      <section class="carrouselCard" id="carrouselCard11">
+                        <h1>Inicio de la ronda</h1>
+                        <p>
+                          Se distribuyen 4 cartas a cada jugador y 4 en la mesa. Cuando se agoten 
+                          las cartas de cada jugador, se vuelven a repartir exceptuando la mesa, hasta 
+                          que se termine la cantidad de cartas de la baraja en la esquina inferior derecha.
+                        </p>
+                        <div>
+                          <img src="./src/img/tutorial/inicio de ronda" alt="">
+                        </div>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard12">
+                        <h1>Fin de la ronda</h1>
+                        <p>
+                          Una vez que la baraja se agote, finaliza 
+                          una ronda y el último jugador en llevarse una carta, 
+                          se lleva todos las cartas que quedaron en la mesa. Pasada la 
+                          ronda, se calcula los puntos adquiridos y se vuelven a repartir 4 cartas a
+                           cada jugador y 4 en la mesa hasta cumplir el objetivo. 
+                        </p>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard13">
+                        <h1>Objetivo</h1>
+                        <p>
+                          El primero en acumular 21 o mas puntos gana la partida.
+                        </p>
+                      </section>
+                    </div>
+                  </section>
+                  <section class="carrouselItem" id="carrouselItem2">
+                    <div class="carrouselCardButtons">
+                      <a class="left2" href="#carrouselCard25">
+                        <h1>></h1>
+                      </a>
+                      <a class="right2" href="#carrouselCard22">
+                        <h1>></h1>
+                      </a>
+                    </div>
+                    <div class="carrouselCardContainer carrouselCardContainer1">
+                      <section class="carrouselCard" id="carrouselCard21">
+                        <h1>Soltar cartas</h1>
+                        <p>
+                         Selecciona una carta y presiona "d" para soltar.
+                        </p>
+                        <canvas width="500px" height="700px" class="dropCanvas"></canvas>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard22">
+                        <h1>Tomar cartas</h1>
+                        <p>
+                          Selecciona la carta que quieres jugar y las cartas en la mesa que tengan el mismo valor 
+                          o que sumen el valor de la carta seleccionada, luego presiona la tecla "z" para tomarlas.
+                        </p>
+                        <canvas width="500px" height="700px" class="lootCanvas"></canvas>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard23">
+                        <h1>Formar cartas</h1>
+                        <p>
+                          Selecciona la carta que quieres jugar y las cartas en la mesa con las que quieres formar.
+                          Presiona la tecla "x", si las cartas selecciondas 
+                          suman el valor de una de las otras cartas del jugador, se forma un grupo de cartas en la mesa.
+                        </p>
+                        <canvas width="500px" height="750px" class="formCanvas"></canvas>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard24">
+                        <h1>Emparejar cartas</h1>
+                        <p>
+                          Selecciona la carta que quieres jugar y las cartas en la mesa con las que quieres emparejar.
+                          Presiona la tecla "c", si hay 2 o mas cartas o sumas de cartas con el mismo valor 
+                          de una de las cartas del jugador se forma un par de cartas de ese valor.
+                        </p>
+                        <canvas width="500px" height="750px"  class="matchCanvas"></canvas>
+                      </section>
+                      <section class="carrouselCard" id="carrouselCard25">
+                        <h1>Block A</h1>
+                        <p>
+                          Si un jugador posee mas de una carta A, puede seleccionar una de ellas y presionar la tecla "A" 
+                          para soltarla en la mesa con la condicion de que solo se puede tomar con una carta A. No se podra 
+                          formar ni emparejar con esa carta.
+                        </p>
+                        <canvas  width="500px" height="750px" class="blockCanvas"></canvas>
+                      </section>
+                    </div>
+                  </section>
+                  <section class="carrouselItem" id="carrouselItem3">
+                    <div class="controls">
+                      <h1 style="text-align: center">Distribucion de puntos</h1>
+                      <ul>
+                        <li><b>Mayor cantidad de cartas: </b>3pts</li>
+                        <li><b>Mayor cantidad de cartas de pi: </b>1pt</li>
+                        <li><b>2 de pi: </b>1pt</li>
+                        <li><b>10 de diamante: </b>2pts</li>
+                        <li><b>Cartas A: </b>1pt por cada carta obtenida</li>
+                        <li><b>Birao: </b>1pt por cada birao obtenido</li>
+                      </ul>
+                    </div>
+                    <div class="controls" style="height: 250px; margin-top: 10px;">
+                      <h1 style="text-align: center">Notas: </h1>
+                      <ul>
+                        <li>1. Jugador con 17pts solo podra obtener puntos <br>
+                           por mayor cantidad de cartas totales y cartas de pi</li>
+                        <li>2. Jugador con 18pts solo podra obtener puntos mayor cantidad de cartas totales</li>
+                        <li>3. Jugador con 19pts solo podra obtener puntos por 10 de diamante</li>
+                        <li>4. Jugador con 20pts solo podra obtener puntos por mayor cantidad de cartas de pi</li>
+                      
+                      </ul>
+                    </div>
+
+                  </section>
+                  
+                    </div>
+                  </section>
+                  <div class="closeGameTutorialButton"><h1 style="cursor: pointer; padding: 5px;">X</h1></div>
+                </div>
+                
+
+              </div>
+
+        <div class="playerContainer playerContainer1">
+          <div class="playerStatisticContainer playerStatisticContainer1"></div>
+          <div class="pointsDistribution pointsDistribution1"></div>
+          <div class="playerStatisticContainer playerStatisticContainer3"></div>
+          <div style="padding: 40px; width: 100px;">
+            
+            <div class="button visibleTutorialButton" style="cursor: pointer;"><div>Tutorial</div><span>Tutorial</span></div>
+            
+          </div>
+        </div>
+
+        <div class="cardsContainer">
+          <div class="table" id="table1">
+            <div class="preload">
+              <div class="symbolsContainer">
+                <img src="./src/img/corazon.png" alt="">
+                <img width="30px" height="30px" src="./src/img/pica.png" alt="">
+                <img width="30px" src="./src/img/trebol.png" alt="">
+                <img src="./src/img/diamante.png" alt="">
+                
+              </div>
+              <p  style="margin-top: 20px; flex-basis: 100px; color:#CCA43B">Buscando jugadores...</p>
+            </div>
+          </div>
+          <div class="playerCardContainer"></div>
+        </div>
+        <div class="playerContainer playerContainer2">
+          <div class="playerStatisticContainer playerStatisticContainer2"></div>
+          <div class="pointsDistribution pointsDistribution2"></div>
+          <div class="playerStatisticContainer playerStatisticContainer4"></div>
+          <div style="padding: 8px; position: relative;"><div class="numbersOfCards" ></div><div style=" width: 111px; height: 160px;"><img style="object-fit: cover; border: none;" src="src/img/backcasrd.png" alt=""></div></div>
+        </div> 
+        <div class="controls">
+          <h1 style="text-align: center">Controls</h1>
+          <ul>
+            <li><b>D: </b> drop</li>
+            <li><b>Z: </b>to loot</li>
+            <li><b>X: </b>to form</li>
+            <li><b>C: </b>to match</li>
+            <li><b>A: </b>to block</li>
+          </ul>
+        </div>
+      </div>
+      
+      <script src="js/classes/card.js"></script>
+      <script src="js/classes/deck.js"></script>
+      <script src="js/classes/ui.js"></script>
+      <script src="js/classes/game_rules.js"></script>
+      <script src="js/classes/player.js"></script>
+      <script type="module" src="js/classes/game.js"></script>
+      <script type="module">
+        import {Game} from './js/classes/game.js'
+        let game = new Game()
+        game.start()
+      </script>
+</body>
+</html>
