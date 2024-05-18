@@ -2,7 +2,8 @@ let players = [];
 let ui = new Ui();
 let deckCards;
 let socket;
-let myId;
+let myIndex;
+let myId = "";
 let myRoom;
 let selectedCardsId = [];
 let selectCard = false;
@@ -17,67 +18,85 @@ export class Game {
 
     socket.emit("joined");
     socket.on("my_id", (message) => {
+      myIndex = message.index;
+      myRoom = message.room;
       myId = message.id;
-      myRoom=message.room
-      console.log(myId)
+      console.log(myIndex);
     });
     socket.on("new_player", (playersData) => {
-      if(players.length<myRoom){
-        players = playersData.filter((playerData)=>{
-          return playerData.room==myRoom
-        }).map((playerData, index) => {
-          return new Player(playerData.nickName, playerData.id, playerData.room);
-        });
+      if (players.length < myRoom) {
+        players = playersData
+          .filter((playerData) => {
+            return playerData.room == myRoom;
+          })
+          .map((playerData, index) => {
+            return new Player(
+              playerData.nickName,
+              playerData.id,
+              playerData.room
+            );
+          });
         console.log(players[0]);
-        socket.emit("load_cards", {deckCards: ui.displayGame(players, players.length),
-        room: players[myId].room});
+        socket.emit("load_cards", {
+          deckCards: ui.displayGame(players, players.length),
+          room: players[myIndex].room,
+        });
       }
     });
-    socket.on("full_room", ()=>{
-      ui.showFullRoomMessage()
-    })
-    socket.on("disconnected_player", (playerData)=>{
-      if(playerData.room == players[myId].room){
-        ui.disconnectedPlayerMessage(playerData.nickName, players[myId].nickName, players[myId].room);
-      socket.disconnect()
+    socket.on("full_room", () => {
+      ui.showFullRoomMessage();
+    });
+    socket.on("disconnected_player", (playerData) => {
+      if (playerData.room == players[myIndex].room) {
+        ui.disconnectedPlayerMessage(
+          playerData.nickName,
+          players[myIndex].nickName,
+          players[myIndex].room
+        );
+        socket.disconnect();
       }
-    })
-    
+    });
+
     socket.on("update_game", (message) => {
-      if(players[myId].room==message.room){
-        document.querySelector('.preload').style.visibility='hidden';
-        console.log(players)
-      ui.turnPlayer(
-        players,
-        players.length,
-        message.deckCards,
-        {
-          eventName: "startGame",
-          info: 0,
-        },
-        myId
-      );
+      if (players[myIndex].room == message.room) {
+        document.querySelector(".preload").style.visibility = "hidden";
+        console.log(players);
+        ui.turnPlayer(
+          players,
+          players.length,
+          message.deckCards,
+          {
+            eventName: "startGame",
+            info: 0,
+          },
+          myIndex
+        );
       }
     });
     socket.on("deckCards_loadeds", (deckCardsData) => {
-      if(players[myId].room==deckCardsData.room){
+      if (players[myIndex].room == deckCardsData.room) {
         deckCards = deckCardsData.deckCards;
       }
     });
     socket.on("new_play_server", (playInfo) => {
-      let band=true;
-      if(playInfo.room==players[myId].room){
+      let band = true;
+      if (playInfo.room == players[myIndex].room) {
         band = ui.turnPlayer(
           players,
           players.length,
           deckCards,
           playInfo,
-          myId
+          myIndex
         );
         if (!band) {
-          ui.rotatePlayers(players)
-          socket.emit("load_cards", ui.displayGame(players, players.length));
-          
+          ui.rotatePlayers(players);
+          myIndex = players.findIndex((player) => player.id == myId);
+          console.log(players);
+          socket.emit("load_cards", {
+            deckCards: ui.displayGame(players, players.length),
+            room: players[myIndex].room,
+          });
+
           ui.turnPlayer(
             players,
             players.length,
@@ -86,16 +105,13 @@ export class Game {
               eventName: "startGame",
               info: 0,
             },
-            myId
+            myIndex
           );
         }
         selectedCardsId = [];
-  
       }
 
       console.log("este es band: " + band);
-      
-      
     });
 
     // let playersPlaces = this.updateStatistics(players);
@@ -110,20 +126,20 @@ export class Game {
   }
 }
 // playerCardsContainer.addEventListener("dblclick", (e) => {
-//   if (e.target.className == "selectAction" && players[myId].turn) {
+//   if (e.target.className == "selectAction" && players[myIndex].turn) {
 //     console.log("dblclick");
-//     socket.emit("new_play", { eventName: "dblClick", info: e.target.id , room: players[myId].room});
+//     socket.emit("new_play", { eventName: "dblClick", info: e.target.id , room: players[myIndex].room});
 //   }
 // });
 playerCardsContainer.addEventListener("click", (e) => {
-  console.log(players[myId])
+  console.log(players[myIndex]);
   if (e.target.className == "selectAction") {
-    if (players[myId].turn) {
+    if (players[myIndex].turn) {
       selectCard = true;
       socket.emit("new_play", {
         eventName: "click",
         info: { id: e.target.id, object: e.target },
-        room: players[myId].room
+        room: players[myIndex].room,
       });
     }
   }
@@ -132,12 +148,12 @@ document.addEventListener("keyup", (e) => {
   socket.emit("new_play", {
     eventName: "keyup",
     info: { key: e.key, selectedCardsId: selectedCardsId },
-    room: players[myId].room
+    room: players[myIndex].room,
   });
   selectCard = false;
 });
 table.addEventListener("click", (e) => {
-  if (selectCard && players[myId].turn) {
+  if (selectCard && players[myIndex].turn) {
     if (e.target.className == "selectAction") {
       if (e.target.style.background != "blue") {
         e.target.style.background = "blue";

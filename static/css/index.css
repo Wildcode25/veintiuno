@@ -101,6 +101,8 @@
     flex-direction: column;
     gap: 10px;
     align-items: center;
+    justify-content: center;
+    padding-bottom: 150px;
 }
 canvas{
     height: 700px;
@@ -435,6 +437,8 @@ body {
 
 .left,
 .left2 {
+    position: relative;
+    top: 30px;
     transform: rotate(180deg);
 }
 

@@ -37,8 +37,9 @@ io.on("connection", (socket) => {
     })
   
     if (getNumbersOfPlayerInRoom(limit)<=limit) {
-      socket.emit("my_id", {id: playersData.filter(playerData=>playerData.room==limit).length - 1,
-        room: limit
+      socket.emit("my_id", {index: playersData.filter(playerData=>playerData.room==limit).length - 1,
+        room: limit,
+        id: socket.id
       });
       io.emit("new_player", playersData);
       

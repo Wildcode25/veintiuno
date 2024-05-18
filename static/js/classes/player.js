@@ -55,7 +55,7 @@ let gameRules = new GameRules();
     return this.cards.filter((cardItem) => cardItem.value == 14).length;
   }
   dropCard(gameCards, playerCard) {
-    if (gameRules.verifyFormedCards(gameCards, this)) {
+    if (gameRules.verifyFormedCards(gameCards, this)&&this.cards.findIndex(card=>card.name==playerCard.name)!=-1) {
       gameCards.cards.push(playerCard);
       gameCards.playStatus = true;
     }

@@ -303,6 +303,7 @@ class Ui {
         player.cards = deck.dealCards();
       });
       band = true;
+      turn=0;
     }
     document.querySelector(".numbersOfCards").innerHTML = deck.numbersOfCards;
 
@@ -326,7 +327,7 @@ class Ui {
       player.countCards();
       player.turn = false;
       let playersContainer =
-        player.id % 2 == 0 ? playersContainer2 : playersContainer1;
+        index % 2 == 0 ? playersContainer1 : playersContainer2;
       var playerStatisticContainer = document.querySelector(
         `.playerStatisticContainer${index + 1}`
       );
@@ -478,7 +479,7 @@ class Ui {
         //   if (card.name == playInfo.info.id) playerCard = card;
         // }
         players[turn].dropCard(gameCards, globalPlayerCard);
-        console.log(playerCard);
+        
         if (this.playerVerification(gameCards, players[turn], globalPlayerCard)) {
           turn++;
           previousTurn = turn - 1;

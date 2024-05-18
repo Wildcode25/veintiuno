@@ -29,7 +29,7 @@ class Deck {
     return turnCards;
   }
   get haveCards() {
-    return this.cards.length > 0;
+    return this.cards.length > 30;
   }
   get numbersOfCards(){
     return this.cards.length
