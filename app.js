@@ -63,7 +63,7 @@ io.on("connection", (socket) => {
     });
   });
   socket.on("new_play", (message) => {
-    io.emit("new_play_server", message);
+    io.emit("new_play", message);
   });
   socket.on("disconnect", ()=>{
     let disconnectedPlayer = playersData.find((playerNickname)=>{

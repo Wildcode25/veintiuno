@@ -5,7 +5,7 @@
     this.value = value;
     this.block = false;
     this.formedCards = [];
-    this.formedBy = "";
+    this.nicknameOfThePlayerWhoFormed = "";
     this.img = img;
   }
   get numberOfFormedCards() {

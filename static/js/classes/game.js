@@ -1,100 +1,116 @@
-let players = [];
-let ui = new Ui();
-let deckCards;
-let socket;
-let myIndex;
-let myId = "";
-let myRoom;
-let selectedCardsId = [];
-let selectCard = false;
+let players = [];  // Array to store player objects
+const ui = new Ui(); // Instance of the Ui class to manage UI updates
+let deckCards;     // Variable to store deck cards
+let currentPlayerIndex;       // Index of the current player in the players array
+let currentPlayerId = "";     // ID of the current player
+let myRoom;        // Room ID of the current game
+let selectedCardsId = [];  // Array to store IDs of selected cards
+let selectCard = false;    // Flag to indicate if a card is selected
+
+// URL configuration for socket connection
 let url =
   window.location.hostname == "localhost"
     ? window.location.hostname + ":3000"
     : window.location.hostname;
+
 export class Game {
   constructor() {}
-  start() {
-    socket = io.connect(url, { forceNew: true });
 
+  start() {
+   const socket = io.connect(url, { forceNew: true });
+
+    // Emit 'joined' event to the server
     socket.emit("joined");
-    socket.on("my_id", (message) => {
-      myIndex = message.index;
-      myRoom = message.room;
-      myId = message.id;
-      console.log(myIndex);
+
+    // Listen for 'my_id' event to receive player playData
+    socket.on("my_id", (currentPlayerData) => {
+      currentPlayerIndex = currentPlayerData.index;
+      myRoom = currentPlayerData.room;
+      currentPlayerId = currentPlayerData.id;
     });
+
+    // Listen for 'new_player' event to update players list
     socket.on("new_player", (playersData) => {
       if (players.length < myRoom) {
         players = playersData
           .filter((playerData) => {
             return playerData.room == myRoom;
           })
-          .map((playerData, index) => {
+          .map((playerData) => {
             return new Player(
               playerData.nickName,
               playerData.id,
               playerData.room
             );
           });
-        console.log(players[0]);
+        ui.displayGame(players)
         socket.emit("load_cards", {
-          deckCards: ui.displayGame(players, players.length),
-          room: players[myIndex].room,
+          deckCards: ui.getNewCards,
+          room: players[currentPlayerIndex].room,
         });
       }
     });
+
+    // Listen for 'full_room' event to show full room message
     socket.on("full_room", () => {
       ui.showFullRoomMessage();
     });
+
+    // Listen for 'disconnected_player' event to handle player disconnection
     socket.on("disconnected_player", (playerData) => {
-      if (playerData.room == players[myIndex].room) {
+      if (playerData.room == players[currentPlayerIndex].room) {
         ui.disconnectedPlayerMessage(
           playerData.nickName,
-          players[myIndex].nickName,
-          players[myIndex].room
+          players[currentPlayerIndex].nickName,
+          players[currentPlayerIndex].room
         );
         socket.disconnect();
       }
     });
 
-    socket.on("update_game", (message) => {
-      if (players[myIndex].room == message.room) {
+    // Listen for 'update_game' event to update game state
+    socket.on("update_game", (gameData) => {
+      if (players[currentPlayerIndex].room == gameData.room) {
         document.querySelector(".preload").style.visibility = "hidden";
         console.log(players);
         ui.turnPlayer(
           players,
           players.length,
-          message.deckCards,
+          gameData.deckCards,
           {
             eventName: "startGame",
-            info: 0,
+            playData: 0,
           },
-          myIndex
+          currentPlayerIndex
         );
       }
     });
+
+    // Listen for 'deckCards_loadeds' event to load deck cards
     socket.on("deckCards_loadeds", (deckCardsData) => {
-      if (players[myIndex].room == deckCardsData.room) {
+      if (players[currentPlayerIndex].room == deckCardsData.room) {
         deckCards = deckCardsData.deckCards;
       }
     });
-    socket.on("new_play_server", (playInfo) => {
+
+    // Listen for 'new_play_server' event to handle new plays from server
+    socket.on("new_play", (playData) => {
       let band = true;
-      if (playInfo.room == players[myIndex].room) {
+      if (playData.room == players[currentPlayerIndex].room) {
         band = ui.turnPlayer(
           players,
           players.length,
           deckCards,
-          playInfo,
-          myIndex
+          playData,
+          currentPlayerIndex
         );
         if (!band) {
           ui.rotatePlayers(players);
-          myIndex = players.findIndex((player) => player.id == myId);
+          currentPlayerIndex = players.findIndex((player) => player.id == currentPlayerId);
           console.log(players);
           socket.emit("load_cards", {
-            deckCards: ui.displayGame(players, players.length),
-            room: players[myIndex].room,
+            deckCards: ui.getNewCards,
+            room: players[currentPlayerIndex].room,
           });
 
           ui.turnPlayer(
@@ -103,9 +119,9 @@ export class Game {
             deckCards,
             {
               eventName: "startGame",
-              info: 0,
+              playData: 0,
             },
-            myIndex
+            currentPlayerIndex
           );
         }
         selectedCardsId = [];
@@ -114,46 +130,38 @@ export class Game {
       console.log("este es band: " + band);
     });
 
-    // let playersPlaces = this.updateStatistics(players);
-
-    // playersPlaces = this.updateStatistics(players)
-
     console.log("Fin del juego");
-    // playersPlaces.forEach((e,i)=>{
-    //   console.log(`${i+1}. ${e}`)
-
-    // })
   }
 }
-// playerCardsContainer.addEventListener("dblclick", (e) => {
-//   if (e.target.className == "selectAction" && players[myIndex].turn) {
-//     console.log("dblclick");
-//     socket.emit("new_play", { eventName: "dblClick", info: e.target.id , room: players[myIndex].room});
-//   }
-// });
+
+// Handle card selection by the player
 playerCardsContainer.addEventListener("click", (e) => {
-  console.log(players[myIndex]);
+  console.log(players[currentPlayerIndex]);
   if (e.target.className == "selectAction") {
-    if (players[myIndex].turn) {
+    if (players[currentPlayerIndex].turn) {
       selectCard = true;
       socket.emit("new_play", {
         eventName: "click",
-        info: { id: e.target.id, object: e.target },
-        room: players[myIndex].room,
+        playData: { id: e.target.id, object: e.target },
+        room: players[currentPlayerIndex].room,
       });
     }
   }
 });
+
+// Handle keyup events to manage selected cards
 document.addEventListener("keyup", (e) => {
   socket.emit("new_play", {
     eventName: "keyup",
-    info: { key: e.key, selectedCardsId: selectedCardsId },
-    room: players[myIndex].room,
+    playData: { key: e.key, selectedCardsId: selectedCardsId },
+    room: players[currentPlayerIndex].room,
   });
   selectCard = false;
 });
+
+// Handle table click events to manage card selections
 table.addEventListener("click", (e) => {
-  if (selectCard && players[myIndex].turn) {
+  if (selectCard && players[currentPlayerIndex].turn) {
     if (e.target.className == "selectAction") {
       if (e.target.style.background != "blue") {
         e.target.style.background = "blue";

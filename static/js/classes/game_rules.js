@@ -1,4 +1,5 @@
 class GameRules {
+  // Calculate the total sum of the values of the selected cards
   getTotalSum(selectedCards) {
     let sum = 0;
     for (let selectedCard of selectedCards) {
@@ -6,6 +7,8 @@ class GameRules {
     }
     return sum;
   }
+
+  // Evaluate Ace cards in the selected cards and adjust their value if necessary
   evaluateACArds(selectedCards, playerCard) {
     if (playerCard.name[0] == "A") {
       for (let selectedCard of selectedCards) {
@@ -19,6 +22,8 @@ class GameRules {
         if (selectedCard.name[0] == "A") selectedCard.value = 1;
     }
   }
+
+  // Find possible sums of card values that match a given card value
   sumasPosibles(arr, n, cardValue) {
     const resultados = [];
     function calcularSumas(actual, startIndex) {
@@ -41,6 +46,7 @@ class GameRules {
     return resultados;
   }
 
+  // Check if the selected cards form a valid set according to game rules
   checkForm(selectedCards, playerCard) {
     let sum = 0;
     let reduce = 0;
@@ -59,12 +65,16 @@ class GameRules {
     }
     return false;
   }
+
+  // Check if any of the selected cards are blocked
   checkBlocks(selectedCards) {
     for (let selectedCard of selectedCards) {
       if (selectedCard.block) return true;
     }
     return false;
   }
+
+  // Check if the selected cards and player card form a match
   checkMatch(selectedCards, playerCard) {
     let sum = 0;
     let combinations = 0;
@@ -88,9 +98,10 @@ class GameRules {
         return true;
       }
     }
-
     return false;
   }
+
+  // Check if the selected cards and player card form a loot
   checkLoot(selectedCards, playerCard) {
     let sum = 0;
     let combinations = 0;
@@ -121,6 +132,8 @@ class GameRules {
     }
     return false;
   }
+
+  // Get the number of combinations that match the player card value
   getNumberOfCombinations(selectedCards, playerCard) {
     let sums = [];
     let combinations = 0;
@@ -132,6 +145,8 @@ class GameRules {
     }
     return combinations;
   }
+
+  // Evaluate a card and assign points to the player based on card type
   cardEvaluation(card, player) {
     if (card.symbol == "♠️") {
       player.pointsDistribution.piCards.push(card);
@@ -144,6 +159,8 @@ class GameRules {
     }
     if (card.name == "2" + "♠️") player.pointsDistribution.piTwo++;
   }
+
+  // Verify if a player's formed cards are unique
   verifyFormedCards(gameCards, player) {
     return (
       gameCards.cards.findIndex(
@@ -151,6 +168,8 @@ class GameRules {
       ) == -1
     );
   }
+
+  // Update the statistics of the players based on their points
   updateStatistics(players) {
     console.log(players);
     for (let i = 0; i < players.length - 1; i++) {
@@ -162,6 +181,8 @@ class GameRules {
     console.log(players);
     return players;
   }
+
+  // Check if the table is empty (no cards left)
   tableIsEmpty(gameCards) {
     return gameCards.cards.length < 1;
   }
