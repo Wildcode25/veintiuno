@@ -51,21 +51,8 @@ Controls
 - Loot Cards: Press the 'z' key to loot selected cards.
 - Match Cards: Press the 'c' key to match selected cards.
 
-Tutorial
-
-- Open Tutorial: Click on tutorial to open the game tutorial.
-
-- Navigate Tutorial: Use the left (`.left`, `.left2`) and right (`.right`, `.right2`) buttons 
-to navigate through the tutorial sections.
-
-- **Close Tutorial**: Click the `.closeGameTutorialButton` to close the tutorial.
 
 Code Structure
-
-Player Class
-
-
-
 
  UI Class
 

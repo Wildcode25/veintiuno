@@ -261,9 +261,7 @@ class Ui {
 
   playerVerification(tableCard, player, playerCard) {
     if (tableCard.playStatus) {
-      player.cards = player.cards.filter((playerCardItem) => {
-        return playerCardItem.name != playerCard.name;
-      });
+      player.setPlayerCards(playerCard)
       tableCards.playStatus = false;
       return true;
     }
@@ -283,7 +281,7 @@ class Ui {
 
     playerStatisticContainer.appendChild(detailElement);
   }
-  turnPlayer(players, limit, deckCards, playInfo, myId) {
+  updategame(players, limit, deckCards, playInfo, myId) {
     console.log(players);
     turnLimit = limit;
     table.innerHTML = "";
@@ -302,8 +300,6 @@ class Ui {
     console.log(players);
     if (turn == limit) turn = 0;
 
-    console.log(turn);
-    console.log(players[turn]);
     players[myId].cards.forEach((playerCard, i) => {
       console.log("linea: 474");
       selectCard = false;
@@ -411,13 +407,13 @@ class Ui {
         });
         document.querySelector(".numbersOfCards").innerHTML =
           deck.numbersOfCards;
-        this.turnPlayer(
+        this.updategame(
           players,
           limit,
           deckCards,
           {
             eventName: "",
-            info: 0,
+            playData: 0,
           },
           myId
         );
@@ -449,11 +445,9 @@ class Ui {
 
     //documents events
 
-    if (playInfo.eventName == "dblClick") {
-    }
 
     if (playInfo.eventName == "keyup") {
-      playInfo.info.selectedCardsId.forEach((selectedCardId) => {
+      playInfo.playData.selectedCardsId.forEach((selectedCardId) => {
         selectedCards.push(
           tableCards.cards.find((tableCard) => {
             return selectedCardId == tableCard.name;
@@ -462,14 +456,10 @@ class Ui {
       });
 
       console.log(selectedCards);
-      if (playInfo.info.key == "d") {
-        console.log(playInfo.info);
+      if (playInfo.playData.key == "d") {
+        console.log(playInfo.playData);
         let playerCard;
 
-        // for (let card of players[turn].cards) {
-        //   console.log(card.name);
-        //   if (card.name == playInfo.info.id) playerCard = card;
-        // }
         players[turn].dropCard(tableCards, globalPlayerCard);
         
         if (this.playerVerification(tableCards, players[turn], globalPlayerCard)) {
@@ -477,11 +467,11 @@ class Ui {
           previousTurn = turn - 1;
           plays++;
           console.log(turn, limit);
-          this.turnPlayer(
+          this.updategame(
             players,
             limit,
             deckCards,
-            { eventName: "", info: 0 },
+            { eventName: "", playData: 0 },
             myId
           );
         }
@@ -491,7 +481,7 @@ class Ui {
       if (selectedCards.length > 0) {
         console.log(" robao");
         
-        if (playInfo.info.key == "x") {
+        if (playInfo.playData.key == "x") {
           players[turn].formCards(tableCards, selectedCards, globalPlayerCard);
           if (
             this.playerVerification(tableCards, players[turn], globalPlayerCard)
@@ -500,13 +490,13 @@ class Ui {
             previousTurn = turn - 1;
             plays++;
             selectedCards = [];
-            this.turnPlayer(
+            this.updategame(
               players,
               limit,
               deckCards,
               {
                 eventName: "",
-                info: 0,
+                playData: 0,
               },
               myId
             );
@@ -514,7 +504,7 @@ class Ui {
 
           this.resetSelection(table);
         }
-        if (playInfo.info.key == "a") {
+        if (playInfo.playData.key == "a") {
           players[turn].blockA(tableCards, globalPlayerCard);
           if (
             this.playerVerification(tableCards, players[turn], globalPlayerCard)
@@ -523,13 +513,13 @@ class Ui {
             previousTurn = turn - 1;
             plays++;
             selectedCards = [];
-            this.turnPlayer(
+            this.updategame(
               players,
               limit,
               deckCards,
               {
                 eventName: "",
-                info: 0,
+                playData: 0,
               },
               myId
             );
@@ -537,7 +527,7 @@ class Ui {
           this.resetSelection(table);
         }
 
-        if (playInfo.info.key == "z") {
+        if (playInfo.playData.key == "z") {
           lastPlayerLootName = players[turn].nickName;
           console.log(selectedCards);
           players[turn].lootCards(tableCards, selectedCards, globalPlayerCard);
@@ -555,13 +545,13 @@ class Ui {
             previousTurn = turn - 1;
             plays++;
             selectedCards = [];
-            this.turnPlayer(
+            this.updategame(
               players,
               limit,
               deckCards,
               {
                 eventName: "",
-                info: 0,
+                playData: 0,
               },
               myId
             );
@@ -570,7 +560,7 @@ class Ui {
 
           console.log(selectedCards);
         }
-        if (playInfo.info.key == "c") {
+        if (playInfo.playData.key == "c") {
           players[turn].match(tableCards, selectedCards, globalPlayerCard);
           if (
             this.playerVerification(tableCards, players[turn], globalPlayerCard)
@@ -579,13 +569,13 @@ class Ui {
             previousTurn = turn - 1;
             plays++;
             selectedCards = [];
-            this.turnPlayer(
+            this.updategame(
               players,
               limit,
               deckCards,
               {
                 eventName: "",
-                info: 0,
+                playData: 0,
               },
               myId
             );
@@ -596,7 +586,7 @@ class Ui {
     }
     if (playInfo.eventName == "click") {
       playerCardsContainer.childNodes.forEach((childNode) => {
-        if (childNode.id == playInfo.info.id) {
+        if (childNode.id == playInfo.playData.id) {
           childNode.childNodes[0].style.background = "blue";
         } else childNode.childNodes[0].style.background = "none";
       });
@@ -604,19 +594,20 @@ class Ui {
         childNode.childNodes[0].style.background = "none";
       });
       globalPlayerCard = players[turn].cards.find((card) => {
-        return playInfo.info.id == card.name;
+        return playInfo.playData.id == card.name;
       });
-      globalCardObject = document.getElementById(`${playInfo.info.id}`);
+      globalCardObject = document.getElementById(`${playInfo.playData.id}`);
       selectedCards = [];
     }
     selectedCards = [];
     return band;
   }
-  showFullRoomMessage() {
+ 
+  showErrorMessage(text) {
     table.innerHTML = "";
     let message = document.createElement("div");
     message.className = "fullRoomMessage";
-    message.appendChild(document.createTextNode("La sala esta llena"));
+    message.appendChild(document.createTextNode(text));
     table.appendChild(message);
   }
   disconnectedPlayerMessage(disconnectedPlayer, playerNickname, limitPlayers) {

@@ -7,26 +7,22 @@ const playersOptionContainer = document.querySelector(".players_option_container
 const layout = document.querySelector(".layout");
 const inputNickname = content.querySelector("input");
 
-let players = []; // Array to store player objects
+const players = []; // Array to store player objects
 let limit = 0;    // Variable to store the player limit
 
 // Function to start the game
 function startGame(e) {
-  // Check if the event is a click on the next button or pressing Enter, and the input is not empty
   if ((e.target.className == "next_button" || e.key == "Enter") && inputNickname.value != "") {
     // Redirect to the game page with nickname and limit as query parameters
     window.location.href = `/game?nickName=${inputNickname.value}&&limit=${limit}`;
   }
 }
 
-// Add event listener for 'keydown' event to start the game
 document.addEventListener("keydown", (e) => startGame(e));
 
-// Add event listener for 'click' event on form buttons
 formButtons.addEventListener("click", (e) => {
   e.preventDefault();
 
-  // Check if the clicked button is the back button
   if (e.target.className == "back_button") {
     if (players.length == 0) {
       // If no players are added, reset the layout and show the players option container
@@ -36,7 +32,7 @@ formButtons.addEventListener("click", (e) => {
       return;
     }
   } else {
-    startGame(e); // Start the game if it's not the back button
+    startGame(e); 
   }
 });
 

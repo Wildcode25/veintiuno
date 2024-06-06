@@ -24,25 +24,25 @@ class GameRules {
   }
 
   // Find possible sums of card values that match a given card value
-  sumasPosibles(arr, n, cardValue) {
+  possibleSums(arr, n, cardValue) {
     const resultados = [];
-    function calcularSumas(actual, startIndex) {
-      if (actual.length === n) {
-        let suma = 0;
-        for (let actualItem of actual) {
-          suma += actualItem.value;
+    function calculateSums(currentarray, startIndex) {
+      if (currentarray.length === n) {
+        let sum = 0;
+        for (let currentArrayItem of currentarray) {
+          sum += currentArrayItem.value;
         }
-        if (suma == cardValue) {
-          resultados.push(suma);
+        if (sum == cardValue) {
+          resultados.push(sum);
         }
         return;
       }
       for (let i = startIndex; i < arr.length; i++) {
-        let nuevoActual = [...actual, arr[i]];
-        calcularSumas(nuevoActual, i + 1);
+        let newCurrentArray = [...currentarray, arr[i]];
+        calculateSums(newCurrentArray, i + 1);
       }
     }
-    calcularSumas([], 0);
+    calculateSums([], 0);
     return resultados;
   }
 
@@ -138,7 +138,7 @@ class GameRules {
     let sums = [];
     let combinations = 0;
     for (let i = 1; i <= selectedCards.length; i++) {
-      sums.push(this.sumasPosibles(selectedCards, i, playerCard.value));
+      sums.push(this.possibleSums(selectedCards, i, playerCard.value));
     }
     for (let sum of sums) {
       combinations += sum.length;

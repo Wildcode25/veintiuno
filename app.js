@@ -28,7 +28,6 @@ app.get("/game", (req, res) => {
   res.sendFile(path.join(baseRoute, "game.html"));
 });
 io.on("connection", (socket) => {
-  console.log("A player has joined");
   socket.on("joined", () => {
     playersData.push({
       nickName: nickName,
@@ -37,7 +36,8 @@ io.on("connection", (socket) => {
     })
   
     if (getNumbersOfPlayerInRoom(limit)<=limit) {
-      socket.emit("my_id", {index: playersData.filter(playerData=>playerData.room==limit).length - 1,
+      socket.emit("my_id", {
+        index: playersData.filter(playerData=>playerData.room==limit).length - 1,
         room: limit,
         id: socket.id
       });
@@ -45,14 +45,19 @@ io.on("connection", (socket) => {
       
     }
     if (getNumbersOfPlayerInRoom(limit) == limit) {
-      console.log("limit: "+limit)
       io.emit("update_game", {deckCards: deckCards,
         room: limit
       });
     }
     if(getNumbersOfPlayerInRoom(limit)>limit){
-      playersData.pop().room=0
+      let declinedPlayer =  playersData.pop()
+      declinedPlayer.room=0
       socket.emit("full_room")
+    }
+    if(limit>4||nickName==""){
+      let declinedPlayer =  playersData.pop()
+      declinedPlayer.room=0
+      socket.emit("join_error")
     }
   });
   socket.on("load_cards", (message) => {

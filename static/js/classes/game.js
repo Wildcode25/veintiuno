@@ -1,23 +1,25 @@
-let players = [];  // Array to store player objects
-const ui = new Ui(); // Instance of the Ui class to manage UI updates
-let deckCards;     // Variable to store deck cards
-let currentPlayerIndex;       // Index of the current player in the players array
-let currentPlayerId = "";     // ID of the current player
-let myRoom;        // Room ID of the current game
+let players = [];  
+const ui = new Ui(); 
+let deckCards;    
+let currentPlayerIndex;       
+let currentPlayerId = "";     
+let currentRoom;        
 let selectedCardsId = [];  // Array to store IDs of selected cards
 let selectCard = false;    // Flag to indicate if a card is selected
 
-// URL configuration for socket connection
+
+
 let url =
   window.location.hostname == "localhost"
     ? window.location.hostname + ":3000"
     : window.location.hostname;
-
+    
+const socket = io.connect(url, { forceNew: true });;
 export class Game {
   constructor() {}
 
   start() {
-   const socket = io.connect(url, { forceNew: true });
+   
 
     // Emit 'joined' event to the server
     socket.emit("joined");
@@ -25,16 +27,16 @@ export class Game {
     // Listen for 'my_id' event to receive player playData
     socket.on("my_id", (currentPlayerData) => {
       currentPlayerIndex = currentPlayerData.index;
-      myRoom = currentPlayerData.room;
+      currentRoom = currentPlayerData.room;
       currentPlayerId = currentPlayerData.id;
     });
 
     // Listen for 'new_player' event to update players list
     socket.on("new_player", (playersData) => {
-      if (players.length < myRoom) {
+      if (players.length < currentRoom) {
         players = playersData
           .filter((playerData) => {
-            return playerData.room == myRoom;
+            return playerData.room == currentRoom;
           })
           .map((playerData) => {
             return new Player(
@@ -51,11 +53,13 @@ export class Game {
       }
     });
 
-    // Listen for 'full_room' event to show full room message
+    
     socket.on("full_room", () => {
-      ui.showFullRoomMessage();
+      ui.showErrorMessage("La sala esta llena");
     });
-
+    socket.on("join_error", () => {
+      ui.showErrorMessage("Error al unirse a la sala");
+    });
     // Listen for 'disconnected_player' event to handle player disconnection
     socket.on("disconnected_player", (playerData) => {
       if (playerData.room == players[currentPlayerIndex].room) {
@@ -73,7 +77,7 @@ export class Game {
       if (players[currentPlayerIndex].room == gameData.room) {
         document.querySelector(".preload").style.visibility = "hidden";
         console.log(players);
-        ui.turnPlayer(
+        ui.updategame(
           players,
           players.length,
           gameData.deckCards,
@@ -97,7 +101,7 @@ export class Game {
     socket.on("new_play", (playData) => {
       let band = true;
       if (playData.room == players[currentPlayerIndex].room) {
-        band = ui.turnPlayer(
+        band = ui.updategame(
           players,
           players.length,
           deckCards,
@@ -113,7 +117,7 @@ export class Game {
             room: players[currentPlayerIndex].room,
           });
 
-          ui.turnPlayer(
+          ui.updategame(
             players,
             players.length,
             deckCards,

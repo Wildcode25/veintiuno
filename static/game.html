@@ -9,7 +9,7 @@
     <script >
       console.log = ()=>{}
     </script>
-    <title>Home</title>
+    <title>Veintiuno</title>
 </head>
 <body>
     <div class="fullGame_container">
@@ -104,7 +104,7 @@
                         <h1>Formar cartas</h1>
                         <p>
                           Selecciona la carta que quieres jugar y las cartas en la mesa con las que quieres formar.
-                          Presiona la tecla "x", si las cartas selecciondas 
+                          Presiona la tecla "x". Si las cartas seleccionadas 
                           suman el valor de una de las otras cartas del jugador, se forma un grupo de cartas en la mesa.
                         </p>
                         <canvas width="500px" height="750px" class="formCanvas"></canvas>
@@ -113,17 +113,17 @@
                         <h1>Emparejar cartas</h1>
                         <p>
                           Selecciona la carta que quieres jugar y las cartas en la mesa con las que quieres emparejar.
-                          Presiona la tecla "c", si hay 2 o mas cartas o sumas de cartas con el mismo valor 
-                          de una de las cartas del jugador se forma un par de cartas de ese valor.
+                           Presiona la tecla "c". Si hay 2 o más cartas o sumas de cartas con el mismo valor de 
+                          una de las cartas del jugador, se forma un par de cartas de ese valor.
                         </p>
                         <canvas width="500px" height="750px"  class="matchCanvas"></canvas>
                       </section>
                       <section class="carrouselCard" id="carrouselCard25">
                         <h1>Block A</h1>
                         <p>
-                          Si un jugador posee mas de una carta A, puede seleccionar una de ellas y presionar la tecla "A" 
-                          para soltarla en la mesa con la condicion de que solo se puede tomar con una carta A. No se podra 
-                          formar ni emparejar con esa carta.
+                          Si un jugador posee más de una carta A, puede seleccionar una de 
+                          ellas y presionar la tecla "A" para soltarla en la mesa con la condición 
+                          de que solo se puede tomar con una carta A. No se podrá formar ni emparejar con esa carta.
                         </p>
                         <canvas  width="500px" height="750px" class="blockCanvas"></canvas>
                       </section>
@@ -131,7 +131,7 @@
                   </section>
                   <section class="carrouselItem" id="carrouselItem3">
                     <div class="controls">
-                      <h1 style="text-align: center">Distribucion de puntos</h1>
+                      <h1 style="text-align: center">Distribución de puntos</h1>
                       <ul>
                         <li><b>Mayor cantidad de cartas: </b>3pts</li>
                         <li><b>Mayor cantidad de cartas de pi: </b>1pt</li>
@@ -144,11 +144,11 @@
                     <div class="controls" style="height: 250px; margin-top: 10px;">
                       <h1 style="text-align: center">Notas: </h1>
                       <ul>
-                        <li>1. Jugador con 17pts solo podra obtener puntos <br>
+                        <li>1. Jugador con 17pts solo podrá obtener puntos <br>
                            por mayor cantidad de cartas totales y cartas de pi</li>
-                        <li>2. Jugador con 18pts solo podra obtener puntos mayor cantidad de cartas totales</li>
-                        <li>3. Jugador con 19pts solo podra obtener puntos por 10 de diamante</li>
-                        <li>4. Jugador con 20pts solo podra obtener puntos por mayor cantidad de cartas de pi</li>
+                        <li>2. Jugador con 18pts solo podrá obtener puntos mayor cantidad de cartas totales</li>
+                        <li>3. Jugador con 19pts solo podrá obtener puntos por 10 de diamante</li>
+                        <li>4. Jugador con 20pts solo podrá obtener puntos por mayor cantidad de cartas de pi</li>
                       
                       </ul>
                     </div>
@@ -215,7 +215,7 @@
       <script type="module" src="js/classes/game.js"></script>
       <script type="module">
         import {Game} from './js/classes/game.js'
-        let game = new Game()
+        const game = new Game()
         game.start()
       </script>
 </body>

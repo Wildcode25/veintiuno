@@ -99,8 +99,12 @@ class Player {
     }
     this.resetAValues(selectedCards);
   }
+  setPlayerCards(playerCard){
+    this.cards = this.cards.filter((playerCardItem) => {
+      return playerCardItem.name != playerCard.name;
+    });
+  }
 
-  // Forms cards into groups if the conditions are met
   formCards(tableCards, selectedCards, playerCard) {
     let groupName = "+";
     let groupValue;
